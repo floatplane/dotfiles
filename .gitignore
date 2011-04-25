@@ -1,0 +1,9 @@
+*~
+\#*#
+*.log
+.svn/
+.DS_Store
+.rsense
+*.pyc
+._.DS_Store
+data/inventory/output

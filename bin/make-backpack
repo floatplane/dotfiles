@@ -1,0 +1,49 @@
+#! /usr/bin/env ruby
+require 'digest'
+require 'uri'
+
+SECRET_KEY = "c539aj9gm7yth3n4r6jhrddko" # "jh2xmlwuka2i70qdedz08nem8" # "e31wfuypr6pel1vtjvxymxyti"
+APPLICATION_ID = "cndnmpglbeyrd1s2sqxplkAPP" # "akuyn48umapd8n75e0gt92APP" # "ldfcp5pygcyoux7t7w0vkpAPP"
+HOST = "api.jambool.com" # 'api.development.jambool.com'
+ACCESS_METHOD = 'https' # must be https for api.jambool.com
+
+path = "/inventory/v1/applications/#{APPLICATION_ID}/backpacks"
+
+sig_params = {
+  "http_verb" => "post",
+  "resource_path" => path,
+  "ts" => Time.now.to_i.to_s,
+  "name" => "name_#{rand(10000)}",
+  "user_id" => "user_id",
+  "platform_id" => "1"
+}
+
+str = ""
+sig_params.keys.sort.each { |x| str = str + x + sig_params[x] }
+
+str = str + SECRET_KEY
+
+puts str
+
+sig = Digest::MD5.hexdigest(str)
+
+url = "#{ACCESS_METHOD}://#{HOST}#{path}?sig=#{sig}"
+sig_params.delete "http_verb"
+sig_params.delete "resource_path"
+
+separator = "&"
+sig_params.each do |k,v|
+  url = url + separator + k + "=" + v
+end
+puts url
+
+separator = ""
+post_str = ""
+sig_params.each do |k,v|
+  post_str = post_str + separator + k + "=" + v
+  separator = "&"
+end
+
+cmd = "curl -X POST -d \"#{post_str}\" \"#{url}\""
+puts cmd
+exec cmd

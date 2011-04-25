@@ -1,0 +1,24 @@
+#!/bin/bash
+
+case "$1" in
+mac)
+MODMAPFILE=~/keymaps/mac_laptop.xmodmap
+;;
+desktop)
+MODMAPFILE=~/keymaps/desktop.xmodmap
+xmodmap ~/keymaps/desktop.xmodmap;
+;;
+*)
+echo "Usage: fixkeys <mac>|<desktop>";
+exit -1;
+;;
+esac
+
+echo xmodmap $MODMAPFILE;
+xmodmap $MODMAPFILE;
+
+# Fix Alt-Tab by doing a no-op change to the switch_windows shortcut
+echo gconftool-2 --set  /apps/metacity/global_keybindings/switch_windows --type string '<Shift><Alt>Tab'
+gconftool-2 --set  /apps/metacity/global_keybindings/switch_windows --type string '<Shift><Alt>Tab'
+echo gconftool-2 --set  /apps/metacity/global_keybindings/switch_windows --type string '<Alt>Tab'
+gconftool-2 --set  /apps/metacity/global_keybindings/switch_windows --type string '<Alt>Tab'

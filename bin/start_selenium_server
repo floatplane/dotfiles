@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /home/bsharon/selenium/selenium-server-1.0.3/
+java -jar selenium-server.jar -firefoxProfileTemplate ~/.mozilla/firefox/*.selenium

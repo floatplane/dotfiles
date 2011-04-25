@@ -1,0 +1,11 @@
+#!/bin/bash
+
+GREEN_CL_COMMAND="/home/build/static/projects/testing/tap/scripts/last_green_cl --project"
+PROJECT=$1
+shift
+
+CLNUM=$($GREEN_CL_COMMAND $PROJECT)
+
+echo "Syncing $PROJECT@$CLNUM"
+echo "Other args: $@"
+git5 sync --sync-at $CLNUM $@

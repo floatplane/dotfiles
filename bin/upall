@@ -1,0 +1,8 @@
+#! /usr/bin/env ruby
+
+require 'pp'
+ARGV.each do |arg|
+  `find #{arg} -path \"*/.git_externals/*/.git\"`.split.each do |repo|
+    puts `cd #{repo}/.. && echo Inside \`pwd\`: && git svn fetch && git svn rebase && echo done.`
+  end
+end

@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# git-svn-diff
+# Generate an SVN-compatible diff against the tip of the tracking branch
+
+if [[ ($# > 0) && ("$1" = "help") ]]; then
+    echo Generates an SVN format diff against the tip of an SVN branch
+    echo Options:
+    echo   --branch \<branchname\> : select the SVN branch to diff against.  Default is trunk.
+    exit
+fi
+
+if [[ ($# > 0) && ("$1" = "--branch") ]]; then
+    shift
+    TRACKING_BRANCH=$1
+    shift
+else
+    TRACKING_BRANCH=`git config --get svn-remote.svn.fetch | sed -e 's/.*:refs\/remotes\///'`
+fi
+
+REV=`git svn find-rev $(git rev-list --date-order --max-count=1 $TRACKING_BRANCH)`
+git diff --ignore-space-at-eol --ignore-space-change --no-prefix $(git rev-list --date-order --max-count=1 $TRACKING_BRANCH) $* |
+#git diff --ignore-space-at-eol --no-prefix $(git rev-list --date-order --max-count=1 $TRACKING_BRANCH) $* |
+sed -e "s/^+++ .*/& (working copy)/" -e "s/^--- .*/& (revision $REV)/" \
+-e "s/^diff --git [^[:space:]]*/Index:/" \
+-e "s/^index.*/===================================================================/"
+
+

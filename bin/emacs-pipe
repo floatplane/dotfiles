@@ -1,0 +1,10 @@
+#! /usr/bin/perl
+
+# This script uses emacsclient, be sure to have a running server session.
+# A server-session can be started by "M-x server-start".
+
+my $status = system("emacsclient -n --eval '(progn (pop-to-buffer (get-buffer-create \"*piped*\")))'");
+if($status!=0){ exit 1; }
+while(<STDIN>){ 
+     system("emacsclient -n --eval '(with-current-buffer \"*piped*\" (insert \"" . $_ . "\"))'");
+}

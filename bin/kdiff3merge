@@ -1,0 +1,4 @@
+#!/bin/sh
+echo $*
+echo /Applications/kdiff3.app/Contents/MacOS/kdiff3 "$BASE" "$LOCAL" "$REMOTE" -o "$MERGED"
+/Applications/kdiff3.app/Contents/MacOS/kdiff3 "$BASE" "$LOCAL" "$REMOTE" -o "$MERGED"

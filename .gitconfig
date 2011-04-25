@@ -1,0 +1,36 @@
+[core]
+	excludesfile = /home/bsharon/.gitignore
+[user]
+	name = Brian Sharon
+	email = bsharon@google.com
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[alias]
+	svn-diff = !git-svn-diff
+	diffall = !git-diffall
+[merge]
+	tool = meld
+# 	tool = mergetool.rb
+# 	log = true
+
+# [mergetool]
+# 	keepBackup = false
+# 	prompt = false
+
+# [mergetool "mergetool.rb"]
+# 	cmd = mergetool.rb $BASE $LOCAL $REMOTE $MERGED
+# 	trustExitCode = true
+# 	alternate = opendiff
+
+# [merge]
+# 	keepBackup = false;
+# 	tool = kdiff3merge
+# [mergetool "kdiff3merge"]
+# 	cmd = kdiff3merge
+# 	keepTemporaries = false
+# 	trustExitCode = false
+# 	keepBackup = false
+# [diff]
+# 	external = /home/bsharon/bin/p4diff
