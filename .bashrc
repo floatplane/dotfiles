@@ -138,6 +138,6 @@ if [[ -n "$PS1" ]]; then
 fi
 
 # Load google-specific goodies
-if [[ -s ~/google/bash/google.bashrc ]] ; then source ~/google/bash/google.bashrc ; fi
+if [[ -s ~/.bashrc.google ]] ; then source ~/.bashrc.google ; fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
