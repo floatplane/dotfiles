@@ -135,6 +135,50 @@ if [[ -n "$PS1" ]]; then
   source /etc/bash_completion.d/g4
 
   export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
+  # git status with a dirty flag
+  function __git_status_flag {
+    git_status="$(git status 2> /dev/null)"
+    remote_pattern="^# Your branch is (.*) of"
+    diverge_pattern="# Your branch and (.*) have diverged"
+    if [[ ! ${git_status}} =~ "working directory clean" ]]; then
+      state="\0342\0230\0207"
+      spacer=" "
+    fi
+
+    if [[ ${git_status} =~ ${remote_pattern} ]]; then
+      spacer=" "
+      if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
+        remote="â"
+      else
+        remote="â"
+      fi
+    fi
+
+    if [[ ${git_status} =~ ${diverge_pattern} ]]; then
+      remote="â"
+      spacer=" "
+    fi
+
+    echo -e "${state}${remote}${spacer}"
+  }
+
+  function __truncated_current_directory {
+    let pwdmaxlen="$(tput cols) - 80"
+    let pwdhalfmaxlen="$pwdmaxlen / 2"
+    trunc_symbol="..."
+    curr_dir=$(echo ${PWD} | sed -e "s/\/home\/bsharon/~/" -e "s/\/usr\/local\/google\/vc/~\/clients\/vc/")
+    if [ ${#curr_dir} -gt $pwdmaxlen ]
+    then
+     pwdoffset=$(( ${#curr_dir} - $pwdhalfmaxlen ))
+      echo "${curr_dir:0:$pwdhalfmaxlen}${trunc_symbol}${curr_dir:$pwdoffset:$pwdhalfmaxlen}"
+    else
+      echo ${curr_dir}
+    fi
+  }
+
+  # the prompt itself
+  PS1='\u@\[\e[1m\]\h\[\e[22m\]: \[\e[0m\]$(__truncated_current_directory)\[\e[22;35m\]$(__git_ps1 " [\[\e[33m\]$(__git_status_flag)\[\e[35m\]%s]")\[\e[33m\] \$ \[\e[0m\]'
+
 fi
 
 # Load google-specific goodies
