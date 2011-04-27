@@ -35,6 +35,10 @@
   (interactive "f")
         (load-file (concat "~/" (if xemacsp "x" "") "emacs/" the-file)))
 
+;; Window colors
+(load-local-file "color-theme-solarized.el")
+(color-theme-solarized-light)
+
 ;
 ; Under XEmacs, install XFF for extended find file syntax
 (cond (xemacsp (require 'tellib)
@@ -76,8 +80,8 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 
 ; Save the desktop periodically
 (require 'desktop)
-(setq desktop-save t)
 (setq desktop-dirname "~/.emacs.desktop.dir/")
+(setq desktop-save t)
 (add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
 (desktop-save-mode 1)
 ; Automatically clean up old buffersx
