@@ -8,11 +8,6 @@
 ;; Disable Ctrl-Z minimization/suspension of emacs.
 (global-set-key [C-z] nil)
 
-; Aquamacs: don't pop help in a separate buffer
-(setq special-display-regexps (remove "[ ]?\\*[hH]elp.*" special-display-regexps))
-;; (if (fboundp 'global-font-lock-mode)
-;;     (global-font-lock-mode 1))
-
 ;  Define a function to (formerly) disable tabs, and set the tab width
 ;  to something sensible.  These variables are buffer
 ; local, so we have to set them in a mode hook.
@@ -24,7 +19,7 @@
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 
 ;; Window colors
-;; (load-file "color-theme-solarized.el")
+;; (load "color-theme-solarized.el")
 ;; (color-theme-solarized-light)
 
 ; Define a "jump-to-column" function, we'll install that through
@@ -52,7 +47,7 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ; Set up buffer switching through ctrl-tab/ctrl-shift-tab.
 ; Package from http://perso.wanadoo.fr/david.ponce/more-elisp.html
 ;
-(load-file "swbuff.el")
+(load "swbuff.el")
 (require 'swbuff)
 
 (require 'ido)
@@ -65,10 +60,11 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (setq desktop-save t)
 (add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
 (desktop-save-mode 1)
+
 ; Automatically clean up old buffersx
 (require 'midnight)
 
-(load-file "smex.el")
+(load "smex.el")
 (require 'smex)
 (add-hook 'after-init-hook 'smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
@@ -76,26 +72,27 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-(load-file "anything.el")
-(load-file "rcodetools.el")
-(load-file "anything-rcodetools.el")
+(load "anything.el")
+(load "rcodetools.el")
+(load "anything-rcodetools.el")
 (require 'anything)
 (require 'rcodetools)
 (require 'anything-rcodetools)
 
-(load-file "nxhtml/autostart.el")
+(load "nxhtml/autostart.el")
 
-(load-file "haml-mode.el")
+(load "haml-mode.el")
 (require 'haml-mode)
 
-(if (file-exists-p "~/dotfiles.google/emacs/google.el")
-;; (load-file "rinari/rinari.el")
-;; (require 'rinari)
+(when (file-exists-p "~/emacs/rinari/rinari.el")
+  (load "rinari/rinari.el")
+  (require 'rinari)
+)
 
-(load-file "actionscript-mode-connors.el")
+(load "actionscript-mode-connors.el")
 (require 'actionscript-mode)
 
-(load-file "csharp-mode.el")
+(load "csharp-mode.el")
 (require 'csharp-mode)
 
 (setq global-auto-revert-mode 1)
@@ -164,7 +161,7 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ;
 ; (setq semantic-load-turn-everything-on t)
 ;; Load CEDET
-; (load-file "cedet/common/cedet.el")
+; (load "cedet/common/cedet.el")
 ;; Enabling SEMANTIC minor modes.  See semantic/INSTALL for more ideas.
 ; (semantic-load-enable-code-helpers)
 
