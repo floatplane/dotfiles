@@ -20,31 +20,12 @@
   (setq indent-tabs-mode nil)
   (setq tab-width 4))
 
-;
-; Set some aquamacs settings
-(cond ((not (bound-and-true-p xemacsp)) (setq xemacsp nil)))
-(cond ((bound-and-true-p aquamacs-version) (setq xemacsp nil) (setq aquamacsp t))
-      (t (setq aquamacsp nil)))
-
-; Add the home directory's site-lisp directory to the load path.  This
-; is specific to a particular emacs.
-(setq load-path (cons (expand-file-name (cond (xemacsp "~/xemacs")
-                                              (t       "~/emacs"))) load-path))
-(defun load-local-file (the-file)
-  "Load a file from the editor-specific load path in my home directory"
-  (interactive "f")
-        (load-file (concat "~/" (if xemacsp "x" "") "emacs/" the-file)))
+; Add the home directory's emacs directory to the load path.
+(setq load-path (cons (expand-file-name "~/emacs") load-path))
 
 ;; Window colors
-;; (load-local-file "color-theme-solarized.el")
+;; (load-file "color-theme-solarized.el")
 ;; (color-theme-solarized-light)
-
-;
-; Under XEmacs, install XFF for extended find file syntax
-(cond (xemacsp (require 'tellib)
-               (tellib-install)
-               (require 'xff)
-               (xff-install)))
 
 ; Define a "jump-to-column" function, we'll install that through
 ; customize to be another XFF keyword
@@ -71,7 +52,7 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ; Set up buffer switching through ctrl-tab/ctrl-shift-tab.
 ; Package from http://perso.wanadoo.fr/david.ponce/more-elisp.html
 ;
-(load-local-file "swbuff.el")
+(load-file "swbuff.el")
 (require 'swbuff)
 
 (require 'ido)
@@ -87,7 +68,7 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ; Automatically clean up old buffersx
 (require 'midnight)
 
-(load-local-file "smex.el")
+(load-file "smex.el")
 (require 'smex)
 (add-hook 'after-init-hook 'smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
@@ -95,25 +76,26 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-(load-local-file "anything.el")
-(load-local-file "rcodetools.el")
-(load-local-file "anything-rcodetools.el")
+(load-file "anything.el")
+(load-file "rcodetools.el")
+(load-file "anything-rcodetools.el")
 (require 'anything)
 (require 'rcodetools)
 (require 'anything-rcodetools)
 
-(load-local-file "nxhtml/autostart.el")
+(load-file "nxhtml/autostart.el")
 
-(load-local-file "haml-mode.el")
+(load-file "haml-mode.el")
 (require 'haml-mode)
 
-(load-local-file "rinari/rinari.el")
-(require 'rinari)
+(if (file-exists-p "~/dotfiles.google/emacs/google.el")
+;; (load-file "rinari/rinari.el")
+;; (require 'rinari)
 
-(load-local-file "actionscript-mode-connors.el")
+(load-file "actionscript-mode-connors.el")
 (require 'actionscript-mode)
 
-(load-local-file "csharp-mode.el")
+(load-file "csharp-mode.el")
 (require 'csharp-mode)
 
 (setq global-auto-revert-mode 1)
@@ -158,11 +140,6 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
    kept-new-versions 6
    kept-old-versions 2
    version-control t)       ; use versioned backups
-;
-; Use iswitch-buffers by default
-;; commenting out in favor of ido
-;; (cond (xemacsp (iswitchb-default-keybindings))
-;;       (t (iswitchb-mode 1)))
 
 ;;
 ;; Shell stuff
@@ -180,65 +157,14 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ; Allow shifted movement keys to modify current region.
 ; CUA Package from http://www.cua.dk/cua.html
 ;
-(cond (xemacsp
-       (require 'pc-autoloads)
-       (require 'pc-select)
-       (require 'pending-del)
-       (if (fboundp 'pending-delete-mode)
-           (pending-delete-mode 1)))
-      ((not aquamacsp) (cua-mode t)))
-
-
-; Newcomment automatically comes with Emacs.  This is what makes M-;
-; so nice.  Not working with XEmacs though :(
-(cond (xemacsp
-       ; Define some functions so newcomment doesn't choke
-       (defun line-beginning-position ()
-         "return the position of the last character on the current line"
-         (interactive)
-         (save-excursion (beginning-of-line) (point)))
-       (defun line-end-position ()
-         "return the position of the last character on the current line"
-         (interactive)
-         (save-excursion (end-of-line) (point)))
-       (require 'newcomment)))
-;
-
-;
-; Doxymacs
-;; (if (not xemacsp)
-;;      (require 'doxymacs))
-;(setq doxymacs-doxygen-style "JavaDoc")
-;(setq doxymacs-use-external-xml-parser t)
-;(setq doxymacs-external-xml-parser-executable "doxymacs_parser")
-;(setq doxymacs-doxygen-dirs
-;      '(
-;       ("ad/snicket/src"
-;        "C:/Progra~1/Apache~1/Apache2/htdocs/doxygen/html/tag.xml"
-;        "http://bsharon/doxygen/html"
-;        )
-;       )
-;      )
-
-;;; rewrite some of the doxymacs functions to stop asking so many
-;;; fucking questions
-;(defun doxymacs-symbol-completion (initial collection &optional pred)
-;  "Do completion for given symbol."
-;  (doxymacs-validate-symbol-completion initial collection pred)
-;)
-;(defun doxymacs-validate-symbol-completion (initial collection &optional pred)
-;  "Checks whether the symbol (initial) has multiple descriptions, and if so
-;continue completion on those descriptions.  In the end it returns the URL for
-;the completion or nil if canceled by the user."
-;  (let ((new-collection (cdr (assoc initial collection))))
-;      (cdar new-collection)))
+(cua-mode t)
 
 ;
 ; fire up cedet
 ;
 ; (setq semantic-load-turn-everything-on t)
 ;; Load CEDET
-; (load-local-file "cedet/common/cedet.el")
+; (load-file "cedet/common/cedet.el")
 ;; Enabling SEMANTIC minor modes.  See semantic/INSTALL for more ideas.
 ; (semantic-load-enable-code-helpers)
 
