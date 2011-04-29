@@ -416,7 +416,7 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ;;; interfacing with ELPA, the package archive.
 ;;; Move this code earlier if you want to reference
 ;;; packages in your .emacs.
-(when
+(when (file-exists-p "~/.emacs.d/elpa/package.el")
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
