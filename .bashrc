@@ -2,6 +2,10 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+function source_if_exists {
+  if [[ -s $1 ]] ; then source $1 ; else echo $1 not found. ; fi
+}
+
 # If not running interactively, don't do anything
 if [[ -n "$PS1" ]]; then
 
@@ -126,10 +130,6 @@ if [[ -n "$PS1" ]]; then
   # PYTHONPATH=$PYTHONPATH:~/python/boto-1.8d
 
   PS1='\u@\h:\w\$ '
-
-  function source_if_exists {
-    if [[ -s $1 ]] ; then source $1 ; else echo $1 not found. ; fi
-  }
 
   # dummy functions so that the prompt doesn't break if the
   # autocompletion files aren't found
