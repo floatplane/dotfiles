@@ -127,12 +127,26 @@ if [[ -n "$PS1" ]]; then
 
   PS1='\u@\h:\w\$ '
 
+  function source_if_exists {
+    if [[ -s $1 ]] ; then source $1 ; else echo $1 not found. ; fi
+  }
+
+  # dummy functions so that the prompt doesn't break if the
+  # autocompletion files aren't found
+  function __git_ps1 {
+    echo -n ''
+  }
+
+  function __git_status_flag {
+    echo -n ''
+  }
+
   # tab-completion for rake and cap
-  source ~/bin/rake_cap_bash_autocomplete.sh
+  source_if_exists ~/bin/rake_cap_bash_autocomplete.sh
 
   # tab-completion for git subcommands
-  source /etc/bash_completion.d/git
-  source /etc/bash_completion.d/g4
+  source_if_exists /etc/bash_completion.d/git
+  source_if_exists /etc/bash_completion.d/g4
 
   export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
   # git status with a dirty flag
@@ -182,6 +196,6 @@ if [[ -n "$PS1" ]]; then
 fi
 
 # Load google-specific goodies
-if [[ -s ~/.bashrc.google ]] ; then source ~/.bashrc.google ; fi
+source_if_exists ~/.bashrc.google
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
