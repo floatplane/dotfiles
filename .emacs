@@ -36,8 +36,8 @@
         (load-file (concat "~/" (if xemacsp "x" "") "emacs/" the-file)))
 
 ;; Window colors
-(load-local-file "color-theme-solarized.el")
-(color-theme-solarized-light)
+;; (load-local-file "color-theme-solarized.el")
+;; (color-theme-solarized-light)
 
 ;
 ; Under XEmacs, install XFF for extended find file syntax
@@ -499,5 +499,5 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
   (package-initialize))
 
 ;; Load google-specific packages, if they exist
-(if (file-exists-p "~/google/emacs/google.el")
-    (load-file "~/google/emacs/google.el"))
+(if (file-exists-p "~/dotfiles.google/emacs/google.el")
+    (load-file "~/dotfiles.google/emacs/google.el"))

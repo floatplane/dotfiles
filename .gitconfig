@@ -1,5 +1,6 @@
 [core]
 	excludesfile = /home/bsharon/.gitignore
+	pager = less -FXR -x4
 [user]
 	name = Brian Sharon
 	email = bsharon@google.com
@@ -16,7 +17,7 @@
 # 	log = true
 
 # [mergetool]
-# 	keepBackup = false
+	keepBackup = false
 # 	prompt = false
 
 # [mergetool "mergetool.rb"]

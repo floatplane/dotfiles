@@ -119,7 +119,7 @@ if [[ -n "$PS1" ]]; then
   alias api="pushd ~/src/api"
   alias pbcopy="xsel -i -b"
   alias pbpaste="xsel -o -b"
-  alias ack="ack-grep --pager=\"less -R\""
+  alias ack="ack-grep --pager=\"less -FXR\""
 
   export GIT_EDITOR=$EDITOR
   export VISUAL=$EDITOR
