@@ -177,7 +177,7 @@ if [[ -n "$PS1" ]]; then
   }
 
   function __truncated_current_directory {
-    let pwdmaxlen="$(tput cols) - 80"
+    let pwdmaxlen="$(tput cols) - 60"
     let pwdhalfmaxlen="$pwdmaxlen / 2"
     trunc_symbol="..."
 
