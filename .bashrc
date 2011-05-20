@@ -177,10 +177,15 @@ if [[ -n "$PS1" ]]; then
   }
 
   function __truncated_current_directory {
-    let pwdmaxlen="$(tput cols) - 80"
+    let pwdmaxlen="$(tput cols) - 60"
     let pwdhalfmaxlen="$pwdmaxlen / 2"
     trunc_symbol="..."
-    curr_dir=$(echo ${PWD} | sed -e "s/\/home\/bsharon/~/" -e "s/\/usr\/local\/google\/vc/~\/clients\/vc/")
+
+    # TODO: set escaped_home_dir to $HOME, then substitute \/ for \
+    escaped_home_dir="\/home\/bsharon"
+    if [[ $(uname) =~ "Darwin" ]]; then escaped_home_dir="\/Users\/bsharon"; fi
+
+    curr_dir=$(echo ${PWD} | sed -e "s/${escaped_home_dir}/~/" -e "s/\/usr\/local\/google\/vc/~\/clients\/vc/")
     if [ ${#curr_dir} -gt $pwdmaxlen ]
     then
      pwdoffset=$(( ${#curr_dir} - $pwdhalfmaxlen ))
