@@ -1,0 +1,6 @@
+#!/bin/bash
+pushd `git rev-parse --show-toplevel`
+git status --porcelain | grep -e '^??' | awk '{print $2}' >> .gitignore
+popd
+git status
+
