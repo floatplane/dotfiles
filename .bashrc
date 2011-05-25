@@ -103,6 +103,7 @@ if [[ -n "$PS1" ]]; then
     . /etc/bash_completion
   fi
 
+  if [[ $(uname) =~ "Darwin" ]]; then alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"; fi
   export EDITOR="emacsclient --alternate-editor= -t"
 
   alias ls="ls -Gp"
