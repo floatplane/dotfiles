@@ -3,7 +3,12 @@
 # for examples
 
 function source_if_exists {
-  if [[ -s $1 ]] ; then source $1 ; else echo $1 not found. ; fi
+  if [[ -s $1 ]] ; then
+      source $1
+  elif [[ "$PS1" ]]; then
+      # Warn when running interactively, not otherwise
+      echo $1 not found.
+  fi
 }
 
 # If not running interactively, don't do anything
@@ -124,7 +129,11 @@ if [[ -n "$PS1" ]]; then
   alias api="pushd ~/src/api"
   alias pbcopy="xsel -i -b"
   alias pbpaste="xsel -o -b"
-  alias ack="ack-grep --pager=\"less -FXR\""
+  if [[ $(uname) =~ "Darwin" ]]; then 
+      alias ack="ack --pager=\"less -FXR\""
+  else
+      alias ack="ack-grep --pager=\"less -FXR\""
+  fi
 
   export GIT_EDITOR=$EDITOR
   export VISUAL=$EDITOR
