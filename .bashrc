@@ -108,7 +108,9 @@ if [[ -n "$PS1" ]]; then
     . /etc/bash_completion
   fi
 
-  if [[ $(uname) =~ "Darwin" ]]; then alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"; fi
+  if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
+    PATH="/Applications/Emacs.app/Contents/MacOS/bin":$PATH
+  fi
   export EDITOR="emacsclient --alternate-editor= -t"
 
   alias ls="ls -Gp"
@@ -119,7 +121,6 @@ if [[ -n "$PS1" ]]; then
   alias ec="emacsclient --alternate-editor= -n"
   alias e="emacsclient --alternate-editor= -n"
   alias vi="emacsclient --alternate-editor= -t"
-  alias diffident="~/src/ops/trunk/dev_tools/bin/diffident"
   alias src="pushd ~/src"
   alias sg="pushd ~/src/socialgold/trunk"
   alias j="pushd ~/src/jambool/trunk/"
@@ -127,12 +128,12 @@ if [[ -n "$PS1" ]]; then
   alias inv="pushd ~/src/jambool/trunk/data/inventory"
   alias ops="pushd ~/src/svn/ops/trunk"
   alias api="pushd ~/src/api"
-  alias pbcopy="xsel -i -b"
-  alias pbpaste="xsel -o -b"
-  if [[ $(uname) =~ "Darwin" ]]; then 
-      alias ack="ack --pager=\"less -FXR\""
+  if [[ $(uname) =~ "Darwin" ]]; then
+    alias ack="ack --pager=\"less -FXR\""
   else
-      alias ack="ack-grep --pager=\"less -FXR\""
+    alias pbcopy="xclip -i -sel clip"
+    alias pbpaste="xclip -o"
+    alias ack="ack-grep --pager=\"less -FXR\""
   fi
 
   export GIT_EDITOR=$EDITOR
