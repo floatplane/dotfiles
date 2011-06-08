@@ -109,18 +109,23 @@ if [[ -n "$PS1" ]]; then
   fi
 
   if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
-    PATH="/Applications/Emacs.app/Contents/MacOS/bin":$PATH
+    alias emacs='open -a emacs'
+    alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+    alias ec='emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+    alias vi="emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+    export EDITOR="emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+  else
+    alias ec="emacsclient --alternate-editor= -n"
+    alias e="emacsclient --alternate-editor= -n"
+    alias vi="emacsclient --alternate-editor= -t"
+    export EDITOR="emacsclient --alternate-editor= -t"
   fi
-  export EDITOR="emacsclient --alternate-editor= -t"
 
   alias ls="ls -Gp"
   alias l="ls -la"
   # alias mysql=/usr/local/mysql/bin/mysql
   # alias mysqladmin=/usr/local/mysql/bin/mysqladmin
   alias start=~/bin/start_everything.rb
-  alias ec="emacsclient --alternate-editor= -n"
-  alias e="emacsclient --alternate-editor= -n"
-  alias vi="emacsclient --alternate-editor= -t"
   alias src="pushd ~/src"
   alias sg="pushd ~/src/socialgold/trunk"
   alias j="pushd ~/src/jambool/trunk/"

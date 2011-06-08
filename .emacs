@@ -43,20 +43,17 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
     ; (message "index = %d, col = %d" index col)
     (goto-char (+ (point-at-bol) index))))
 
-;
-; Set up buffer switching through ctrl-tab/ctrl-shift-tab.
-; Package from http://perso.wanadoo.fr/david.ponce/more-elisp.html
-;
-(load "swbuff.el")
-(require 'swbuff)
-
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
 ; Save the desktop periodically
-(require 'desktop)
 (setq desktop-dirname "~/.emacs.desktop.dir/")
+(setq desktop-load-locked-desktop nil)
+(require 'desktop)
+(add-hook 'desktop-not-loaded-hook
+		  (lambda () (progn (desktop-save-mode-off)
+							(message "Disabling desktop saving"))))
 (setq desktop-save t)
 (add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
 (desktop-save-mode 1)
@@ -340,15 +337,10 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 
 (setq compilation-scroll-output t)
 
-;
-; Fire up gnuserv when running in Emacs - otherwise we need to use
-; XEmacs' winclient and XFF.el
-;
-;; (cond ((and (not xemacsp) (not aquamacsp))
-;; 	(require 'gnuserv)
-;; 	(setq gnuserv-frame (selected-frame))
-;; 	(gnuserv-start)))
-(server-start)
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;; (defun ns-raise-emacs ()
 ;;   (ns-do-applescript "tell application \"Emacs\" to activate"))
 ;; (add-hook 'server-visit-hook 'ns-raise-emacs)
