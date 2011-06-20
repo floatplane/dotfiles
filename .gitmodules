@@ -1,0 +1,3 @@
+[submodule "emacs/Fill-Column-Indicator"]
+	path = emacs/Fill-Column-Indicator
+	url = git://github.com/alpaker/Fill-Column-Indicator.git

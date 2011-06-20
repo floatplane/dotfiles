@@ -17,6 +17,7 @@
 
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
 
 ;; Window colors
 ;; (load "color-theme-solarized.el")
@@ -47,18 +48,18 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
-; Save the desktop periodically
-(setq desktop-dirname "~/.emacs.desktop.dir/")
-(setq desktop-load-locked-desktop nil)
-(require 'desktop)
-(add-hook 'desktop-not-loaded-hook
-		  (lambda () (progn (desktop-save-mode-off)
-							(message "Disabling desktop saving"))))
-(setq desktop-save t)
-(add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
-(desktop-save-mode 1)
+;; ; Save the desktop periodically
+;; (setq desktop-dirname "~/.emacs.desktop.dir/")
+;; (setq desktop-load-locked-desktop nil)
+;; (require 'desktop)
+;; (add-hook 'desktop-not-loaded-hook
+;; 		  (lambda () (progn (desktop-save-mode-off)
+;; 							(message "Disabling desktop saving"))))
+;; (setq desktop-save t)
+;; (add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
+;; (desktop-save-mode 1)
 
-; Automatically clean up old buffersx
+; Automatically clean up old buffers
 (require 'midnight)
 
 (load "smex.el")
@@ -104,6 +105,10 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 
 (require 'tramp)
 (setq tramp-default-method "scp")
+
+(require 'fill-column-indicator)
+(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode t)))
+(global-fci-mode 1)
 
 ;; Replace $RSENSE_HOME with the directory where RSense was installed in full path
 ;; Example for UNIX-like systems
