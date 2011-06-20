@@ -201,7 +201,7 @@ if [[ -n "$PS1" ]]; then
     escaped_home_dir="\/home\/bsharon"
     if [[ $(uname) =~ "Darwin" ]]; then escaped_home_dir="\/Users\/bsharon"; fi
 
-    curr_dir=$(echo ${PWD} | sed -e "s/${escaped_home_dir}/~/" -e "s/\/usr\/local\/google\/vc/~\/clients\/vc/")
+    curr_dir=$(echo ${PWD} | sed -e "s/^${escaped_home_dir}/~/" -e "s/^\/usr\/local\/google\/vc/~\/clients\/vc/")
     if [ ${#curr_dir} -gt $pwdmaxlen ]
     then
      pwdoffset=$(( ${#curr_dir} - $pwdhalfmaxlen ))
