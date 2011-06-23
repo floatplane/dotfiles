@@ -20,6 +20,17 @@
   (interactive)
   (setq indent-tabs-mode (not indent-tabs-mode)))
 
+(defun yes-tabs (tab-width-value)
+  "Enable tabs for indent, set tab-width to the given value"
+  (interactive)
+  (progn (setq indent-tabs-mode t)
+         (setq tab-width tab-width-value)))
+
+(defun no-tabs
+  "Disable tabs for indent"
+  (interactive)
+  (setq indent-tabs-mode nil))
+
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
