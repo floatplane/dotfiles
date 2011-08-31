@@ -79,7 +79,7 @@
 
 (c-lang-defconst c-class-decl-kwds
   actionscript
-  '("class" "interface"))
+  '("class" "interface" "package"))
 
 (c-lang-defconst c-opt-cpp-prefix
   actionscript
@@ -94,12 +94,12 @@
 ;; treating it as a modifier works fairly well.
 (c-lang-defconst c-modifier-kwds
   actionscript 
- '("function" "dynamic" "public" "private" "final" "override" "native"))
+ '("function" "dynamic" "public" "internal" "protected" "private" "final" "override" "native"))
 
 
-(c-lang-defconst c-other-block-decl-kwds
-  actionscript
-  '("package"))
+;; (c-lang-defconst c-other-block-decl-kwds
+;;   actionscript
+;;   '("package"))
 
 (c-lang-defconst c-typeless-decl-kwds
   actionscript
