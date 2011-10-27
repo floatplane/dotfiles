@@ -133,6 +133,10 @@ if [[ -n "$PS1" ]]; then
   alias inv="pushd ~/src/jambool/trunk/data/inventory"
   alias ops="pushd ~/src/svn/ops/trunk"
   alias api="pushd ~/src/api"
+  function up {
+    dir="$(up_dir $@)"
+    pushd $dir
+  }
   if [[ $(uname) =~ "Darwin" ]]; then
     alias ack="ack --pager=\"less -FXR\""
   else

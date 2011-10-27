@@ -1,0 +1,4 @@
+#! /usr/bin/env ruby
+d = `pwd -L`.strip + "/"
+(0..ARGV[0].to_i - 1).each { d += "../" }
+puts d
