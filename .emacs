@@ -39,6 +39,9 @@
 ;; (load "color-theme-solarized.el")
 ;; (color-theme-solarized-light)
 
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
+
 ; Define a "jump-to-column" function, we'll install that through
 ; customize to be another XFF keyword
 (defun jump-to-column (dest-col)

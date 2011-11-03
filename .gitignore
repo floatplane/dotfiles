@@ -7,3 +7,4 @@
 *.pyc
 ._.DS_Store
 data/inventory/output
+*.elc
