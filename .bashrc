@@ -161,6 +161,9 @@ if [[ -n "$PS1" ]]; then
     echo -n ''
   }
 
+  # tab-completion for macports
+  source_if_exists /opt/local/etc/bash_completion
+
   # tab-completion for rake and cap
   source_if_exists ~/bin/rake_cap_bash_autocomplete.sh
 
