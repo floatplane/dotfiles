@@ -34,6 +34,7 @@
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.0.3") load-path))
 
 ;; Window colors
 ;; (load "color-theme-solarized.el")
