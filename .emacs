@@ -26,7 +26,7 @@
   (progn (setq indent-tabs-mode t)
          (setq tab-width tab-width-value)))
 
-(defun no-tabs
+(defun no-tabs ()
   "Disable tabs for indent"
   (interactive)
   (setq indent-tabs-mode nil))
@@ -97,7 +97,8 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (require 'rcodetools)
 (require 'anything-rcodetools)
 
-(load "nxhtml/autostart.el")
+;; (load "nxhtml/autostart.el")
+(add-hook 'html-mode-hook 'no-tabs)
 
 (load "haml-mode.el")
 (require 'haml-mode)
