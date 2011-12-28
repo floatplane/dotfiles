@@ -271,6 +271,10 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (setq auto-mode-alist (cons '("\\.m\\'" . objc-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.mm\\'" . objc-mode) auto-mode-alist))
 
+;; Ruby alist
+(setq auto-mode-alist (cons '("\\.rake\\|Rakefile$" .
+                              ruby-mode) auto-mode-alist))
+
 ;; Python editing stuff
 (setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript$" .
                               python-mode) auto-mode-alist))
