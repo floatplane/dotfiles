@@ -31,6 +31,11 @@
   (interactive)
   (setq indent-tabs-mode nil))
 
+; When would I not want this?
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default c-basic-offset 4)
+
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
