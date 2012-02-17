@@ -111,9 +111,9 @@ if [[ -n "$PS1" ]]; then
   if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
     alias emacs='open -a emacs'
     alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-    alias ec='emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs'
-    alias vi="emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
-    export EDITOR="emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+    alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+    alias vi="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+    export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
   else
     alias ec="emacsclient --alternate-editor= -n"
     alias e="emacsclient --alternate-editor= -n"
