@@ -35,6 +35,12 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
+(defun sensible-indentation ()
+  "Make all the indentation settings sensible"
+  (interactive)
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq c-basic-offset 4))
 
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
@@ -115,6 +121,7 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 
 (load "actionscript-mode-connors.el")
 (require 'actionscript-mode)
+(add-hook 'actionscript-mode-hook 'sensible-indentation)
 
 (load "csharp-mode.el")
 (require 'csharp-mode)
