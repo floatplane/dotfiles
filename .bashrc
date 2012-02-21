@@ -111,9 +111,9 @@ if [[ -n "$PS1" ]]; then
   if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
     alias emacs='open -a emacs'
     alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-    alias ec='emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs'
-    alias vi="emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
-    export EDITOR="emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+    alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+    alias vi="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+    export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
   else
     alias ec="emacsclient --alternate-editor= -n"
     alias e="emacsclient --alternate-editor= -n"
@@ -178,21 +178,22 @@ if [[ -n "$PS1" ]]; then
     remote_pattern="^# Your branch is (.*) of"
     diverge_pattern="# Your branch and (.*) have diverged"
     if [[ ! ${git_status}} =~ "working directory clean" ]]; then
-      state="\0342\0230\0207"
+      # state="\0342\0230\0207"
+      state="⚡"
       spacer=" "
     fi
 
     if [[ ${git_status} =~ ${remote_pattern} ]]; then
       spacer=" "
       if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
-        remote="â"
+        remote="↑"
       else
-        remote="â"
+        remote="↓"
       fi
     fi
 
     if [[ ${git_status} =~ ${diverge_pattern} ]]; then
-      remote="â"
+      remote="↕"
       spacer=" "
     fi
 
