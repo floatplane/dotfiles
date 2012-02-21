@@ -3,7 +3,7 @@
 	pager = less -FXR -x4
 [user]
 	name = Brian Sharon
-	email = bsharon@google.com
+	email = brian@floatplane.us
 [color]
 	diff = auto
 	status = auto
