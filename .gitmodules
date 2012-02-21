@@ -1,3 +1,6 @@
 [submodule "emacs/Fill-Column-Indicator"]
 	path = emacs/Fill-Column-Indicator
 	url = git://github.com/alpaker/Fill-Column-Indicator.git
+[submodule "emacs/textmate"]
+	path = emacs/textmate
+	url = git://github.com/defunkt/textmate.el.git
