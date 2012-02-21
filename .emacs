@@ -35,6 +35,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
+(setq-default fill-column 100)
 (defun sensible-indentation ()
   "Make all the indentation settings sensible"
   (interactive)
