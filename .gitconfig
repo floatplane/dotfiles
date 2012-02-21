@@ -13,17 +13,18 @@
 	diffall = !git-diffall
 [merge]
 	tool = meld
+	keepBackup = false
 # 	tool = mergetool.rb
 # 	log = true
 
-# [mergetool]
-	keepBackup = false
-# 	prompt = false
+[mergetool]
+	prompt = false
 
-# [mergetool "mergetool.rb"]
-# 	cmd = mergetool.rb $BASE $LOCAL $REMOTE $MERGED
-# 	trustExitCode = true
-# 	alternate = opendiff
+[mergetool "mergetool.rb"]
+	cmd = mergetool.rb $BASE $LOCAL $REMOTE $MERGED
+	trustExitCode = true
+	alternate = opendiff
+	keepTemporaries = false
 
 # [merge]
 # 	keepBackup = false;
