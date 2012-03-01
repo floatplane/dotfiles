@@ -111,7 +111,7 @@ if [[ -n "$PS1" ]]; then
   if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
     alias emacs='open -a emacs'
     alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-    alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+    alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -n'
     alias vi="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
     export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
   else
@@ -123,16 +123,7 @@ if [[ -n "$PS1" ]]; then
 
   alias ls="ls -Gp"
   alias l="ls -la"
-  # alias mysql=/usr/local/mysql/bin/mysql
-  # alias mysqladmin=/usr/local/mysql/bin/mysqladmin
-  alias start=~/bin/start_everything.rb
-  alias src="pushd ~/src"
-  alias sg="pushd ~/src/socialgold/trunk"
-  alias j="pushd ~/src/jambool/trunk/"
-  alias jd="pushd ~/src/jambool/trunk/data"
-  alias inv="pushd ~/src/jambool/trunk/data/inventory"
-  alias ops="pushd ~/src/svn/ops/trunk"
-  alias api="pushd ~/src/api"
+  alias b="pushd ~/src/Bueller"
   function up {
     dir="$(up_dir $@)"
     pushd $dir
@@ -224,7 +215,7 @@ if [[ -n "$PS1" ]]; then
 
 fi
 
-# Load google-specific goodies
-source_if_exists ~/.bashrc.google
+# Load local script, if any
+source_if_exists ~/.bashrc.local
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
