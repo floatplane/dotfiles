@@ -118,6 +118,8 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 
 (load "haml-mode.el")
 (require 'haml-mode)
+(load "sass-mode/sass-mode.el")
+(require 'sass-mode)
 
 (when (file-exists-p "~/emacs/rinari/rinari.el")
   (load "rinari/rinari.el")
