@@ -120,6 +120,8 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (require 'haml-mode)
 (load "sass-mode/sass-mode.el")
 (require 'sass-mode)
+(load "coffee-mode/coffee-mode.el")
+(require 'coffee-mode)
 
 (when (file-exists-p "~/emacs/rinari/rinari.el")
   (load "rinari/rinari.el")
