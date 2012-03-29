@@ -11,6 +11,14 @@
 [alias]
 	svn-diff = !git-svn-diff
 	diffall = !git-diffall
+	switch = !legit switch \"$@\"
+	branches = !legit branches
+	sprout = !legit sprout \"$@\"
+	unpublish = !legit unpublish \"$@\"
+	harvest = !legit harvest \"$@\"
+	sync = !legit sync \"$@\"
+	publish = !legit publish \"$@\"
+	graft = !legit graft \"$@\"
 [merge]
 	tool = meld
 	keepBackup = false
