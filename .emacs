@@ -45,9 +45,14 @@
 
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/nxhtml") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.0.3") load-path))
+;; (setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.0.3") load-path))
+
+(load (expand-file-name "~/emacs/nxhtml/autostart.el"))
+(setq-default mumamo-chunk-coloring 2)
+(setq mumamo-background-colors nil)
 
 (require 'textmate)
 (textmate-mode)
@@ -140,13 +145,6 @@
 
 (add-hook 'shell-mode-hook '(lambda () (toggle-truncate-lines 1)))
 (setq comint-prompt-read-only t)
-
-;
-; Set up windows-like shifted motion keys and other goodness.
-; Allow shifted movement keys to modify current region.
-; CUA Package from http://www.cua.dk/cua.html
-;
-(cua-mode t)
 
 ;
 ; fire up cedet
@@ -248,9 +246,9 @@
 ;; Python editing stuff
 (setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript$" .
                               python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
+;; (setq interpreter-mode-alist (cons '("python" . python-mode)
+;;                                    interpreter-mode-alist))
+;; (autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; Lua editing stuff
 (setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
@@ -340,6 +338,14 @@
 (setq default-input-method "latin-1-prefix")
 ;; (turn-on-font-lock)
 ;; (global-font-lock-mode t)
+
+;
+; Set up windows-like shifted motion keys and other goodness.
+; Allow shifted movement keys to modify current region.
+; CUA Package from http://www.cua.dk/cua.html
+;
+(cua-mode 'emacs)
+(delete-selection-mode 1)
 (setq transient-mark-mode t)
 
 (put 'upcase-region 'disabled nil)
@@ -361,6 +367,7 @@
  '(speedbar-frame-parameters (quote ((minibuffer) (width . 40) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (left-fringe . 0))))
  '(speedbar-frame-plist (quote (minibuffer nil width 40 border-width 0 internal-border-width 0 unsplittable t default-toolbar-visible-p nil has-modeline-p nil menubar-visible-p nil default-gutter-visible-p nil)))
  '(whitespace-style (quote (trailing tab-mark))))
+
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
