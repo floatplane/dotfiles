@@ -52,33 +52,8 @@
 (require 'textmate)
 (textmate-mode)
 
-;; Window colors
-;; (load "color-theme-solarized.el")
-;; (color-theme-solarized-light)
-
 (require 'rainbow-delimiters)
 (global-rainbow-delimiters-mode)
-
-; Define a "jump-to-column" function, we'll install that through
-; customize to be another XFF keyword
-(defun jump-to-column (dest-col)
-  "Move to the specified column.  Column is in the VC sense, where a tab
-counts as n columns, rather than 1.  Column numbers are 1-based."
-  (interactive "nColumn: ")
-  (let* ((line (buffer-substring (point-at-bol) (point-at-eol)))
-         (col 1)
-         (index 0)
-         )
-    ; (message "line = %s, index = %d, col = %d" line index col)
-    (while (> dest-col col)
-        (progn (cond ((char-equal ?\t (aref line index))
-                      (setq col (+ col tab-width))
-                      (setq col (- col (mod (- col 1) tab-width))))
-                     (t (setq col (+ col 1))))
-               (setq index (+ index 1))))
-               ; (message "line = %s, index = %d, col = %d" line index col)))
-    ; (message "index = %d, col = %d" index col)
-    (goto-char (+ (point-at-bol) index))))
 
 (require 'ido)
 (ido-mode t)
@@ -106,13 +81,6 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-(load "anything.el")
-(load "rcodetools.el")
-(load "anything-rcodetools.el")
-(require 'anything)
-(require 'rcodetools)
-(require 'anything-rcodetools)
-
 ;; (load "nxhtml/autostart.el")
 (add-hook 'html-mode-hook 'no-tabs)
 
@@ -122,11 +90,6 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (require 'sass-mode)
 (load "coffee-mode/coffee-mode.el")
 (require 'coffee-mode)
-
-(when (file-exists-p "~/emacs/rinari/rinari.el")
-  (load "rinari/rinari.el")
-  (require 'rinari)
-)
 
 (load "actionscript-mode-connors.el")
 (require 'actionscript-mode)
@@ -151,21 +114,6 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
 (require 'fill-column-indicator)
 (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode t)))
 (global-fci-mode 1)
-
-;; Replace $RSENSE_HOME with the directory where RSense was installed in full path
-;; Example for UNIX-like systems
-;; (setq rsense-home "/home/tomo/opt/rsense-0.2")
-;; or
-;; (setq rsense-home (expand-file-name "~/opt/rsense-0.2"))
-;; Example for Windows
-;; (setq rsense-home "C:\\rsense-0.2")
-;; (setq rsense-home "/opt/rsense-0.3")
-;; (add-to-list 'load-path (concat rsense-home "/etc"))
-;; (require 'rsense)
-;; (add-hook 'ruby-mode-hook
-;;           (lambda ()
-;;             (add-to-list 'ac-sources 'ac-source-rsense-method)
-;;             (add-to-list 'ac-sources 'ac-source-rsense-constant)))
 
 ; (add-hook 'before-save-hook 'delete-trailing-whitespace) <-- this is a little too prone to making changes
 
@@ -321,30 +269,6 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
   (next-error -1)
 )
 
-;; GNU Emacs doesn't have symbol-near-point apparently
-;; stolen from browse-cltl2.el, and in turn:
-;; stolen from XEmacs 19.15 syntax.el
-(if (not (fboundp (function symbol-near-point)))
-    (defun symbol-near-point ()
-      "Return the first textual item to the nearest point."
-      (interactive)
-      ;;alg stolen from etag.el
-      (save-excursion
-        (if (not (memq (char-syntax (preceding-char)) '(?w ?_)))
-            (while (not (looking-at "\\sw\\|\\s_\\|\\'"))
-              (forward-char 1)))
-        (while (looking-at "\\sw\\|\\s_")
-          (forward-char 1))
-        (if (re-search-backward "\\sw\\|\\s_" nil t)
-            (regexp-quote
-             (progn (forward-char 1)
-                    (buffer-substring (point)
-                                      (progn (forward-sexp -1)
-                                             (while (looking-at "\\s'")
-                                               (forward-char 1))
-                                             (point)))))
-          nil))))
-
 (setq my-grep-history nil)
 (setq my-grep-dir-history nil)
 (setq my-grep-default-dir "~/src")
@@ -463,7 +387,3 @@ counts as n columns, rather than 1.  Column numbers are 1-based."
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
-
-;; Load google-specific packages, if they exist
-(if (file-exists-p "~/emacs/.emacs.google.el")
-    (load-file "~/emacs/.emacs.google.el"))
