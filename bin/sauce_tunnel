@@ -1,2 +1,0 @@
-#! /bin/bash
-~/selenium/Sauce-Connect-1.0-r17/unix/sauce_connect -u bsharon -k 9290804a-c254-4bf0-9639-2e1280322b57 -s localhost -p 80 -d *.development.jambool.com
