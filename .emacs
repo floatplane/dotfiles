@@ -46,7 +46,7 @@
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/nxhtml") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
+;; (setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
 ;; (setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.0.3") load-path))
 
@@ -116,9 +116,9 @@
 (require 'tramp)
 (setq tramp-default-method "scp")
 
-(require 'fill-column-indicator)
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode t)))
-(global-fci-mode 1)
+;; (require 'fill-column-indicator)
+;; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode t)))
+;; (global-fci-mode 1)
 
 ; (add-hook 'before-save-hook 'delete-trailing-whitespace) <-- this is a little too prone to making changes
 

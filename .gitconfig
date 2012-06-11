@@ -34,6 +34,9 @@
 	alternate = opendiff
 	keepTemporaries = false
 
+[mergetool "meld"]
+	keepTemporaries = false
+
 # [merge]
 # 	keepBackup = false;
 # 	tool = kdiff3merge

@@ -1,2 +1,4 @@
 --type-add=ruby=.haml
+--type-set=sass=.sass,.scss
+--type-add=html=.djhtml
 --type-set=proto=.proto,.rosy
