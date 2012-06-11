@@ -152,6 +152,12 @@ if [[ -n "$PS1" ]]; then
     echo -n ''
   }
 
+  # Alias git to the hub command
+  eval "$(hub alias -s)"
+
+  # Load hub tab-completion
+  source_if_exists ~/dotfiles/hub.bash_completion.sh
+
   # tab-completion for macports
   source_if_exists /opt/local/etc/bash_completion
 
