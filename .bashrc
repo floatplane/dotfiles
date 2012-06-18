@@ -11,7 +11,10 @@ function source_if_exists {
   fi
 }
 
-# If not running interactively, don't do anything
+# Tweak the path.
+export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
+
+# If not running interactively, don't do any of these things
 if [[ -n "$PS1" ]]; then
 
   # don't put duplicate lines in the history. See bash(1) for more options
@@ -168,7 +171,6 @@ if [[ -n "$PS1" ]]; then
   source_if_exists /etc/bash_completion.d/git
   source_if_exists /etc/bash_completion.d/g4
 
-  export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
   # git status with a dirty flag
   function __git_status_flag {
     git_status="$(git status 2> /dev/null)"

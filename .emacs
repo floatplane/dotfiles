@@ -8,6 +8,15 @@
 ;; Disable Ctrl-Z minimization/suspension of emacs.
 (global-set-key [C-z] nil)
 
+;; On OS X we don't inherit the same path as terminal programs would, so read in PATH from .bashrc
+;; http://emacswiki.org/emacs/EmacsApp
+(if (not (getenv "TERM_PROGRAM"))
+    (setenv "PATH"
+            (shell-command-to-string "source $HOME/.bashrc && printf $PATH")))
+;; Make sure exec-path matches our environment's path
+(setq exec-path (split-string (getenv "PATH") path-separator))
+
+
 ;  Define a function to (formerly) disable tabs, and set the tab width
 ;  to something sensible.  These variables are buffer
 ; local, so we have to set them in a mode hook.
@@ -356,6 +365,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ack-and-a-half-project-root-file-patterns (quote ("\\`.git\\'" "\\`.bzr\\'" "\\`_darcs\\'" "\\`.hg\\'")))
  '(ack-prompt-for-directory (quote unless-guessed))
  '(fill-column 80)
  '(global-auto-revert-mode t)
@@ -377,6 +387,15 @@
  '(whitespace-trailing ((t (:background "medium sea green" :foreground "yellow" :weight bold)))))
 
 
+(autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
+(autoload 'ack-and-a-half "ack-and-a-half" nil t)
+(autoload 'ack-and-a-half-find-file-same "ack-and-a-half" nil t)
+(autoload 'ack-and-a-half-find-file "ack-and-a-half" nil t)
+;; Create shorter aliases
+(defalias 'ack 'ack-and-a-half)
+(defalias 'ack-same 'ack-and-a-half-same)
+(defalias 'ack-find-file 'ack-and-a-half-find-file)
+(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 ;; (autoload 'ack-same "full-ack" nil t)
 ;; (autoload 'ack "full-ack" nil t)
 ;; (autoload 'ack-find-same-file "full-ack" nil t)
