@@ -73,6 +73,25 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
+;; From https://bitbucket.org/durin42/dotfiles/src/tip/.elisp/settings/50.localfuncs.el#cl-9:
+;; advice to prevent ido from using flex matches on huge lists of files
+;; with enough characters typed and blocking for an absurd amount of time
+;; after a stupid typo
+;; The value af-ido-flex-fuzzy-limit is the maximum value of the product
+;; of the number of characters the user has entered and the number of
+;; options in the ido list.
+;; The default value was determined experimentally and seemed to be
+;; the boundary of sane wait times when this was written.
+(defvar af-ido-flex-fuzzy-limit (* 2000 5))
+(defadvice ido-set-matches-1 (around my-ido-set-matches-1 activate)
+  "Conditionally disable flex matching if the list is huge.
+
+This is useful because when the ido list is huge, ido flex matching
+spends an eternity in a regex if you make a typo."
+  (let ((ido-enable-flex-matching (< (* (length (ad-get-arg 0)) (length ido-text))
+                                     af-ido-flex-fuzzy-limit)))
+    ad-do-it))
+
 ;; ; Save the desktop periodically
 ;; (setq desktop-dirname "~/.emacs.desktop.dir/")
 ;; (setq desktop-load-locked-desktop nil)
@@ -83,6 +102,10 @@
 ;; (setq desktop-save t)
 ;; (add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
 ;; (desktop-save-mode 1)
+
+;; Enable winner-mode
+(when (fboundp 'winner-mode)
+      (winner-mode 1))
 
 ; Automatically clean up old buffers
 (require 'midnight)
