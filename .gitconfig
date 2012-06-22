@@ -8,6 +8,7 @@
 	diff = auto
 	status = auto
 	branch = auto
+    interactive = auto
 [alias]
 	svn-diff = !git-svn-diff
 	diffall = !git-diffall
@@ -19,6 +20,8 @@
 	sync = !legit sync \"$@\"
 	publish = !legit publish \"$@\"
 	graft = !legit graft \"$@\"
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 [merge]
 	tool = meld
 	keepBackup = false
