@@ -2,7 +2,7 @@
 srcdir = File.dirname(__FILE__)
 homedir = ENV['HOME']
 
-symlinked_files = FileList.new('.*', 'emacs', 'bin').exclude('.git', '.', '..')
+symlinked_files = FileList.new('.*', 'emacs', 'bin').exclude('.git', /^\.$/, /^\.\.$/)
 compiled_elisp = FileList.new('emacs/**/*.el').sub!(/.el$/, '.elc')
 
 def try_delete_file(f)
