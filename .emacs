@@ -12,7 +12,7 @@
 ;; http://emacswiki.org/emacs/EmacsApp
 (if (not (getenv "TERM_PROGRAM"))
     (setenv "PATH"
-            (shell-command-to-string "source $HOME/.bashrc && printf $PATH")))
+            (shell-command-to-string "bash -c \"source $HOME/.bashrc; echo $PATH\"")))
 ;; Make sure exec-path matches our environment's path
 (setq exec-path (split-string (getenv "PATH") path-separator))
 
