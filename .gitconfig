@@ -4,6 +4,8 @@
 [user]
 	name = Brian Sharon
 	email = brian@floatplane.us
+[branch]
+	autosetuprebase = always
 [color]
 	diff = auto
 	status = auto
