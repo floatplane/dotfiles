@@ -125,6 +125,7 @@ spends an eternity in a regex if you make a typo."
 (require 'haml-mode)
 (load "sass-mode/sass-mode.el")
 (require 'sass-mode)
+(add-to-list 'auto-mode-alist '("\\.s[ac]ss$" . sass-mode))
 (load "coffee-mode/coffee-mode.el")
 (require 'coffee-mode)
 
