@@ -400,6 +400,7 @@ spends an eternity in a regex if you make a typo."
  '(show-trailing-whitespace t)
  '(speedbar-frame-parameters (quote ((minibuffer) (width . 40) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (left-fringe . 0))))
  '(speedbar-frame-plist (quote (minibuffer nil width 40 border-width 0 internal-border-width 0 unsplittable t default-toolbar-visible-p nil has-modeline-p nil menubar-visible-p nil default-gutter-visible-p nil)))
+ '(tool-bar-mode nil)
  '(whitespace-style (quote (trailing tab-mark))))
 
 (custom-set-faces
@@ -407,6 +408,7 @@ spends an eternity in a regex if you make a typo."
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Source Code Pro"))))
  '(trailing-whitespace ((((class color) (background light)) (:background "gray89"))))
  '(whitespace-trailing ((t (:background "medium sea green" :foreground "yellow" :weight bold)))))
 
