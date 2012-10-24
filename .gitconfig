@@ -1,6 +1,8 @@
 [core]
 	excludesfile = /home/bsharon/.gitignore
 	pager = less -FXR -x4
+[rerere]
+    enabled = true
 [user]
 	name = Brian Sharon
 	email = brian@floatplane.us
@@ -32,23 +34,17 @@
 
 [mergetool]
 	prompt = false
+	keepBackup = false
 
 [mergetool "mergetool.rb"]
 	cmd = mergetool.rb $BASE $LOCAL $REMOTE $MERGED
 	trustExitCode = true
 	alternate = opendiff
-	keepTemporaries = false
-
-[mergetool "meld"]
-	keepTemporaries = false
 
 # [merge]
-# 	keepBackup = false;
 # 	tool = kdiff3merge
 # [mergetool "kdiff3merge"]
 # 	cmd = kdiff3merge
-# 	keepTemporaries = false
 # 	trustExitCode = false
-# 	keepBackup = false
 # [diff]
 # 	external = /home/bsharon/bin/p4diff
