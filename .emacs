@@ -342,6 +342,10 @@ spends an eternity in a regex if you make a typo."
 (define-key global-map [(alt return)] 'mac-toggle-max-window)
 
 (setq compilation-scroll-output t)
+;; Recognize jshint errors
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(jshint "^\\([^:]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 1 2 3))
+(add-to-list 'compilation-error-regexp-alist 'jshint)
 
 (require 'server)
 (unless (server-running-p)
@@ -355,6 +359,8 @@ spends an eternity in a regex if you make a typo."
 
 (setq grep-command "grep -nr")
 ; (setq compile-command "c:\\ad\\snicket\\bin\\build.bat winpc debug code")
+(setq compile-command "rake lint")
+(define-key global-map '[f7] 'compile)
 
 (defun switch-to-kexp ()
   "Set things up for kexp"
