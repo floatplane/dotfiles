@@ -123,9 +123,12 @@ spends an eternity in a regex if you make a typo."
 
 (load "haml-mode.el")
 (require 'haml-mode)
-(load "sass-mode/sass-mode.el")
-(require 'sass-mode)
-(add-to-list 'auto-mode-alist '("\\.s[ac]ss$" . sass-mode))
+;; (load "sass-mode/sass-mode.el")
+;; (require 'sass-mode)
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+(setq scss-compile-at-save nil)
+;; (add-to-list 'auto-mode-alist '("\\.s[ac]ss$" . sass-mode))
 (load "coffee-mode/coffee-mode.el")
 (require 'coffee-mode)
 
