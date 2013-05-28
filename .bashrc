@@ -168,8 +168,8 @@ if [[ -n "$PS1" ]]; then
   source_if_exists ~/bin/rake_cap_bash_autocomplete.sh
 
   # tab-completion for git subcommands
-  source_if_exists /etc/bash_completion.d/git
-  source_if_exists /etc/bash_completion.d/g4
+  source_if_exists ~/dotfiles/git-completion.bash
+  source_if_exists ~/dotfiles/git-prompt.sh
 
   # git status with a dirty flag
   function __git_status_flag {
@@ -222,7 +222,7 @@ if [[ -n "$PS1" ]]; then
   PS1='\u@\[\e[1m\]\h\[\e[22m\]: \[\e[0m\]$(__truncated_current_directory)\[\e[22;35m\]$(__git_ps1 " [\[\e[33m\]$(__git_status_flag)\[\e[35m\]%s]")\[\e[33m\] \$ \[\e[0m\]'
 
   # devtunnel hostname
-  export DEVTUNNEL_HOST=`whoami`-`hostname`
+  export DEVTUNNEL_HOST=`whoami`-`hostname -s`
 
 fi
 
