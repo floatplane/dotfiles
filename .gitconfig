@@ -48,3 +48,5 @@
 # 	trustExitCode = false
 # [diff]
 # 	external = /home/bsharon/bin/p4diff
+[push]
+	default = simple
