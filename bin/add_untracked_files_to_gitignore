@@ -1,6 +1,7 @@
 #!/bin/bash
-pushd "`git rev-parse --show-toplevel`"
-git status --porcelain | grep -e '^??' | sed 's/\/$//' | sed 's/\?\? //' >> .gitignore
-popd
+echo pushd "`git rev-parse --show-toplevel`"
+RESULT="$(git status --porcelain | grep -e '^??' | sed 's/\/$//' | sed 's/\?\? //')"
+echo "$RESULT" >> .gitignore
+echo popd
 git status
 

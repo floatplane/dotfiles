@@ -226,7 +226,12 @@ if [[ -n "$PS1" ]]; then
 
 fi
 
+# Add depot tools to the path if they're there
+[[ -s "$HOME/depot_tools" ]] && PATH=$PATH:$HOME/depot_tools
+
 # Load local script, if any
 source_if_exists ~/.bashrc.local
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
