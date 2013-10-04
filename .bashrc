@@ -224,9 +224,17 @@ if [[ -n "$PS1" ]]; then
   # devtunnel hostname
   export DEVTUNNEL_HOST=`whoami`-`hostname -s`
 
+  if [[ -d "/Applications/Postgres.app/Contents/MacOS/bin" ]]; then
+      PATH=/Applications/Postgres.app/Contents/MacOS/bin:$PATH
+  fi
 fi
 
 # Load local script, if any
 source_if_exists ~/.bashrc.local
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
