@@ -115,12 +115,12 @@ if [[ -n "$PS1" ]]; then
     alias emacs='open -a emacs'
     alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
     alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -n'
-    alias vi="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
+    alias edit="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
     export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -t"
   else
     alias ec="emacsclient --alternate-editor= -n"
     alias e="emacsclient --alternate-editor= -n"
-    alias vi="emacsclient --alternate-editor= -t"
+    alias edit="emacsclient --alternate-editor= -t"
     export EDITOR="emacsclient --alternate-editor= -t"
   fi
 
@@ -228,6 +228,9 @@ if [[ -n "$PS1" ]]; then
       PATH=/Applications/Postgres.app/Contents/MacOS/bin:$PATH
   fi
 fi
+
+# Add depot tools to the path if they're there
+[[ -s "$HOME/depot_tools" ]] && PATH=$PATH:$HOME/depot_tools
 
 # Load local script, if any
 source_if_exists ~/.bashrc.local
