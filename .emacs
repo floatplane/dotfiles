@@ -407,6 +407,7 @@ spends an eternity in a regex if you make a typo."
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ack-and-a-half-arguments (list "--ignore-dir=build" "--ignore-dir=tools"))
  '(ack-and-a-half-project-root-file-patterns (quote ("\\`.git\\'" "\\`.bzr\\'" "\\`_darcs\\'" "\\`.hg\\'")))
  '(ack-prompt-for-directory (quote unless-guessed))
  '(fill-column 80)
@@ -420,6 +421,14 @@ spends an eternity in a regex if you make a typo."
  '(speedbar-frame-plist (quote (minibuffer nil width 40 border-width 0 internal-border-width 0 unsplittable t default-toolbar-visible-p nil has-modeline-p nil menubar-visible-p nil default-gutter-visible-p nil)))
  '(tool-bar-mode nil)
  '(whitespace-style (quote (trailing tab-mark))))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Source Code Pro"))))
+ '(trailing-whitespace ((((class color) (background light)) (:background "gray89"))))
+ '(whitespace-trailing ((t (:background "medium sea green" :foreground "yellow" :weight bold)))))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
