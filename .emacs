@@ -454,7 +454,8 @@ spends an eternity in a regex if you make a typo."
 ;; (autoload 'ack-find-same-file "full-ack" nil t)
 ;; (autoload 'ack-find-file "full-ack" nil t)
 (setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+(cond ((fboundp 'x-selection-value) (setq interprogram-paste-function 'x-selection-value))
+      ((fboundp 'x-cut-buffer-or-selection-value) (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
 
 
 ;;; This was installed by package-install.el.
