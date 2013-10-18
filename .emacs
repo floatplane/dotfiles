@@ -72,6 +72,13 @@
 (setq-default mumamo-chunk-coloring 2)
 (setq mumamo-background-colors nil)
 
+(cond ((boundp 'custom-theme-load-path)
+       (setq custom-theme-load-path (cons (expand-file-name "~/emacs/emacs-color-theme-solarized") custom-theme-load-path))
+       (load-theme 'solarized-dark t)
+       (setq solarized-italic nil)
+       (setq solarized-underline nil)
+       (setq solaized-bold nil)))
+
 (require 'textmate)
 (textmate-mode)
 
@@ -421,24 +428,19 @@ spends an eternity in a regex if you make a typo."
  '(speedbar-frame-plist (quote (minibuffer nil width 40 border-width 0 internal-border-width 0 unsplittable t default-toolbar-visible-p nil has-modeline-p nil menubar-visible-p nil default-gutter-visible-p nil)))
  '(tool-bar-mode nil)
  '(whitespace-style (quote (trailing tab-mark))))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Source Code Pro"))))
- '(trailing-whitespace ((((class color) (background light)) (:background "gray89"))))
- '(whitespace-trailing ((t (:background "medium sea green" :foreground "yellow" :weight bold)))))
+
+
+(when (eq system-type 'darwin)
+      (set-face-attribute 'default nil :family "Source Code Pro"))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Source Code Pro"))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ ;; '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Source Code Pro"))))
  '(trailing-whitespace ((((class color) (background light)) (:background "gray89"))))
  '(whitespace-trailing ((t (:background "medium sea green" :foreground "yellow" :weight bold)))))
-
 
 (autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
 (autoload 'ack-and-a-half "ack-and-a-half" nil t)
