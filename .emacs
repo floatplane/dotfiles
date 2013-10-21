@@ -82,8 +82,9 @@
 (require 'textmate)
 (textmate-mode)
 
-(require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
+;; This kind of makes my eyes dizzy
+;; (require 'rainbow-delimiters)
+;; (global-rainbow-delimiters-mode)
 
 (require 'ido)
 (ido-mode t)
