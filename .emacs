@@ -63,28 +63,17 @@
 
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/nxhtml") load-path))
-;; (setq load-path (cons (expand-file-name "~/emacs/Fill-Column-Indicator") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
-;; (setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.0.3") load-path))
-
-(load (expand-file-name "~/emacs/nxhtml/autostart.el"))
-(setq-default mumamo-chunk-coloring 2)
-(setq mumamo-background-colors nil)
 
 (cond ((boundp 'custom-theme-load-path)
-       (setq custom-theme-load-path (cons (expand-file-name "~/emacs/emacs-color-theme-solarized") custom-theme-load-path))
-       (load-theme 'solarized-dark t)
-       (setq solarized-italic nil)
-       (setq solarized-underline nil)
-       (setq solaized-bold nil)))
+       (setq custom-theme-load-path (cons (expand-file-name "~/emacs") custom-theme-load-path))
+       (load-theme 'zenburn t))
 
 (require 'textmate)
 (textmate-mode)
 
-;; This kind of makes my eyes dizzy
-;; (require 'rainbow-delimiters)
-;; (global-rainbow-delimiters-mode)
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
 
 (require 'ido)
 (ido-mode t)
@@ -135,8 +124,23 @@ spends an eternity in a regex if you make a typo."
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-;; (load "nxhtml/autostart.el")
-(add-hook 'html-mode-hook 'no-tabs)
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq rainbow-delimiters-mode nil)
+  (setq whitespace-mode 0)
+  (message "Entering web mode")
+)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+(setq web-mode-comment-style 2) ;; server-side comments rather than HTML comments
 
 (load "haml-mode.el")
 (require 'haml-mode)
@@ -363,9 +367,9 @@ spends an eternity in a regex if you make a typo."
 
 (setq compilation-scroll-output t)
 ;; Recognize jshint errors
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(jshint "^\\([^:]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 1 2 3))
-(add-to-list 'compilation-error-regexp-alist 'jshint)
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(jshint "^\\([^:]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 1 2 3))
+;; (add-to-list 'compilation-error-regexp-alist 'jshint)
 
 (require 'server)
 (unless (server-running-p)
