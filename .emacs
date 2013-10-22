@@ -67,7 +67,7 @@
 
 (cond ((boundp 'custom-theme-load-path)
        (setq custom-theme-load-path (cons (expand-file-name "~/emacs") custom-theme-load-path))
-       (load-theme 'zenburn t))
+       (load-theme 'zenburn t)))
 
 (require 'textmate)
 (textmate-mode)
