@@ -632,7 +632,7 @@ Must be used in conjunction with web-mode-enable-block-face."
   '("assets" "autoescape" "block" "cache" "call" "comment"
     "elif" "else" "elseif" "embed" "empty" "filter" "foreach" "for"
     "ifchanged" "ifequal" "ifnotequal" "if"
-    "macro" "draw" "random" "sandbox" "spaceless" "trans" "verbatim" "with")
+    "macro" "draw" "random" "sandbox" "spaceless" "verbatim" "with")
   "Django controls.")
 
 (defvar web-mode-go-active-blocks
