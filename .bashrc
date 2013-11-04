@@ -171,6 +171,8 @@ if [[ -n "$PS1" ]]; then
   source_if_exists ~/dotfiles/git-completion.bash
   source_if_exists ~/dotfiles/git-prompt.sh
 
+  source_if_exists ~/dotfiles/ssh_completion.sh
+
   # git status with a dirty flag
   function __git_status_flag {
     git_status="$(git status 2> /dev/null)"
