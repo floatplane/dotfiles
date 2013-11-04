@@ -64,6 +64,7 @@
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.1.2") load-path))
 
 (cond ((boundp 'custom-theme-load-path)
        (setq custom-theme-load-path (cons (expand-file-name "~/emacs") custom-theme-load-path))
@@ -305,7 +306,7 @@ spends an eternity in a regex if you make a typo."
                               python-mode) auto-mode-alist))
 ;; (setq interpreter-mode-alist (cons '("python" . python-mode)
 ;;                                    interpreter-mode-alist))
-;; (autoload 'python-mode "python-mode" "Python editing mode." t)
+(autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;; Lua editing stuff
 (setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))

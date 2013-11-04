@@ -18,7 +18,6 @@
 
 ;;; Code:
 
-
 (defcustom highlight-indentation  nil
  "If level of indentation should be displayed at start.
 Toggle buffer local status via `M-x highlight-indentation' during session. "
@@ -30,20 +29,18 @@ Toggle buffer local status via `M-x highlight-indentation' during session. "
 (defvar highlight-indent-active nil)
 (make-variable-buffer-local 'highlight-indent-active)
 
-(unless (featurep 'xemacs)
-  (defface highlight-indent-face
-    '((((class color) (min-colors 88) (background dark))
-       :background "grey22")
-      (((class color) (min-colors 88) (background light))
-       :background "grey88"))
-    "Basic face for highlighting indentation guides."
-    :group 'basic-faces))
+(defface highlight-indent-face
+  '((((class color) (background dark))
+     (:background "grey33"))
+    (((class color) (background light))
+     (:background "grey")))
+  "Basic face for highlighting indentation guides.")
 
 (setq-default highlight-indent-offset 4)
 
-
 (defvar ruby-indent-level nil)
-(defvar nxml-child-indent nil)
+;; lp:1067928
+;; (defvar nxml-child-indent nil)
 
 (defun highlight-indentation-on ()
   "Make sure `highlight-indentation' is on. "
@@ -74,10 +71,11 @@ indent-width will be guessed from current major-mode"
                (if indent-width
                    indent-width
                  ;; Set indentation offset according to major mode
-                 (cond ((eq major-mode 'python-mode)
-                        (if (boundp 'python-indent)
-                            python-indent
-                          py-indent-offset))
+                 (cond ((and (eq major-mode 'python-mode)(boundp 'py-indent-offset)) 
+                        py-indent-offset)
+                       ;; support both python.el
+                       ((or (eq major-mode 'python-mode)(eq major-mode 'python))
+                        python-indent)
                        ((eq major-mode 'ruby-mode)
                         ruby-indent-level)
                        ((eq major-mode 'nxml-mode)
