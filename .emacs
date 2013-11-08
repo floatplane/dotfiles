@@ -64,7 +64,7 @@
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/python-mode.el-6.1.2") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/python-mode-5.2") load-path))
 
 (cond ((boundp 'custom-theme-load-path)
        (setq custom-theme-load-path (cons (expand-file-name "~/emacs") custom-theme-load-path))
