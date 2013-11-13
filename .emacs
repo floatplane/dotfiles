@@ -65,6 +65,7 @@
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/python-mode-5.2") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/js2-mode-20131106") load-path))
 
 (cond ((boundp 'custom-theme-load-path)
        (setq custom-theme-load-path (cons (expand-file-name "~/emacs") custom-theme-load-path))
@@ -300,6 +301,11 @@ spends an eternity in a regex if you make a typo."
 ;; Ruby alist
 (setq auto-mode-alist (cons '("\\.rake\\|Rakefile$" .
                               ruby-mode) auto-mode-alist))
+
+;; Javscript alist
+(setq auto-mode-alist (cons '("\\.js\\|\\.json$" .
+                              js2-mode) auto-mode-alist))
+(autoload 'js2-mode "js2-mode" "Javascript editing mode." t)
 
 ;; Python editing stuff
 (setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript$" .
