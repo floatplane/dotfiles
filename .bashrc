@@ -14,6 +14,12 @@ function source_if_exists {
 # Tweak the path.
 export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
 
+if [[ $(uname) =~ "Darwin" ]]; then
+    # OS X limits us to 256 open file descriptors by default. That's kinda
+    # small. Node can chew that up easily.
+    ulimit -n 8192
+fi
+
 # If not running interactively, don't do any of these things
 if [[ -n "$PS1" ]]; then
 
@@ -243,3 +249,6 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+# Get grunt tab completion if it's installed
+command -v "grunt" > /dev/null && eval "$(grunt --completion=bash)"
