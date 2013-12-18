@@ -137,12 +137,10 @@ if [[ -n "$PS1" ]]; then
     dir="$(up_dir $@)"
     pushd $dir
   }
-  if [[ $(uname) =~ "Darwin" ]]; then
-    alias ack="ack --pager=\"less -FXR\""
-  else
+  if [[ ! $(uname) =~ "Darwin" ]]; then
     alias pbcopy="xclip -i -sel clip"
     alias pbpaste="xclip -o"
-    alias ack="ack-grep --pager=\"less -FXR\""
+    alias ack="ack-grep"
   fi
 
   export GIT_EDITOR=$EDITOR
