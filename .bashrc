@@ -147,7 +147,14 @@ if [[ -n "$PS1" ]]; then
   export VISUAL=$EDITOR
   # PYTHONPATH=$PYTHONPATH:~/python/boto-1.8d
 
-  PS1='\u@\h:\w\$ '
+  PROMPT_HOSTNAME=`hostname`
+  if [ -x /usr/bin/ec2metadata ]; then
+      INSTANCE_ID=`ec2metadata --instance-id`
+      INSTANCE_IP=`ec2metadata --public-ipv4`
+      PROMPT_HOSTNAME="$INSTANCE_ID ($INSTANCE_IP)"
+  fi
+
+  PS1='\u@$PROMPT_HOSTNAME:\w\$ '
 
   # dummy functions so that the prompt doesn't break if the
   # autocompletion files aren't found
@@ -225,7 +232,7 @@ if [[ -n "$PS1" ]]; then
   }
 
   # the prompt itself
-  PS1='\u@\[\e[1m\]\h\[\e[22m\]: \[\e[0m\]$(__truncated_current_directory)\[\e[22;35m\]$(__git_ps1 " [\[\e[33m\]$(__git_status_flag)\[\e[35m\]%s]")\[\e[33m\] \$ \[\e[0m\]'
+  PS1='\u@\[\e[1m\]$PROMPT_HOSTNAME\[\e[22m\]: \[\e[0m\]$(__truncated_current_directory)\[\e[22;35m\]$(__git_ps1 " [\[\e[33m\]$(__git_status_flag)\[\e[35m\]%s]")\[\e[33m\] \$ \[\e[0m\]'
 
   # devtunnel hostname
   export DEVTUNNEL_HOST=`whoami`-`hostname -s`
