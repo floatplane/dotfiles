@@ -3,3 +3,5 @@
 --type-add=html=.djhtml
 --type-set=proto=.proto,.rosy
 --type-set=coffee=.coffee
+--type-set=yaml=.yaml,.yml
+--pager=less -FXR
