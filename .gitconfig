@@ -1,5 +1,5 @@
 [core]
-	excludesfile = /home/bsharon/.gitignore
+	excludesfile = ~/.gitignore
 	pager = less -FXR -x4
 [rerere]
     enabled = true
