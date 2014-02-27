@@ -151,8 +151,7 @@ if [[ -n "$PS1" ]]; then
   if [ -x /usr/bin/ec2metadata ]; then
       INSTANCE_ID=`ec2metadata --instance-id`
       INSTANCE_IP=`ec2metadata --public-ipv4`
-      CHEF_ROLE=`knife node show --format text $INSTANCE_ID | grep run_list | awk '/run_list: / { sub(/role\[/, ""); sub(/\]/, ""); printf("%s", $2);}'`
-      PROMPT_HOSTNAME="$CHEF_ROLE/$INSTANCE_ID/$INSTANCE_IP)"
+      PROMPT_HOSTNAME="$INSTANCE_ID ($INSTANCE_IP)"
   fi
 
   PS1='\u@$PROMPT_HOSTNAME:\w\$ '
