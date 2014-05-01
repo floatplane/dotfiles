@@ -118,10 +118,11 @@ if [[ -n "$PS1" ]]; then
   fi
 
 
-  if [[ -x `command -v atom` ]]; then
-    alias ec='atom --foreground'
-    export EDITOR="atom --wait"
-  elif [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
+  # if [[ -x `command -v atom` ]]; then
+  #   alias ec='atom --foreground'
+  #   export EDITOR="atom --wait"
+  # elif [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
+  if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
     alias emacs='open -a emacs'
     alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
     alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -n'
