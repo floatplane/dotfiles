@@ -5,9 +5,9 @@
 function source_if_exists {
   if [[ -s $1 ]] ; then
       source $1
-  elif [[ "$PS1" ]]; then
-      # Warn when running interactively, not otherwise
-      echo $1 not found.
+  # elif [[ "$PS1" ]]; then
+  #     # Warn when running interactively, not otherwise
+  #     echo $1 not found.
   fi
 }
 
@@ -18,6 +18,9 @@ if [[ $(uname) =~ "Darwin" ]]; then
     # OS X limits us to 256 open file descriptors by default. That's kinda
     # small. Node can chew that up easily.
     ulimit -n 8192
+
+    # Move /usr/local/bin to the front for Homebrew
+    export PATH=/usr/local/bin:$PATH
 fi
 
 # If not running interactively, don't do any of these things
@@ -179,6 +182,9 @@ if [[ -n "$PS1" ]]; then
 
   # tab-completion for macports
   source_if_exists /opt/local/etc/bash_completion
+
+  # tab-completion for homebrew
+  source_if_exists `brew --prefix`/etc/bash_completion
 
   # tab-completion for rake and cap
   source_if_exists ~/bin/rake_cap_bash_autocomplete.sh
