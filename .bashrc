@@ -140,7 +140,7 @@ if [[ -n "$PS1" ]]; then
 
   alias ls="ls -Gp"
   alias l="ls -la"
-  alias b="pushd ~/src/Bueller"
+  alias p="pushd ~/src/Paper"
   function up {
     dir="$(up_dir $@)"
     pushd $dir
@@ -150,6 +150,7 @@ if [[ -n "$PS1" ]]; then
     alias pbpaste="xclip -o"
     alias ack="ack-grep"
   fi
+  alias ag="ag --pager='less -FXR' --depth 100"
 
   export GIT_EDITOR=$EDITOR
   export VISUAL=$EDITOR
