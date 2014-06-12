@@ -1,5 +1,2 @@
+set completion-ignore-case on
 set show-all-if-ambiguous on
-
-# inputrc files are not additive. Include this if you want to keep the
-# system-default values for the other options:
-$include /etc/inputrc
