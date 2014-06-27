@@ -1,0 +1,75 @@
+#!/usr/bin/ruby
+
+# test for ruby
+
+# use the git niceness
+# https://www.kernel.org/pub/software/scm/git/docs/git-sh-setup.html
+# https://coderwall.com/p/bt93ia
+
+# jump to ruby?
+
+# http://www.ruby-doc.org/stdlib-2.1.1/libdoc/optparse/rdoc/OptionParser.html
+# http://octokit.github.io/octokit.rb/
+
+begin
+  require "octokit"
+rescue LoadError
+  puts "Octokit gem not found. Run:\n\n  gem install --user-install octokit\n\n"
+  exit -1
+end
+
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: example.rb [options]"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+end.parse!
+
+# p options
+# p ARGV
+
+# exit
+
+# TODO
+# - take a branch name
+# - make sure local develop is up-to-date
+# - make sure feature branch has been pushed to remote
+# - make sure feature branch can be ff merged to develop
+# - (http://stackoverflow.com/questions/15631890/how-to-achieve-git-no-ff-ff-only-which-is-not-allowed)
+# - do no-ff merge from remote tracking branch to develop. this signals to Github that you're closing a PR
+# - push local develop to remote (maybe prompt here? maybe do a git lola from origin/develop to develop so output can be verified?)
+# - would be nice to get a list of pull requests/comment on which pull request is being closed.
+# - push to develop can fail. trying to rebase the no-ff merge will lose it, so you have to reset local develop back to origin/develop and start again.
+
+def run(cmd)
+  puts cmd
+  puts `#{cmd}`
+  puts ''
+  exit -1 if $? != 0
+end
+
+if ARGV.length < 3
+  puts "Usage: #{File.basename($PROGRAM_NAME)} <PR_NUMBER> <LOCAL_BRANCH> <REMOTE_NAME>"
+  exit -1
+end
+
+PR_NUMBER = ARGV[0]
+LOCAL_BRANCH = ARGV[1]
+REMOTE = ARGV[2]
+
+run "git checkout develop"
+run "git pull"
+run "git checkout #{LOCAL_BRANCH}"
+run "git rebase develop"
+run "git push -f #{REMOTE}"
+run "git checkout develop"
+run "git merge --no-ff #{REMOTE}/#{LOCAL_BRANCH} -m 'PR ##{PR_NUMBER}. Merge branch #{REMOTE}/#{LOCAL_BRANCH} into develop.'"
+run "git log --graph --decorate --pretty=oneline --abbrev-commit --color develop remotes/origin/develop^1..develop"
+
+
+puts "Run git push if you're happy with the merge"
+puts "Run git reset --hard origin/develop if you're not"
