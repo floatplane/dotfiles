@@ -76,8 +76,29 @@ run "git rebase #{TARGET_BRANCH}"
 run "git push -f #{REMOTE}"
 run "git checkout #{TARGET_BRANCH}"
 run "git merge --no-ff #{REMOTE}/#{LOCAL_BRANCH} -m 'PR ##{PR_NUMBER}. Merge branch #{REMOTE}/#{LOCAL_BRANCH} into #{TARGET_BRANCH}.'"
-run "git log --graph --decorate --pretty=oneline --abbrev-commit --color #{TARGET_BRANCH} remotes/origin/#{TARGET_BRANCH}^1..#{TARGET_BRANCH}"
 
+# Print a log of the merge with branch structure visible. Jump through hoops to
+# get the right branch to start the log revision range with. If origin/develop
+# is a merge commit, we need the right parent of the merge.
+#
+# The goal is to get output like this:
+#
+# *   5be2a77 (HEAD, develop) PR #1269. Merge branch floatplane/feature/categories into develop.
+# |\
+# | * 2242141 (floatplane/feature/categories, feature/categories) Process CR feedback. Remove StaticCreatorListDataSource, will just rework Streamed* version to meet needs instead.
+# | * d7cf231 Implement StaticCreatorListDataSource for categories, rename CreatorListDataSource => StreamedCreatorListDataSource
+# | * ef034d0 Don't animate profile pic transitions when we're re-using a cell and needing to replace someone else's picture. Only animate from the blank thumbnail to an actual picture.
+# | * 25cda8b Refactor CreatorListViewController.
+# | * 682b7ba Adjust search dialog size and default position. Remove temp close button. Stub categories into search dialog.
+# | * e8ba0b1 Rename CollaboratorsListViewController => CreatorListViewController. Add CollaboratorListViewController as a subclass of CreatorListViewController, will refactor behavior into it in future commits.
+# | * e901256 Make dismissWithBackgroundTouch work for all CustomModalDialogs, even those that don't set useCustomPopover. Fix latent bug in ApplicationInfoNavigationController's implementation of the same.
+# |/
+# * 8d5ecbc (origin/develop, origin/HEAD) Merge branch 'feature/schemaUpgradeUtils' into develop
+#
+# where the log stops at origin/develop, no matter whether it's a merge commit or not.
+#
+origin_parent = `git rev-list --abbrev-commit --parents -n 1 origin/#{TARGET_BRANCH}`.split().last
+run "git log --graph --decorate --pretty=oneline --abbrev-commit --color #{TARGET_BRANCH} #{origin_parent}..#{TARGET_BRANCH}"
 
 puts "Run git push if you're happy with the merge"
 puts "Run git reset --hard origin/#{TARGET_BRANCH} if you're not"
