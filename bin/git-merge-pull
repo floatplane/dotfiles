@@ -63,7 +63,7 @@ end.parse!
 
 def run(cmd)
   puts cmd
-  puts `echo #{cmd}`
+  puts `#{cmd}`
   puts ''
   exit -1 if $? != 0
 end
@@ -223,8 +223,8 @@ run "git merge --no-ff #{source_remote.name}/#{source_branch} -m 'PR ##{pull[:nu
 #
 # where the log stops at origin/develop, no matter whether it's a merge commit or not.
 #
-origin_parent = `git rev-list --abbrev-commit --parents -n 1 origin/#{TARGET_BRANCH}`.split().last
-run "git log --graph --decorate --pretty=oneline --abbrev-commit --color #{TARGET_BRANCH} #{origin_parent}..#{TARGET_BRANCH}"
+origin_parent = `git rev-list --abbrev-commit --parents -n 1 origin/#{target_branch}`.split().last
+run "git log --graph --decorate --pretty=oneline --abbrev-commit --color #{target_branch} #{origin_parent}..#{target_branch}"
 
 puts "Run git push if you're happy with the merge"
-puts "Run git reset --hard origin/#{TARGET_BRANCH} if you're not"
+puts "Run git reset --hard origin/#{target_branch} if you're not"
