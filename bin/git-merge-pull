@@ -36,14 +36,39 @@ require_gem_or_prompt 'git'
 require_gem_or_prompt 'netrc'
 require_gem_or_prompt 'octokit'
 
-options = {}
-OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
+options = {
+  :remote => "origin",
+  :no_prompt => false,
+  :verbose => false
+}
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: git merge-pull [options] [pull request number]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
   end
-end.parse!
+
+  opts.on("-r", "--remote", "Remote that PR will be merged into. Default: origin") do |remote|
+    options[:remote] = remote
+  end
+
+  opts.on("-y", "--[no-]auto", "Answer 'y' to all prompts") do |no_prompt|
+    options[:no_prompt] = no_prompt
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+opts.parse!
+
+options[:pull_number] = ARGV[0]
+if not options[:pull_number]
+  puts opts
+  exit
+end
 
 # p options
 # p ARGV
@@ -119,7 +144,6 @@ def prompt_for_github_credentials(args = {})
 
   n = Netrc.read
   n[NETRC_KEY] = user, auth[:token]
-  pp n
   n.save
 
   return true
@@ -134,7 +158,7 @@ git = Git.open `git rev-parse --show-toplevel`.chomp!
 
 # Find the target repository that we'll merge the pull request into
 # TODO: could read off command line instead
-target_remote = git.remotes.find { |x| x.name == "origin" }
+target_remote = git.remotes.find { |x| x.name == options[:remote] }
 url_match = target_remote.url.match "^git@github.com:(.*)/(.*).git"
 organization = url_match[1]
 repository = url_match[2]
@@ -156,7 +180,10 @@ end
 # pp pulls.first
 
 # TODO: select the correct pull request #
-pull = pulls.first
+pull = pulls.find { |p| p[:number] == options[:pull_number].to_i }
+unless pull
+  puts "Invalid pull request #{options[:pull_number]}"
+end
 
 pull_number = pull[:number]
 source_branch = pull[:head][:ref]
@@ -170,7 +197,7 @@ target_repo_clone_url = pull[:base][:repo][:clone_url]
 puts "#{target_repo_ssh_url}/#{target_branch} <= #{source_repo_ssh_url}/#{source_branch}"
 
 # find or add a remote for the PR
-pp git.remotes.last
+# pp git.remotes.last
 source_remote = git.remotes.find { |x| [pull[:head][:repo][:git_url],
                                         pull[:head][:repo][:ssh_url]].include? x.url }
 unless source_remote
@@ -178,28 +205,18 @@ unless source_remote
   source_remote = git.add_remote pull[:user][:login], pull[:head][:repo][:ssh_url]
 end
 
-pp source_remote
+# pp source_remote
 
 puts "Fetching latest changes from #{source_remote}"
 source_remote.fetch
 puts "Fetching latest changes from #{target_remote}"
 target_remote.fetch
 
-if ARGV.length < 3
-  puts "Usage: #{File.basename($PROGRAM_NAME)} <PR_NUMBER> <LOCAL_BRANCH> <REMOTE_NAME>"
-  exit -1
-end
-
-PR_NUMBER = pull[:number]
-LOCAL_BRANCH = source_branch
-
-# exit -1
-
 run "git checkout #{target_branch}"
 run "git pull"
 run "git checkout #{source_branch}"
 run "git rebase #{target_branch}"
-run "git push -f #{target_remote.name}"
+run "git push -f #{source_remote.name}"
 run "git checkout #{target_branch}"
 run "git merge --no-ff #{source_remote.name}/#{source_branch} -m 'PR ##{pull[:number]}. Merge branch #{source_remote.name}/#{source_branch} into #{target_branch}.'"
 
