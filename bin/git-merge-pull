@@ -1,19 +1,9 @@
 #!/usr/bin/ruby
 
-# test for ruby
-
-# use the git niceness
+# TODO
+# use more git shell integration
 # https://www.kernel.org/pub/software/scm/git/docs/git-sh-setup.html
 # https://coderwall.com/p/bt93ia
-
-# jump to ruby?
-
-# http://www.ruby-doc.org/stdlib-2.1.1/libdoc/optparse/rdoc/OptionParser.html
-# http://octokit.github.io/octokit.rb/
-
-# Save credentials
-# https://github.com/geemus/netrc
-
 # Make a gem for easy install?
 
 SCRIPT_NAME = "git-merge-pull"
@@ -70,21 +60,8 @@ if not options[:pull_number]
   exit
 end
 
-# p options
-# p ARGV
-
-# exit
-
 # TODO
-# - take a branch name
-# - make sure local develop is up-to-date
-# - make sure feature branch has been pushed to remote
-# - make sure feature branch can be ff merged to develop
-# - (http://stackoverflow.com/questions/15631890/how-to-achieve-git-no-ff-ff-only-which-is-not-allowed)
-# - do no-ff merge from remote tracking branch to develop. this signals to Github that you're closing a PR
-# - push local develop to remote (maybe prompt here? maybe do a git lola from origin/develop to develop so output can be verified?)
-# - would be nice to get a list of pull requests/comment on which pull request is being closed.
-# - push to develop can fail. trying to rebase the no-ff merge will lose it, so you have to reset local develop back to origin/develop and start again.
+# - take a branch name instead of a PR number and figure that out
 
 def run(cmd)
   puts cmd
