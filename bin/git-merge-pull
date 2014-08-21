@@ -182,18 +182,26 @@ unless source_remote
   source_remote = git.add_remote pull[:user][:login], pull[:head][:repo][:ssh_url]
 end
 
-# pp source_remote
-
+# Fetch latest changes from source & target remotes. Useful in case one of source or target
+# branches doesn't exist locally yet, or if we've never pulled from one of the remotes.
 puts "Fetching latest changes from #{source_remote}"
 source_remote.fetch
 puts "Fetching latest changes from #{target_remote}"
 target_remote.fetch
 
+# Get the target branch up to date
 run "git checkout #{target_branch}"
 run "git pull"
+
+# Get the source branch up to date
 run "git checkout #{source_branch}"
+run "git pull"
+
+# Rebase the source branch on top of the target branch, and then force push it
 run "git rebase #{target_branch}"
 run "git push -f #{source_remote.name}"
+
+# Merge the source branch into the target. Use --no-ff so that an explicit merge commit is created.
 run "git checkout #{target_branch}"
 run "git merge --no-ff #{source_remote.name}/#{source_branch} -m 'PR ##{pull[:number]}. Merge branch #{source_remote.name}/#{source_branch} into #{target_branch}.'"
 
@@ -220,5 +228,27 @@ run "git merge --no-ff #{source_remote.name}/#{source_branch} -m 'PR ##{pull[:nu
 origin_parent = `git rev-list --abbrev-commit --parents -n 1 origin/#{target_branch}`.split().last
 run "git log --graph --decorate --pretty=oneline --abbrev-commit --color #{target_branch} #{origin_parent}..#{target_branch}"
 
-puts "Run git push if you're happy with the merge"
-puts "Run git reset --hard origin/#{target_branch} if you're not"
+def get_char
+  state = `stty -g`
+  `stty raw -echo -icanon isig`
+
+  STDIN.getc.chr
+ensure
+  `stty #{state}`
+  puts ""
+end
+
+print "Do you want to proceed with the merge (y/n)? "
+if get_char.downcase == 'y'
+  puts "Pushing changes to #{target_remote}"
+  run "git push"
+  print "Do you want to delete the feature branch (y/n)? "
+  if get_char.downcase == 'y'
+    run "git push #{target_remote} :#{target_branch}"
+    run "git branch -d #{target_branch}"
+  end
+  puts "Merge complete!"
+else
+  puts "Undoing local merge"
+  run "git reset --hard origin/#{target_branch}"
+end
