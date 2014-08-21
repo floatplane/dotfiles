@@ -244,8 +244,8 @@ if get_char.downcase == 'y'
   run "git push"
   print "Do you want to delete the feature branch (y/n)? "
   if get_char.downcase == 'y'
-    run "git push #{target_remote} :#{target_branch}"
-    run "git branch -d #{target_branch}"
+    run "git push #{source_remote} :#{source_branch}"
+    run "git branch -d #{source_branch}"
   end
   puts "Merge complete!"
 else
