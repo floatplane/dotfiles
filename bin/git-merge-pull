@@ -241,14 +241,14 @@ end
 print "Do you want to proceed with the merge (y/n)? "
 if get_char.downcase == 'y'
   puts "Pushing changes to #{target_remote}"
-  run "echo git push"
-  print "Do you want to delete the feature branches (y/n)? "
+  run "git push"
+  print "Do you want to delete the feature branch (y/n)? "
   if get_char.downcase == 'y'
-    run "echo git push #{target_remote} :#{target_branch}"
-    run "echo git branch -d #{target_branch}"
+    run "git push #{target_remote} :#{target_branch}"
+    run "git branch -d #{target_branch}"
   end
   puts "Merge complete!"
 else
   puts "Undoing local merge"
-  run "echo git reset --hard origin/#{target_branch}"
+  run "git reset --hard origin/#{target_branch}"
 end
