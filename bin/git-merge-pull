@@ -157,14 +157,7 @@ end
 github_repo = Octokit.repo "#{organization}/#{repository}"
 # pp github_repo
 
-summary = ""
 pulls = Octokit.pulls "#{organization}/#{repository}/pulls"
-pulls.each do |pull|
-  summary = "Merge ##{pull[:number]} from #{pull[:user][:login]}: \"#{pull[:title]}\""
-  puts summary.cyan
-end
-
-# pp pulls.first
 
 # TODO: select the correct pull request #
 pull = pulls.find { |p| p[:number] == options[:pull_number].to_i }
@@ -172,6 +165,8 @@ unless pull
   puts "Invalid pull request: #{options[:pull_number]}".red
   exit -1
 end
+pull_summary = "Merge ##{pull[:number]} from #{pull[:user][:login]}: \"#{pull[:title]}\""
+puts pull_summary.cyan
 
 pull_number = pull[:number]
 source_branch = pull[:head][:ref]
@@ -246,7 +241,7 @@ run "git push -f #{source_remote.name} #{source_branch}"
 # Merge the source branch into the target. Use --no-ff so that an explicit
 # merge commit is created.
 run "git checkout #{target_branch}"
-run "git merge --no-ff #{rebase_branch} -m '#{summary}'"
+run "git merge --no-ff #{rebase_branch} -m '#{pull_summary}'"
 
 # Now that the rebase branch is merged, we can safely delete it.
 run "git branch -D #{rebase_branch}"
