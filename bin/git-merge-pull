@@ -26,6 +26,7 @@ require_gem_or_prompt 'colorize'
 require_gem_or_prompt 'git'
 require_gem_or_prompt 'netrc'
 require_gem_or_prompt 'octokit'
+require_gem_or_prompt 'highline/import'
 
 options = {
   :remote => "origin",
@@ -34,7 +35,7 @@ options = {
 }
 
 opts = OptionParser.new do |opts|
-  opts.banner = "Usage: git merge-pull [options] [pull request number]"
+  opts.banner = "Usage: git merge-pull [options]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
@@ -54,12 +55,6 @@ opts = OptionParser.new do |opts|
   end
 end
 opts.parse!
-
-options[:pull_number] = ARGV[0]
-if not options[:pull_number]
-  puts opts
-  exit
-end
 
 # TODO
 # - take a branch name instead of a PR number and figure that out
@@ -134,6 +129,23 @@ def prompt_for_github_credentials(args = {})
   return true
 end
 
+def pull_summary(pull)
+  return "##{pull[:number]} from #{pull[:user][:login]}: \"#{pull[:title]}\""
+end
+
+def query_for_pull_to_merge(pulls)
+  puts
+  pull_to_merge = nil
+  choose do |menu|
+    menu.prompt = "Select PR to merge: "
+    pulls.each do |pull|		
+      menu.choice(pull_summary(pull)) { pull_to_merge = pull }
+    end
+    menu.choice(:Quit, "Exit program.") { exit }
+  end
+  return pull_to_merge
+end
+
 if not test_github_credentials and not prompt_for_github_credentials
   exit -1
 end
@@ -158,15 +170,7 @@ github_repo = Octokit.repo "#{organization}/#{repository}"
 # pp github_repo
 
 pulls = Octokit.pulls "#{organization}/#{repository}/pulls"
-
-# TODO: select the correct pull request #
-pull = pulls.find { |p| p[:number] == options[:pull_number].to_i }
-unless pull
-  puts "Invalid pull request: #{options[:pull_number]}".red
-  exit -1
-end
-pull_summary = "Merge ##{pull[:number]} from #{pull[:user][:login]}: \"#{pull[:title]}\""
-puts pull_summary.cyan
+pull = query_for_pull_to_merge pulls
 
 pull_number = pull[:number]
 source_branch = pull[:head][:ref]
@@ -177,6 +181,8 @@ target_branch = pull[:base][:ref]
 target_repo_ssh_url = pull[:base][:repo][:git_url]
 target_repo_clone_url = pull[:base][:repo][:clone_url]
 
+puts
+puts "Merging #{pull_summary(pull)}".cyan
 puts "#{target_repo_ssh_url}/#{target_branch} <= #{source_repo_ssh_url}/#{source_branch}".cyan
 
 # find or add a remote for the PR
@@ -236,12 +242,12 @@ run "git rebase #{target_branch}", :failure => lambda {
 }
 
 # Force push the rebased branch to the source remote.
-run "git push -f #{source_remote.name} #{source_branch}"
+run "git push -f #{source_remote.name} HEAD:#{source_branch}"
 
 # Merge the source branch into the target. Use --no-ff so that an explicit
 # merge commit is created.
 run "git checkout #{target_branch}"
-run "git merge --no-ff #{rebase_branch} -m '#{pull_summary}'"
+run "git merge --no-ff #{rebase_branch} -m 'Merge #{pull_summary(pull)}'"
 
 # Now that the rebase branch is merged, we can safely delete it.
 run "git branch -D #{rebase_branch}"
