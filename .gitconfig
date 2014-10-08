@@ -26,10 +26,15 @@
 	graft = !legit graft \"$@\"
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-    st = status
+    st = status -sb
+    stat = status -sb
+    dt = difftool
     co = checkout
     ci = commit
     br = branch
+    prm = pr merge
+    prmerge = pr merge
+    prdt = pr difftool
 [merge]
 # 	tool = meld
 	tool = Kaleidoscope
