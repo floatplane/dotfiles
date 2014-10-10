@@ -154,6 +154,8 @@ spends an eternity in a regex if you make a typo."
 ;; (add-to-list 'auto-mode-alist '("\\.s[ac]ss$" . sass-mode))
 (load "coffee-mode/coffee-mode.el")
 (require 'coffee-mode)
+;; Support Streamline.js compiled CoffeeScript
+(add-to-list 'auto-mode-alist '("\\._coffee\\'" . coffee-mode))
 
 (load "actionscript-mode-connors.el")
 (require 'actionscript-mode)
