@@ -149,6 +149,7 @@ if [[ -n "$PS1" ]]; then
     alias pbcopy="xclip -i -sel clip"
     alias pbpaste="xclip -o"
     alias ack="ack-grep"
+    alias xc="open -a Xcode"
   fi
   alias ag="ag --pager='less -FXR' --depth 100"
 
