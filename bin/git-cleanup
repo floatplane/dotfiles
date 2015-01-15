@@ -1,0 +1,2 @@
+git remote | xargs -n 1 git remote prune
+git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
