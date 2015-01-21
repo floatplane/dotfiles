@@ -164,6 +164,11 @@ spends an eternity in a regex if you make a typo."
 (load "csharp-mode.el")
 (require 'csharp-mode)
 
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
 (setq global-auto-revert-mode 1)
 (require 'whitespace)
 
