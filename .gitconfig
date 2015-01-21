@@ -3,6 +3,8 @@
 	pager = less -FXR -x4
 [rerere]
     enabled = true
+[help]
+    autocorrect = 1
 [user]
 	name = Brian Sharon
 	email = brian@floatplane.us
