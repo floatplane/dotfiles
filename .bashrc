@@ -145,11 +145,12 @@ if [[ -n "$PS1" ]]; then
     dir="$(up_dir $@)"
     pushd $dir
   }
-  if [[ ! $(uname) =~ "Darwin" ]]; then
+  if [[ $(uname) =~ "Darwin" ]]; then
+    alias xc="open -a Xcode"
+  else
     alias pbcopy="xclip -i -sel clip"
     alias pbpaste="xclip -o"
     alias ack="ack-grep"
-    alias xc="open -a Xcode"
   fi
   alias ag="ag --pager='less -FXR' --depth 100"
 
