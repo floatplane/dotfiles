@@ -10,3 +10,6 @@
 [submodule "emacs/coffee-mode"]
 	path = emacs/coffee-mode
 	url = git://github.com/defunkt/coffee-mode.git
+[submodule "emacs/use-package"]
+	path = emacs/use-package
+	url = git@github.com:jwiegley/use-package.git
