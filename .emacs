@@ -1,5 +1,3 @@
-(require 'cl)
-
 ;;
 ;; External packages.
 ;;
@@ -33,7 +31,7 @@
 ;; Window size
 ;;
 (cond ((display-graphic-p)
-       (message "gui")
+       (tool-bar-mode -1)
        (set-frame-height (selected-frame) 40)
        (set-frame-width (selected-frame) 132)
        (set-frame-position (selected-frame) 0 0)))
@@ -107,6 +105,7 @@
 (package-initialize)
 
 
+(require 'cl)
 (defun has-package-not-installed ()
   (loop for p in packages-list
         when (not (package-installed-p p)) do (return t)
@@ -416,7 +415,6 @@ spends an eternity in a regex if you make a typo."
                                            nil
                                            'fullboth)))
 
-(tool-bar-mode -1)
 (define-key global-map [(alt return)] 'mac-toggle-max-window)
 
 (setq compilation-scroll-output t)
