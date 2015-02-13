@@ -1,9 +1,42 @@
+(require 'cl)
+
+;;
+;; External packages.
+;;
+(defvar packages-list
+  '(
+    auto-complete
+    auto-complete-clang-async
+    coffee-mode
+    csharp-mode
+    cursor-chg
+    fill-column-indicator
+    haml-mode
+    highlight-indentation
+    highlight-symbol
+    js2-mode
+    magit
+    markdown-mode
+    protobuf-mode
+    python-mode
+    rainbow-delimiters
+    scss-mode
+    smex
+    textmate
+    web-mode
+    yaml-mode
+    yasnippet
+    zenburn-theme
+    )
+  "List of packages needs to be installed at launch")
 ;
 ;; Window size
 ;;
-(set-frame-height (selected-frame) 40)
-(set-frame-width (selected-frame) 132)
-(set-frame-position (selected-frame) 0 0)
+(cond ((display-graphic-p)
+       (message "gui")
+       (set-frame-height (selected-frame) 40)
+       (set-frame-width (selected-frame) 132)
+       (set-frame-position (selected-frame) 0 0)))
 
 ;; Disable Ctrl-Z minimization/suspension of emacs.
 (global-set-key [C-z] nil)
@@ -63,19 +96,40 @@
 
 ; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/textmate") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/python-mode-5.2") load-path))
-(setq load-path (cons (expand-file-name "~/emacs/js2-mode-20131106") load-path))
+(setq load-path (cons (expand-file-name "~/emacs/use-package") load-path))
 
+; Require packages
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+
+(defun has-package-not-installed ()
+  (loop for p in packages-list
+        when (not (package-installed-p p)) do (return t)
+        finally (return nil)))
+(when (has-package-not-installed)
+  ;; Check for new packages (package versions)
+  (message "%s" "Get latest versions of all packages...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ;; Install the missing packages
+  (dolist (p packages-list)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
+;; Load theme, if themes supported
 (cond ((boundp 'custom-theme-load-path)
-       (setq custom-theme-load-path (cons (expand-file-name "~/emacs") custom-theme-load-path))
        (load-theme 'zenburn t)))
 
 (require 'textmate)
 (textmate-mode)
 
 (require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 (require 'ido)
 (ido-mode t)
@@ -118,7 +172,6 @@ spends an eternity in a regex if you make a typo."
 ; Automatically clean up old buffers
 (require 'midnight)
 
-(load "smex.el")
 (require 'smex)
 (add-hook 'after-init-hook 'smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
@@ -144,15 +197,12 @@ spends an eternity in a regex if you make a typo."
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 (setq web-mode-comment-style 2) ;; server-side comments rather than HTML comments
 
-(load "haml-mode.el")
 (require 'haml-mode)
-;; (load "sass-mode/sass-mode.el")
-;; (require 'sass-mode)
-(autoload 'scss-mode "scss-mode")
+
+(require 'scss-mode)
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (setq scss-compile-at-save nil)
-;; (add-to-list 'auto-mode-alist '("\\.s[ac]ss$" . sass-mode))
-(load "coffee-mode/coffee-mode.el")
+
 (require 'coffee-mode)
 ;; Support Streamline.js compiled CoffeeScript
 (add-to-list 'auto-mode-alist '("\\._coffee\\'" . coffee-mode))
@@ -161,11 +211,9 @@ spends an eternity in a regex if you make a typo."
 (require 'actionscript-mode)
 (add-hook 'actionscript-mode-hook 'sensible-indentation)
 
-(load "csharp-mode.el")
 (require 'csharp-mode)
 
-(autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
+(require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
@@ -312,22 +360,14 @@ spends an eternity in a regex if you make a typo."
 ;; Javscript alist
 (setq auto-mode-alist (cons '("\\.js\\|\\.json$" .
                               js2-mode) auto-mode-alist))
-(autoload 'js2-mode "js2-mode" "Javascript editing mode." t)
+(require 'js2-mode)
 
 ;; Python editing stuff
 (setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript$" .
                               python-mode) auto-mode-alist))
 ;; (setq interpreter-mode-alist (cons '("python" . python-mode)
 ;;                                    interpreter-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
-
-;; Lua editing stuff
-(setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("lua" . lua-mode)
-                                   interpreter-mode-alist))
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-(set-variable 'lua-indent-level 4)
-(set-variable 'lua-default-application "/ad/build/winpc/release/lua/lua.exe")
+(require 'python-mode)
 
 ;
 ; Tweak the key maps
@@ -461,30 +501,7 @@ spends an eternity in a regex if you make a typo."
  '(trailing-whitespace ((((class color) (background light)) (:background "gray89"))))
  '(whitespace-trailing ((t (:background "medium sea green" :foreground "yellow" :weight bold)))))
 
-(autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
-(autoload 'ack-and-a-half "ack-and-a-half" nil t)
-(autoload 'ack-and-a-half-find-file-same "ack-and-a-half" nil t)
-(autoload 'ack-and-a-half-find-file "ack-and-a-half" nil t)
-;; Create shorter aliases
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-;; (autoload 'ack-same "full-ack" nil t)
-;; (autoload 'ack "full-ack" nil t)
-;; (autoload 'ack-find-same-file "full-ack" nil t)
-;; (autoload 'ack-find-file "full-ack" nil t)
 (setq x-select-enable-clipboard t)
 (cond ((fboundp 'x-selection-value) (setq interprogram-paste-function 'x-selection-value))
       ((fboundp 'x-cut-buffer-or-selection-value) (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
 
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when (file-exists-p "~/.emacs.d/elpa/package.el")
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
