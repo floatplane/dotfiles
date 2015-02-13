@@ -57,8 +57,8 @@
 (setq exec-path (split-string (getenv "PATH") path-separator))
 
 
-;  Define a function to (formerly) disable tabs, and set the tab width
-;  to something sensible.  These variables are buffer
+; Define a function to disable tabs, and set the tab width
+; to something sensible.  These variables are buffer
 ; local, so we have to set them in a mode hook.
 (defun fix-tabs ()
   (setq indent-tabs-mode nil)
@@ -123,6 +123,8 @@
 ;; Load theme, if themes supported
 (cond ((boundp 'custom-theme-load-path)
        (load-theme 'zenburn t)))
+
+(setq vc-follow-symlinks t)
 
 (require 'textmate)
 (textmate-mode)
