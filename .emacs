@@ -124,6 +124,25 @@
 (cond ((boundp 'custom-theme-load-path)
        (load-theme 'zenburn t)))
 
+(require 'auto-complete-config)
+; (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
+(ac-config-default)
+
+(require 'auto-complete-clang-async)
+
+(defun ac-cc-mode-setup ()
+  (setq ac-clang-complete-executable "/usr/local/bin/clang-complete")
+  (setq ac-sources '(ac-source-clang-async))
+  (ac-clang-launch-completion-process)
+)
+
+(defun my-ac-config ()
+  (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+  (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+  (global-auto-complete-mode t))
+
+(my-ac-config)
+
 (setq vc-follow-symlinks t)
 
 (require 'textmate)
@@ -223,10 +242,6 @@ spends an eternity in a regex if you make a typo."
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
-
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
-(ac-config-default)
 
 (require 'tramp)
 (setq tramp-default-method "scp")
