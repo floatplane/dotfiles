@@ -3,15 +3,18 @@
 ;;
 (defvar packages-list
   '(
-    auto-complete
-    auto-complete-clang-async
+    ;; auto-complete
+    ;; auto-complete-clang-async
     coffee-mode
+    company
     csharp-mode
     cursor-chg
     fill-column-indicator
+    flycheck
     haml-mode
     highlight-indentation
     highlight-symbol
+    irony
     js2-mode
     magit
     markdown-mode
@@ -124,7 +127,46 @@
 (cond ((boundp 'custom-theme-load-path)
        (load-theme 'zenburn t)))
 
+;; Don't ask if I really want to open a symlink to a VC-controlled file; just
+;; open the file.
 (setq vc-follow-symlinks t)
+
+;; yasnippets
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; Company mode
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Irony mode.
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+;; (optional) adds CC special commands to `company-begin-commands' in order to
+;; trigger completion at interesting places, such as after scope operator
+;;     std::|
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+;; Irony mode.
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; Flycheck
+(require 'flycheck)
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(eval-after-load 'flycheck
+  '(add-to-list 'flycheck-checkers 'irony))
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 (require 'textmate)
 (textmate-mode)
@@ -224,9 +266,9 @@ spends an eternity in a regex if you make a typo."
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
 
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
-(ac-config-default)
+;; (require 'auto-complete-config)
+;; (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
+;; (ac-config-default)
 
 (require 'tramp)
 (setq tramp-default-method "scp")
@@ -417,7 +459,7 @@ spends an eternity in a regex if you make a typo."
                                            nil
                                            'fullboth)))
 
-(define-key global-map [(alt return)] 'mac-toggle-max-window)
+(define-key global-map [(meta return)] 'mac-toggle-max-window)
 
 (setq compilation-scroll-output t)
 ;; Recognize jshint errors
