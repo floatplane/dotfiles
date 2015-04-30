@@ -169,6 +169,13 @@
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 (require 'textmate)
+(add-hook 'textmate-mode-hook
+          (lambda () (progn (message "Textmate mode activated")
+                            (setq textmate-mode-keymap (cdr (assoc 'textmate-mode minor-mode-map-alist)))
+                            (define-key textmate-mode-keymap [(meta up)] nil)
+                            (define-key textmate-mode-keymap [(meta down)] nil)
+                            (define-key textmate-mode-keymap [(meta shift up)] nil)
+                            (define-key textmate-mode-keymap [(meta shift down)] nil))))
 (textmate-mode)
 
 (require 'rainbow-delimiters)
