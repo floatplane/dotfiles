@@ -39,6 +39,8 @@
     prdt = pr difftool
     feature = "!_() { local feature_name=\"$1\"; shift; git checkout -b feature/$feature_name $@; }; _"
     f = "!_() { local feature_name=\"$1\"; shift; git checkout -b feature/$feature_name $@; }; _"
+    fpush = push --force-with-lease
+
 [merge]
 # 	tool = meld
 	tool = Kaleidoscope
