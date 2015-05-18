@@ -9,3 +9,9 @@ command script import /usr/local/opt/chisel/libexec/fblldb.py
 
 # Load FiftyThree type summaries and command aliases
 command script import /Users/brian/src/Paper/Utilities/xcode/lldb.py
+
+# Avoid need to cast when trying to evaluate expressions like self.view.frame.bounds
+# http://furbo.org/2015/05/11/an-import-ant-change-in-xcode
+command alias uikit expr @import UIKit
+command alias foundation expr @import Foundation
+
