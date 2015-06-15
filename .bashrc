@@ -11,6 +11,10 @@ function source_if_exists {
   fi
 }
 
+function command_exists_on_path () {
+  type "$1" &> /dev/null ;
+}
+
 # Tweak the path.
 export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
 
@@ -178,7 +182,9 @@ if [[ -n "$PS1" ]]; then
   }
 
   # Alias git to the hub command
-  eval "$(hub alias -s)"
+  if command_exists_on_path hub; then
+      eval "$(hub alias -s)"
+  fi
 
   # Load hub tab-completion
   source_if_exists ~/dotfiles/hub.bash_completion.sh
