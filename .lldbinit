@@ -15,3 +15,5 @@ command script import /Users/brian/src/Paper/Utilities/xcode/lldb.py
 command alias uikit expr @import UIKit
 command alias foundation expr @import Foundation
 
+# "fr v" will display a variable using type summaries. Alias "pp" (pretty print) to that.
+command alias pp frame variable
