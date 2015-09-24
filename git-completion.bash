@@ -404,8 +404,9 @@ __git_refs ()
 			# Try to find a remote branch that matches the completion word
 			# but only output if the branch name is unique
 			local ref entry
+            # Hack in a filter to avoid everyone else's branches
 			git --git-dir="$dir" for-each-ref --shell --format="ref=%(refname:short)" \
-				"refs/remotes/" | \
+				"refs/remotes/" | grep "floatplane\|origin" |\
 			while read -r entry; do
 				eval "$entry"
 				ref="${ref#*/}"
