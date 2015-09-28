@@ -413,11 +413,18 @@ spends an eternity in a regex if you make a typo."
 (require 'js2-mode)
 
 ;; Python editing stuff
-(setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript$" .
+(setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript\\|BUCK$" .
                               python-mode) auto-mode-alist))
 ;; (setq interpreter-mode-alist (cons '("python" . python-mode)
 ;;                                    interpreter-mode-alist))
 (require 'python-mode)
+(add-hook 'python-mode-hook
+      (lambda ()
+            (let ((filename (buffer-file-name)))
+              ;; Enable buck mode for the appropriate files
+              (when (and filename
+             (string-match "/BUCK.*" filename))
+        (setq python-indent 2)))))
 
 ;
 ; Tweak the key maps
