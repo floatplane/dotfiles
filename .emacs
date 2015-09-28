@@ -127,6 +127,9 @@
 (cond ((boundp 'custom-theme-load-path)
        (load-theme 'zenburn t)))
 
+;; M-y and M-n for yes/no responses
+(require 'quick-yes)
+
 ;; Don't ask if I really want to open a symlink to a VC-controlled file; just
 ;; open the file.
 (setq vc-follow-symlinks t)
