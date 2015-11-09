@@ -529,7 +529,7 @@ spends an eternity in a regex if you make a typo."
 
 (require 're-builder)
 (setq reb-re-syntax 'string)
-+
+
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
