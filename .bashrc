@@ -21,7 +21,9 @@ export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
 if [[ $(uname) =~ "Darwin" ]]; then
     # OS X limits us to 256 open file descriptors by default. That's kinda
     # small. Node can chew that up easily.
-    ulimit -n 8192
+    # See http://docs.basho.com/riak/latest/ops/tuning/open-files-limit/#Mac-OS-X for
+    # information about creating /Library/LaunchDaemons/limit.{maxfiles,maxprocs}.plist
+    ulimit -n 65536
 
     # Move /usr/local/bin to the front for Homebrew
     export PATH=/usr/local/bin:$PATH
