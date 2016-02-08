@@ -23,7 +23,7 @@ if [[ $(uname) =~ "Darwin" ]]; then
     # small. Node can chew that up easily.
     # See http://docs.basho.com/riak/latest/ops/tuning/open-files-limit/#Mac-OS-X for
     # information about creating /Library/LaunchDaemons/limit.{maxfiles,maxprocs}.plist
-    ulimit -n 65536
+    ulimit -n 10000
 
     # Move /usr/local/bin to the front for Homebrew
     export PATH=/usr/local/bin:$PATH
