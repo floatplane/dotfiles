@@ -411,7 +411,7 @@ spends an eternity in a regex if you make a typo."
                               ruby-mode) auto-mode-alist))
 
 ;; Javscript alist
-(setq auto-mode-alist (cons '("\\.js\\|\\.json$" .
+(setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .
                               js2-mode) auto-mode-alist))
 (require 'js2-mode)
 
