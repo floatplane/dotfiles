@@ -429,6 +429,10 @@ spends an eternity in a regex if you make a typo."
              (string-match "/BUCK.*" filename))
         (setq python-indent 2)))))
 
+;; Capnproto
+(require 'capnp-mode)
+(add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
+
 ;
 ; Tweak the key maps
 ;
