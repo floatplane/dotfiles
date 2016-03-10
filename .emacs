@@ -241,6 +241,7 @@ spends an eternity in a regex if you make a typo."
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mako\\'" . web-mode))
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
   (setq rainbow-delimiters-mode nil)
