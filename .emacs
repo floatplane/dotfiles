@@ -9,8 +9,10 @@
     company
     csharp-mode
     cursor-chg
+    editorconfig
     fill-column-indicator
     flycheck
+    groovy-mode
     haml-mode
     highlight-indentation
     highlight-symbol
@@ -41,6 +43,9 @@
 
 ;; Disable Ctrl-Z minimization/suspension of emacs.
 (global-set-key [C-z] nil)
+
+;; Don't open new frames for each file open externally.
+(setq ns-pop-up-frames nil)
 
 ;; On OS X we don't inherit the same path as terminal programs would, so read in PATH from .bashrc
 ;; http://emacswiki.org/emacs/EmacsApp
@@ -107,6 +112,10 @@
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
+(require 'editorconfig)
+(setq editorconfig-get-properties-function
+      'editorconfig-core-get-properties-hash)
+(editorconfig-mode 1)
 
 (require 'cl)
 (defun has-package-not-installed ()
@@ -134,32 +143,56 @@
 ;; open the file.
 (setq vc-follow-symlinks t)
 
+;; org-mode
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
 ;; yasnippets
-(require 'yasnippet)
-(yas-global-mode 1)
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
 
 ;; Company mode
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+;; (require 'company)
+;; (add-hook 'after-init-hook 'global-company-mode)
 
-;; Irony mode.
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
-;; (optional) adds CC special commands to `company-begin-commands' in order to
-;; trigger completion at interesting places, such as after scope operator
-;;     std::|
-(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+;; Capnp
+(require 'capnp-mode)
+(add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
 
-;; Irony mode.
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
+;; ;; Irony mode.
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends 'company-irony))
+;; ;; (optional) adds CC special commands to `company-begin-commands' in order to
+;; ;; trigger completion at interesting places, such as after scope operator
+;; ;;     std::|
+;; (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+;; ;; Irony mode.
+;; (add-hook 'c++-mode-hook 'irony-mode)
+;; (add-hook 'c-mode-hook 'irony-mode)
+;; (add-hook 'objc-mode-hook 'irony-mode)
 
 ;; Flycheck
-(require 'flycheck)
-(add-hook 'after-init-hook 'global-flycheck-mode)
-(eval-after-load 'flycheck
-  '(add-to-list 'flycheck-checkers 'irony))
+;; (require 'flycheck)
+;; (add-hook 'after-init-hook 'global-flycheck-mode)
+;; (eval-after-load 'flycheck
+;;   '(add-to-list 'flycheck-checkers 'irony))
+
+;; rtags
+(require 'rtags)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-rtags))
+(rtags-enable-standard-keybindings)
+(setq rtags-completions-enabled t)
+(define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
+(define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
+(define-key c-mode-base-map (kbd "C-<") 'rtags-location-stack-back)
+(define-key c-mode-base-map (kbd "C->") 'rtags-location-stack-forward)
+(define-key c-mode-base-map (kbd "C-v") 'rtags-find-virtuals-at-point)
+(define-key c-mode-base-map (kbd "M-i") 'rtags-imenu)
+
 
 ;; replace the `completion-at-point' and `complete-symbol' bindings in
 ;; irony-mode's buffers by irony-mode's function
@@ -271,7 +304,7 @@ spends an eternity in a regex if you make a typo."
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-(setq global-auto-revert-mode 1)
+(global-auto-revert-mode t)
 (require 'whitespace)
 
 (require 'yaml-mode)
@@ -371,7 +404,7 @@ spends an eternity in a regex if you make a typo."
                                ((file-exists-p srcfile) (find-file srcfile))
                                ((file-exists-p incfile) (find-file incfile))
                                (t nil))))))
-    (if (or (equal ext "h") (equal ext "hh"))
+    (if (or (equal ext "h") (equal ext "hh") (equal ext "hpp"))
         (cond ((funcall try-open-2 "cpp"))
               ((funcall try-open-2 "cc"))
               ((funcall try-open-2 "c"))
@@ -388,6 +421,7 @@ spends an eternity in a regex if you make a typo."
               )
           (cond ((funcall try-open-2 "h"))
                 ((funcall try-open-2 "hh"))
+                ((funcall try-open-2 "hpp"))
                 (t (message "Couldn't find a complement to source `%s'" fn)))
         (message "Duh?  What kind of file is `%s'?" fn)))))
 
@@ -465,6 +499,7 @@ spends an eternity in a regex if you make a typo."
 (define-key global-map '[(control pause)] 'kill-compilation)
 (define-key global-map '[(control break)] 'kill-compilation)
 (define-key global-map '[f1]  (lambda () (interactive) (manual-entry (current-word))))
+(define-key c-mode-base-map '[(control super up)] 'open-file-complement)
 
 (global-set-key '[(home)] 'move-beginning-of-line)
 (global-set-key '[(end)] 'move-end-of-line)
@@ -523,11 +558,11 @@ spends an eternity in a regex if you make a typo."
 ;
 ; Set up windows-like shifted motion keys and other goodness.
 ; Allow shifted movement keys to modify current region.
-; CUA Package from http://www.cua.dk/cua.html
 ;
-(cua-mode 'emacs)
-(delete-selection-mode 1)
-(setq transient-mark-mode t)
+(cua-mode)
+;; (delete-selection-mode 1)
+;; (setq transient-mark-mode t)
+(setq cua-enable-cua-keys nil)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
