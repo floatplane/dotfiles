@@ -112,11 +112,6 @@
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-(require 'editorconfig)
-(setq editorconfig-get-properties-function
-      'editorconfig-core-get-properties-hash)
-(editorconfig-mode 1)
-
 (require 'cl)
 (defun has-package-not-installed ()
   (loop for p in packages-list
@@ -131,6 +126,11 @@
   (dolist (p packages-list)
     (when (not (package-installed-p p))
       (package-install p))))
+
+(require 'editorconfig)
+(setq editorconfig-get-properties-function
+      'editorconfig-core-get-properties-hash)
+(editorconfig-mode 1)
 
 ;; Load theme, if themes supported
 (cond ((boundp 'custom-theme-load-path)
