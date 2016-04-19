@@ -3,6 +3,7 @@ srcdir = File.dirname(__FILE__)
 homedir = ENV['HOME']
 
 symlinked_files = FileList.new('.*', 'emacs', 'bin').exclude(/^\.git$/, /^\.gitmodules$/, /^\.$/, /^\.\.$/)
+prezto_symlinks = FileList.new('prezto/runcoms/z*')
 compiled_elisp = FileList.new('emacs/**/*.el').sub!(/.el$/, '.elc')
 
 def try_delete_file(f)
@@ -12,27 +13,49 @@ def try_delete_file(f)
   end
 end
 
+def symlink(src, dst)
+  if not File.exists? dst
+    puts "Symlinking #{src} => #{dst}"
+    File.symlink(src, dst)
+  end
+end
+
 desc "clean up everything"
 task :clean do |t|
   for f in symlinked_files
     try_delete_file File.join(homedir, f)
   end
+  for f in prezto_symlinks
+    try_delete_file File.join(homedir, "." + File.basename(f))
+  end
+  try_delete_file File.join(homedir, ".zprezto")
   for f in compiled_elisp
     try_delete_file File.join(srcdir, f)
   end
 end
 
-desc "build symlinks in home dir pointing to these files"
-task :build_symlinks => symlinked_files do |t|
+task :build_normal_symlinks => symlinked_files do |t|
   for f in t.prerequisites do
-    if not File.exists?(File.join(homedir, f))
-      src = File.join(srcdir, f)
-      dst = File.join(homedir, f)
-      puts "Symlinking #{src} => #{dst}"
-      File.symlink(src, dst)
-    end
+    src = File.join(srcdir, f)
+    dst = File.join(homedir, f)
+    symlink src, dst
   end
 end
+
+desc "build symlinks in home dir pointing to prezto init files"
+task :build_prezto_symlinks => prezto_symlinks do |t|
+  for f in t.prerequisites do
+    src = File.join(srcdir, f)
+    dst = File.join(homedir, "." + File.basename(f))
+    symlink src, dst
+  end
+  src = File.join(srcdir, "prezto")
+  dst = File.join(homedir, ".zprezto")
+  symlink src, dst
+end
+
+desc "build symlinks in home dir pointing to these files"
+task :build_symlinks => [:build_normal_symlinks, :build_prezto_symlinks]
 
 # rule '.elc' => '.el' do |t|
 #   sh "emacs -q -batch -f batch-byte-compile #{t.source}"
