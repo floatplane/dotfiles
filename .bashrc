@@ -279,3 +279,6 @@ export PATH="/usr/local/heroku/bin:$PATH"
 
 # Get grunt tab completion if it's installed
 command -v "grunt" > /dev/null && eval "$(grunt --completion=bash)"
+
+export NVM_DIR="/Users/brian/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"  # This loads nvm
