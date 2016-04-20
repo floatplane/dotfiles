@@ -13,7 +13,7 @@ def try_delete_file(f)
   end
 end
 
-def symlink(src, dst)
+def make_symlink(src, dst)
   if not File.exists? dst
     puts "Symlinking #{src} => #{dst}"
     File.symlink(src, dst)
@@ -38,7 +38,7 @@ task :build_normal_symlinks => symlinked_files do |t|
   for f in t.prerequisites do
     src = File.join(srcdir, f)
     dst = File.join(homedir, f)
-    symlink src, dst
+    make_symlink src, dst
   end
 end
 
@@ -47,11 +47,11 @@ task :build_prezto_symlinks => prezto_symlinks do |t|
   for f in t.prerequisites do
     src = File.join(srcdir, f)
     dst = File.join(homedir, "." + File.basename(f))
-    symlink src, dst
+    make_symlink src, dst
   end
   src = File.join(srcdir, "prezto")
   dst = File.join(homedir, ".zprezto")
-  symlink src, dst
+  make_symlink src, dst
 end
 
 desc "build symlinks in home dir pointing to these files"
