@@ -181,17 +181,17 @@
 ;;   '(add-to-list 'flycheck-checkers 'irony))
 
 ;; rtags
-(require 'rtags)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-rtags))
-(rtags-enable-standard-keybindings)
-(setq rtags-completions-enabled t)
-(define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
-(define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
-(define-key c-mode-base-map (kbd "C-<") 'rtags-location-stack-back)
-(define-key c-mode-base-map (kbd "C->") 'rtags-location-stack-forward)
-(define-key c-mode-base-map (kbd "C-v") 'rtags-find-virtuals-at-point)
-(define-key c-mode-base-map (kbd "M-i") 'rtags-imenu)
+;; (require 'rtags)
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends 'company-rtags))
+;; (rtags-enable-standard-keybindings)
+;; (setq rtags-completions-enabled t)
+;; (define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
+;; (define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
+;; (define-key c-mode-base-map (kbd "C-<") 'rtags-location-stack-back)
+;; (define-key c-mode-base-map (kbd "C->") 'rtags-location-stack-forward)
+;; (define-key c-mode-base-map (kbd "C-v") 'rtags-find-virtuals-at-point)
+;; (define-key c-mode-base-map (kbd "M-i") 'rtags-imenu)
 
 
 ;; replace the `completion-at-point' and `complete-symbol' bindings in
