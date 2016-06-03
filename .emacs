@@ -12,6 +12,7 @@
     editorconfig
     fill-column-indicator
     flycheck
+    git-gutter+
     groovy-mode
     haml-mode
     highlight-indentation
@@ -32,6 +33,31 @@
     zenburn-theme
     )
   "List of packages needs to be installed at launch")
+
+; Set up package archives
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+; Look for missing packages, and install them
+(require 'cl)
+(defun has-package-not-installed ()
+  (loop for p in packages-list
+        when (not (package-installed-p p)) do (return t)
+        finally (return nil)))
+(when (has-package-not-installed)
+  ;; Check for new packages (package versions)
+  (message "%s" "Get latest versions of all packages...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ;; Install the missing packages
+  (dolist (p packages-list)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
 ;
 ;; Window size
 ;;
@@ -47,7 +73,7 @@
 ;; Don't open new frames for each file open externally.
 (setq ns-pop-up-frames nil)
 
-;; On OS X we don't inherit the same path as terminal programs would, so read in PATH from .bashrc
+;; On OS X we don't inherit the same path as terminal programs would, so read in PATH from the shell
 ;; http://emacswiki.org/emacs/EmacsApp
 (defun set-exec-path-from-shell-PATH ()
   "Sets the exec-path to the same value used by the user shell"
@@ -57,7 +83,7 @@
           (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
- 
+
 ;; call function now
 (if (not (getenv "TERM_PROGRAM"))
     (set-exec-path-from-shell-PATH))
@@ -104,28 +130,8 @@
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/use-package") load-path))
 
-; Require packages
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
-
-(require 'cl)
-(defun has-package-not-installed ()
-  (loop for p in packages-list
-        when (not (package-installed-p p)) do (return t)
-        finally (return nil)))
-(when (has-package-not-installed)
-  ;; Check for new packages (package versions)
-  (message "%s" "Get latest versions of all packages...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  ;; Install the missing packages
-  (dolist (p packages-list)
-    (when (not (package-installed-p p))
-      (package-install p))))
+(require 'git-gutter+)
+(global-git-gutter+-mode)
 
 (require 'editorconfig)
 (setq editorconfig-get-properties-function
@@ -606,4 +612,3 @@ spends an eternity in a regex if you make a typo."
 (setq x-select-enable-clipboard t)
 (cond ((fboundp 'x-selection-value) (setq interprogram-paste-function 'x-selection-value))
       ((fboundp 'x-cut-buffer-or-selection-value) (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
-
