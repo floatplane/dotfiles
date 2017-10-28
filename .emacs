@@ -594,7 +594,7 @@ spends an eternity in a regex if you make a typo."
  '(global-whitespace-mode t)
  '(initial-buffer-choice t)
  '(load-home-init-file t t)
- '(ns-pop-up-frames nil)
+ '(ns-pop-up-frames nil t)
  '(package-selected-packages
    (quote
     (rjsx-mode zenburn-theme yasnippet yaml-mode web-mode textmate smex scss-mode rainbow-delimiters python-mode protobuf-mode markdown-mode magit js2-mode irony highlight-symbol highlight-indentation haml-mode groovy-mode git-gutter+ flycheck fill-column-indicator editorconfig cursor-chg csharp-mode company coffee-mode)))
