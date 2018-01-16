@@ -5,6 +5,8 @@
   '(
     ;; auto-complete
     ;; auto-complete-clang-async
+    ag
+    aggressive-indent
     coffee-mode
     company
     csharp-mode
@@ -12,6 +14,7 @@
     editorconfig
     fill-column-indicator
     flycheck
+    flymake-ruby
     git-gutter+
     groovy-mode
     haml-mode
@@ -24,6 +27,7 @@
     protobuf-mode
     python-mode
     rainbow-delimiters
+    robe
     scss-mode
     smex
     textmate
@@ -34,7 +38,7 @@
     )
   "List of packages needs to be installed at launch")
 
-; Set up package archives
+;; Set up package archives
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
@@ -42,7 +46,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-; Look for missing packages, and install them
+;; Look for missing packages, and install them
 (require 'cl)
 (defun has-package-not-installed ()
   (loop for p in packages-list
@@ -58,17 +62,15 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-;
+;;
 ;; Window size
 ;;
 (cond ((display-graphic-p)
        (tool-bar-mode -1)
-       (set-frame-height (selected-frame) 40)
-       (set-frame-width (selected-frame) 132)
-       (set-frame-position (selected-frame) 0 0)))
+       (toggle-frame-maximized)))
 
 ;; Disable Ctrl-Z minimization/suspension of emacs.
-(global-set-key [C-z] nil)
+(global-set-key [(control z)] nil)
 
 ;; Don't open new frames for each file open externally.
 (setq ns-pop-up-frames nil)
@@ -91,9 +93,9 @@
 (setq exec-path (split-string (getenv "PATH") path-separator))
 
 
-; Define a function to disable tabs, and set the tab width
-; to something sensible.  These variables are buffer
-; local, so we have to set them in a mode hook.
+;; Define a function to disable tabs, and set the tab width
+;; to something sensible.  These variables are buffer
+;; local, so we have to set them in a mode hook.
 (defun fix-tabs ()
   (setq indent-tabs-mode nil)
   (setq tab-width 4))
@@ -114,7 +116,7 @@
   (interactive)
   (setq indent-tabs-mode nil))
 
-; When would I not want this?
+;; When would I not want this?
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
@@ -126,7 +128,11 @@
   (setq tab-width 4)
   (setq c-basic-offset 4))
 
-; Add the home directory's emacs directory to the load path.
+;; Reindent as you type. I think I like this.
+(global-aggressive-indent-mode 1)
+(add-to-list 'aggressive-indent-excluded-modes 'web-mode)
+
+;; Add the home directory's emacs directory to the load path.
 (setq load-path (cons (expand-file-name "~/emacs") load-path))
 (setq load-path (cons (expand-file-name "~/emacs/use-package") load-path))
 
@@ -261,7 +267,7 @@ spends an eternity in a regex if you make a typo."
 (when (fboundp 'winner-mode)
       (winner-mode 1))
 
-; Automatically clean up old buffers
+;; Automatically clean up old buffers
 (require 'midnight)
 
 (require 'smex)
@@ -327,12 +333,12 @@ spends an eternity in a regex if you make a typo."
 ;; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode t)))
 ;; (global-fci-mode 1)
 
-; (add-hook 'before-save-hook 'delete-trailing-whitespace) <-- this is a little too prone to making changes
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace) <-- this is a little too prone to making changes
 
-; display filename in title bar
+;; display filename in title bar
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
 
-; Don't backup files into the tree; put them all somewhere safe
+;; Don't backup files into the tree; put them all somewhere safe
 (setq
    backup-by-copying t      ; don't clobber symlinks
    backup-directory-alist
@@ -353,23 +359,23 @@ spends an eternity in a regex if you make a typo."
 (add-hook 'shell-mode-hook '(lambda () (toggle-truncate-lines 1)))
 (setq comint-prompt-read-only t)
 
-;
-; fire up cedet
-;
-; (setq semantic-load-turn-everything-on t)
+;;
+;; fire up cedet
+;;
+;; (setq semantic-load-turn-everything-on t)
 ;; Load CEDET
-; (load "cedet/common/cedet.el")
+;; (load "cedet/common/cedet.el")
 ;; Enabling SEMANTIC minor modes.  See semantic/INSTALL for more ideas.
-; (semantic-load-enable-code-helpers)
+;; (semantic-load-enable-code-helpers)
 
-;
-; fire up ecb
-;
-; (cond (xemacsp (require 'ecb)
-;              (ecb-activate)))
+;;
+;; fire up ecb
+;;
+;; (cond (xemacsp (require 'ecb)
+;;              (ecb-activate)))
 
-;
-; Set up bash as the shell
+;;
+;; Set up bash as the shell
 ;; (setq process-coding-system-alist '(("bash" . undecided-unix)))
 ;; (setq shell-file-name "bash")
 ;; (setenv "SHELL" shell-file-name)
@@ -381,9 +387,9 @@ spends an eternity in a regex if you make a typo."
 ;; (add-hook 'comint-output-filter-functions
 ;;        'comint-strip-ctrl-m)
 
-;
-; Stuff I borrowed from Josh
-;
+;;
+;; Stuff I borrowed from Josh
+;;
 
 (defun open-file-complement ()
   "Open complementary header or source file"
@@ -396,8 +402,8 @@ spends an eternity in a regex if you make a typo."
                                      (find-file (concat base "." ext))
                                    ())))
 
-         ; try-open-2 is the supercharged version that looks for
-         ; complementing files relative to the current location
+                                        ; try-open-2 is the supercharged version that looks for
+                                        ; complementing files relative to the current location
          (try-open-2 (lambda (ext)
                        (let* ((srcfile (file-truename (concat "../src/" base "." ext)))
                               (incfile (file-truename (concat "../inc/" base "." ext)))
@@ -443,8 +449,8 @@ spends an eternity in a regex if you make a typo."
 (setq auto-mode-alist (cons '("\\.uc\\'" . c++-mode) auto-mode-alist))
 
 ;; Make .m and .mm files use objective-c mode.
-; (require 'objc-c-mode)
-; (setq auto-mode-alist (cons '("\\.m\\'" . objc-mode) auto-mode-alist))
+;; (require 'objc-c-mode)
+;; (setq auto-mode-alist (cons '("\\.m\\'" . objc-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.mm\\'" . objc-mode) auto-mode-alist))
 
 ;; Actually, make .m files use Octave for now
@@ -453,6 +459,12 @@ spends an eternity in a regex if you make a typo."
 ;; Ruby alist
 (setq auto-mode-alist (cons '("\\.rake\\|Rakefile$" .
                               ruby-mode) auto-mode-alist))
+(require 'flymake-ruby)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(require 'robe)
+(add-hook 'ruby-mode-hook 'robe-mode)
+(eval-after-load 'company
+  '(push 'company-robe company-backends))
 
 ;; Javscript alist
 (setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .
@@ -477,14 +489,14 @@ spends an eternity in a regex if you make a typo."
 (require 'capnp-mode)
 (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
 
-;
-; Tweak the key maps
-;
+;;
+;; Tweak the key maps
+;;
 (defun my-prev-error ()
   "Goto the previous error in the compilation buffer"
   (interactive)
   (next-error -1)
-)
+  )
 
 (setq my-grep-history nil)
 (setq my-grep-dir-history nil)
@@ -544,7 +556,7 @@ spends an eternity in a regex if you make a typo."
 ;; (speedbar)
 
 (setq grep-command "grep -nr")
-; (setq compile-command "c:\\ad\\snicket\\bin\\build.bat winpc debug code")
+;; (setq compile-command "c:\\ad\\snicket\\bin\\build.bat winpc debug code")
 (setq compile-command "rake lint")
 (define-key global-map '[f7] 'compile)
 
@@ -564,10 +576,10 @@ spends an eternity in a regex if you make a typo."
 ;; (turn-on-font-lock)
 ;; (global-font-lock-mode t)
 
-;
-; Set up windows-like shifted motion keys and other goodness.
-; Allow shifted movement keys to modify current region.
-;
+;;
+;; Set up windows-like shifted motion keys and other goodness.
+;; Allow shifted movement keys to modify current region.
+;;
 (cua-mode)
 ;; (delete-selection-mode 1)
 ;; (setq transient-mark-mode t)
@@ -578,6 +590,12 @@ spends an eternity in a regex if you make a typo."
 
 (require 're-builder)
 (setq reb-re-syntax 'string)
+
+;; Get Stripe stuff
+(cond ((file-exists-p "~/stripe/stripemacs/stripemacs.el")
+       (defvar devbox-machine "qa-mydev--02df3f12b2a77dbd7.northwest.stripe.io")
+       (defvar stripe-username "bsharon")
+       (load "~/stripe/stripemacs/stripemacs.el")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -594,10 +612,10 @@ spends an eternity in a regex if you make a typo."
  '(global-whitespace-mode t)
  '(initial-buffer-choice t)
  '(load-home-init-file t t)
- '(ns-pop-up-frames nil t)
+ '(ns-pop-up-frames nil)
  '(package-selected-packages
    (quote
-    (rjsx-mode zenburn-theme yasnippet yaml-mode web-mode textmate smex scss-mode rainbow-delimiters python-mode protobuf-mode markdown-mode magit js2-mode irony highlight-symbol highlight-indentation haml-mode groovy-mode git-gutter+ flycheck fill-column-indicator editorconfig cursor-chg csharp-mode company coffee-mode)))
+    (helm-ag ag helm-projectile helm projectile prettier-js flycheck-flow company-flow use-package flymake-ruby aggressive-indent rjsx-mode zenburn-theme yasnippet yaml-mode web-mode textmate smex scss-mode rainbow-delimiters python-mode protobuf-mode markdown-mode magit js2-mode irony highlight-symbol highlight-indentation haml-mode groovy-mode git-gutter+ flycheck fill-column-indicator editorconfig cursor-chg csharp-mode company coffee-mode)))
  '(show-trailing-whitespace t)
  '(speedbar-frame-parameters
    (quote
