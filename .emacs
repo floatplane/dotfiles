@@ -9,8 +9,10 @@
     aggressive-indent
     coffee-mode
     company
+    counsel
     csharp-mode
     cursor-chg
+    doom-themes
     editorconfig
     fill-column-indicator
     flycheck
@@ -21,15 +23,18 @@
     highlight-indentation
     highlight-symbol
     irony
+    ivy
     js2-mode
     magit
     markdown-mode
+    neotree
     protobuf-mode
     python-mode
     rainbow-delimiters
     robe
     scss-mode
     smex
+    swiper
     textmate
     web-mode
     yaml-mode
@@ -63,7 +68,7 @@
       (package-install p))))
 
 ;;
-;; Window size
+;; Window size - maximize it, hide the button bar
 ;;
 (cond ((display-graphic-p)
        (tool-bar-mode -1)
@@ -148,6 +153,40 @@
 (cond ((boundp 'custom-theme-load-path)
        (load-theme 'zenburn t)))
 
+;; (require 'doom-themes)
+
+;; ;; Global settings (defaults)
+;; (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;       doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+;; ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+;; ;; may have their own settings.
+;; (load-theme 'doom-spacegrey t)
+
+;; ;; Enable flashing mode-line on errors
+;; (doom-themes-visual-bell-config)
+
+;; ;; Enable custom neotree theme
+;; (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
+
+;; ;; Corrects (and improves) org-mode's native fontification.
+;; (doom-themes-org-config)
+
+;; (require 'neotree)
+;; (defun neotree-project-dir ()
+;;   "Open NeoTree using the git root."
+;;   (interactive)
+;;   (let ((project-dir (projectile-project-root))
+;;         (file-name (buffer-file-name)))
+;;     (neotree-toggle)
+;;     (if project-dir
+;;         (if (neo-global--window-exists-p)
+;;             (progn
+;;               (neotree-dir project-dir)
+;;               (neotree-find file-name)))
+;;       (message "Could not find git project root."))))
+;; (global-set-key [f8] 'neotree-project-dir)
+
 ;; M-y and M-n for yes/no responses
 (require 'quick-yes)
 
@@ -170,8 +209,8 @@
 ;; (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Capnp
-(require 'capnp-mode)
-(add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
+;; (require 'capnp-mode)
+;; (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
 
 ;; ;; Irony mode.
 ;; (eval-after-load 'company
@@ -208,49 +247,72 @@
 
 ;; replace the `completion-at-point' and `complete-symbol' bindings in
 ;; irony-mode's buffers by irony-mode's function
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+;; (defun my-irony-mode-hook ()
+;;   (define-key irony-mode-map [remap completion-at-point]
+;;     'irony-completion-at-point-async)
+;;   (define-key irony-mode-map [remap complete-symbol]
+;;     'irony-completion-at-point-async))
+;; (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-(require 'textmate)
-(add-hook 'textmate-mode-hook
-          (lambda () (progn (message "Textmate mode activated")
-                            (setq textmate-mode-keymap (cdr (assoc 'textmate-mode minor-mode-map-alist)))
-                            (define-key textmate-mode-keymap [(meta up)] nil)
-                            (define-key textmate-mode-keymap [(meta down)] nil)
-                            (define-key textmate-mode-keymap [(meta shift up)] nil)
-                            (define-key textmate-mode-keymap [(meta shift down)] nil))))
-(textmate-mode)
+;; (require 'textmate)
+;; (add-hook 'textmate-mode-hook
+;;           (lambda () (progn (message "Textmate mode activated")
+;;                             (setq textmate-mode-keymap (cdr (assoc 'textmate-mode minor-mode-map-alist)))
+;;                             (define-key textmate-mode-keymap [(meta up)] nil)
+;;                             (define-key textmate-mode-keymap [(meta down)] nil)
+;;                             (define-key textmate-mode-keymap [(meta shift up)] nil)
+;;                             (define-key textmate-mode-keymap [(meta shift down)] nil))))
+;; (textmate-mode)
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-(require 'ido)
-(ido-mode t)
-(setq ido-enable-flex-matching t)
+;; (require 'ido)
+;; (ido-mode t)
+;; (setq ido-enable-flex-matching t)
 
-;; From https://bitbucket.org/durin42/dotfiles/src/tip/.elisp/settings/50.localfuncs.el#cl-9:
-;; advice to prevent ido from using flex matches on huge lists of files
-;; with enough characters typed and blocking for an absurd amount of time
-;; after a stupid typo
-;; The value af-ido-flex-fuzzy-limit is the maximum value of the product
-;; of the number of characters the user has entered and the number of
-;; options in the ido list.
-;; The default value was determined experimentally and seemed to be
-;; the boundary of sane wait times when this was written.
-(defvar af-ido-flex-fuzzy-limit (* 2000 5))
-(defadvice ido-set-matches-1 (around my-ido-set-matches-1 activate)
-  "Conditionally disable flex matching if the list is huge.
+;; ;; From https://bitbucket.org/durin42/dotfiles/src/tip/.elisp/settings/50.localfuncs.el#cl-9:
+;; ;; advice to prevent ido from using flex matches on huge lists of files
+;; ;; with enough characters typed and blocking for an absurd amount of time
+;; ;; after a stupid typo
+;; ;; The value af-ido-flex-fuzzy-limit is the maximum value of the product
+;; ;; of the number of characters the user has entered and the number of
+;; ;; options in the ido list.
+;; ;; The default value was determined experimentally and seemed to be
+;; ;; the boundary of sane wait times when this was written.
+;; (defvar af-ido-flex-fuzzy-limit (* 2000 5))
+;; (defadvice ido-set-matches-1 (around my-ido-set-matches-1 activate)
+;;   "Conditionally disable flex matching if the list is huge.
 
-This is useful because when the ido list is huge, ido flex matching
-spends an eternity in a regex if you make a typo."
-  (let ((ido-enable-flex-matching (< (* (length (ad-get-arg 0)) (length ido-text))
-                                     af-ido-flex-fuzzy-limit)))
-    ad-do-it))
+;; This is useful because when the ido list is huge, ido flex matching
+;; spends an eternity in a regex if you make a typo."
+;;   (let ((ido-enable-flex-matching (< (* (length (ad-get-arg 0)) (length ido-text))
+;;                                      af-ido-flex-fuzzy-limit)))
+;;     ad-do-it))
+
+(require 'ivy)
+(require 'swiper)
+(require 'counsel)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
 ;; ; Save the desktop periodically
 ;; (setq desktop-dirname "~/.emacs.desktop.dir/")
@@ -265,17 +327,19 @@ spends an eternity in a regex if you make a typo."
 
 ;; Enable winner-mode
 (when (fboundp 'winner-mode)
-      (winner-mode 1))
+  (winner-mode 1))
 
 ;; Automatically clean up old buffers
 (require 'midnight)
 
-(require 'smex)
-(add-hook 'after-init-hook 'smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+;; (require 'smex)
+;; (add-hook 'after-init-hook 'smex-initialize)
+;; (global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; ;; This is your old M-x.
+;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(require 'amx)
+(amx-mode)
 
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -502,25 +566,38 @@ spends an eternity in a regex if you make a typo."
 (setq my-grep-dir-history nil)
 (setq my-grep-default-dir "~/src")
 (defun my-interactive-grep (search-string search-directory)
-                               "Grep for a symbol in the specified directory"
-                               (interactive (let* ((default-dir (cond ((car my-grep-dir-history))
-                                                                      (t my-grep-default-dir))))
-                                              (list (read-string "Grep for: "
-                                                                 (symbol-near-point)
-                                                                 'my-grep-history)
-                                                    (read-string "In directory: " default-dir 'my-grep-dir-history))))
-                               (grep (concat "grep -nr \""
-                                             search-string "\" " search-directory )))
+  "Grep for a symbol in the specified directory"
+  (interactive (let* ((default-dir (cond ((car my-grep-dir-history))
+                                         (t my-grep-default-dir))))
+                 (list (read-string "Grep for: "
+                                    (symbol-near-point)
+                                    'my-grep-history)
+                       (read-string "In directory: " default-dir 'my-grep-dir-history))))
+  (grep (concat "grep -nr \""
+                search-string "\" " search-directory )))
 
-(define-key global-map '[(control tab)] 'swbuff-switch-to-next-buffer)
-(define-key global-map '[(control shift tab)] 'swbuff-switch-to-previous-buffer)
-(define-key global-map '[(control f3)] 'my-interactive-grep)
-(define-key global-map '[f4] 'next-error)
-(define-key global-map '[(shift f4)] 'my-prev-error)
-(define-key global-map '[(control pause)] 'kill-compilation)
-(define-key global-map '[(control break)] 'kill-compilation)
-(define-key global-map '[f1]  (lambda () (interactive) (manual-entry (current-word))))
-(define-key c-mode-base-map '[(control super up)] 'open-file-complement)
+;; (defun my-projectile-ag (search-string)
+;;   "Search for a symbol in the current project"
+;;   (interactive
+;;    (let*
+;;        (list (read-string "Search for: "
+;;                           (symbol-name (symbol-at-point))
+;;                           'my-search-history))
+;;      )
+;;    )
+;;   (projectile-ag 'search-string)
+;;   )
+
+(global-set-key [(control tab)] 'swbuff-switch-to-next-buffer)
+(global-set-key [(control shift tab)] 'swbuff-switch-to-previous-buffer)
+(global-set-key (kbd "C-c C-f") 'projectile-ag) ; 'my-interactive-grep)
+
+;; (define-key global-map '[f4] 'next-error)
+;; (define-key global-map '[(shift f4)] 'my-prev-error)
+;; (define-key global-map '[(control pause)] 'kill-compilation)
+;; (define-key global-map '[(control break)] 'kill-compilation)
+;; (define-key global-map '[f1]  (lambda () (interactive) (manual-entry (current-word))))
+;; (define-key c-mode-base-map '[(control super up)] 'open-file-complement)
 
 (global-set-key '[(home)] 'move-beginning-of-line)
 (global-set-key '[(end)] 'move-end-of-line)
@@ -530,12 +607,16 @@ spends an eternity in a regex if you make a typo."
 ;; (setq x-alt-keysym 'meta)
 ;; (setq x-super-keysym 'meta)
 
+;; For OS X Emacs from https://github.com/railwaycat/homebrew-emacsmacport, un-swap alt & meta
+(cond ((boundp 'mac-command-modifier)
+       (setq mac-command-modifier mac-option-modifier)
+       (setq mac-option-modifier 'meta)))
 
 (defun mac-toggle-max-window ()
   (interactive)
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
-                                           'fullboth)))
+                                         'fullboth)))
 
 (define-key global-map [(meta return)] 'mac-toggle-max-window)
 
@@ -612,7 +693,6 @@ spends an eternity in a regex if you make a typo."
  '(global-whitespace-mode t)
  '(initial-buffer-choice t)
  '(load-home-init-file t t)
- '(ns-pop-up-frames nil)
  '(package-selected-packages
    (quote
     (helm-ag ag helm-projectile helm projectile prettier-js flycheck-flow company-flow use-package flymake-ruby aggressive-indent rjsx-mode zenburn-theme yasnippet yaml-mode web-mode textmate smex scss-mode rainbow-delimiters python-mode protobuf-mode markdown-mode magit js2-mode irony highlight-symbol highlight-indentation haml-mode groovy-mode git-gutter+ flycheck fill-column-indicator editorconfig cursor-chg csharp-mode company coffee-mode)))
