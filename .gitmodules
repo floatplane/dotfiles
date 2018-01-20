@@ -1,5 +1,5 @@
 [submodule "emacs/use-package"]
-	path = emacs/use-package
+	path = .emacs.d/packages/use-package
 	url = git@github.com:jwiegley/use-package.git
 [submodule "prezto"]
 	path = prezto
