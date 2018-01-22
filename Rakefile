@@ -2,7 +2,7 @@
 srcdir = File.dirname(__FILE__)
 homedir = ENV['HOME']
 
-symlinked_files = FileList.new('.*', 'emacs', 'bin').exclude(/^\.git$/, /^\.gitmodules$/, /^\.$/, /^\.\.$/)
+symlinked_files = FileList.new('.*', 'bin').exclude(/^\.git$/, /^\.gitmodules$/, /^\.$/, /^\.\.$/)
 prezto_symlinks = FileList.new('prezto/runcoms/z*')
 compiled_elisp = FileList.new('emacs/**/*.el').sub!(/.el$/, '.elc')
 
