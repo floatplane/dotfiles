@@ -13,6 +13,7 @@
     ;; auto-complete-clang-async
     ag
     aggressive-indent
+    better-defaults
     coffee-mode
     company
     counsel

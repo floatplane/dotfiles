@@ -29,7 +29,9 @@
                     "appearance"
                     "theme"
                     "programming_modes"
-                    "keys"
-                    "custom"))
+                    "keys"))
   (let ((path (expand-file-name (concat "~/.emacs.d/" initfile ".el") )))
     (load-file path)))
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
