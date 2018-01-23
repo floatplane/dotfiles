@@ -5,6 +5,11 @@
     (message (format "Added %s to load-path" path))))
 
 ;;
+;; Before loading packages, make sure they don't poop everywhere
+;;
+(require 'no-littering)
+
+;;
 ;; External packages.
 ;;
 (defvar packages-list
@@ -29,6 +34,7 @@
     haml-mode
     highlight-indentation
     highlight-symbol
+    ido-completing-read+
     irony
     ivy
     js2-mode

@@ -74,6 +74,13 @@
 
 (require 'whitespace)
 
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(setq ido-use-filename-at-point 'guess)
+(require 'ido-completing-read+)
+(ido-ubiquitous-mode 1)
+
 ;; Not sure I'm convinced by ivy mode
 ;; (require 'ivy)
 ;; (require 'swiper)
@@ -116,11 +123,11 @@
 
 ;; Don't backup files into the tree; put them all somewhere safe
 (setq
-   backup-by-copying t      ; don't clobber symlinks
-   backup-directory-alist
-    '(("." . "~/.emacs.d/.backups"))    ; don't litter my fs tree
-   delete-old-versions t
-   kept-new-versions 6
-   kept-old-versions 2
-   version-control t)       ; use versioned backups
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.emacs.d/etc/backups"))    ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)       ; use versioned backups
 
