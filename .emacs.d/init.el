@@ -30,8 +30,8 @@
                     "theme"
                     "programming_modes"
                     "keys"))
-  (let ((path (expand-file-name (concat "~/.emacs.d/" initfile ".el") )))
+  (let ((path (expand-file-name (concat "~/.emacs.d/init/" initfile ".el") )))
     (load-file path)))
 
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file "~/.emacs.d/init/custom.el")
 (load custom-file)
