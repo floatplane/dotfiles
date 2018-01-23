@@ -1,6 +1,10 @@
 ;; Fix some insanity
 (require 'better-defaults)
 
+;; I want unique names for different buffers to start with the file name,
+;; so autocomplete works better.
+(setq uniquify-buffer-name-style 'post-forward)
+
 ;; Make sure emacsclient can connect to a running instance
 (require 'server)
 (unless (server-running-p)
