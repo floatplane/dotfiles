@@ -1,3 +1,11 @@
+(require 'magit)
+(setq vc-handled-backends (delq 'Git vc-handled-backends))
+(setq magit-commit-show-diff nil
+      magit-revert-buffers 1)
+
+(require 'dumb-jump)
+(dumb-jump-mode)
+
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
@@ -15,6 +23,7 @@
   "Hooks for Web mode."
   (setq rainbow-delimiters-mode nil)
   (setq whitespace-mode 0)
+  (setq web-mode-enable-auto-indentation nil)
   (message "Entering web mode")
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)

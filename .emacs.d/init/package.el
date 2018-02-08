@@ -17,7 +17,8 @@
     ;; auto-complete
     ;; auto-complete-clang-async
     ag
-    aggressive-indent
+    all-the-icons
+    ;; aggressive-indent
     better-defaults
     coffee-mode
     company
@@ -25,6 +26,7 @@
     csharp-mode
     cursor-chg
     doom-themes
+    dumb-jump
     editorconfig
     fill-column-indicator
     flycheck
@@ -47,6 +49,8 @@
     robe
     scss-mode
     smex
+    spaceline
+    spaceline-all-the-icons
     swiper
     textmate
     web-mode

@@ -10,6 +10,15 @@
 (global-set-key '[(end)] 'move-end-of-line)
 (global-set-key '[(kp-delete)] 'delete-char)
 
+(defun my-prev-error ()
+  "Goto the previous error in the compilation buffer"
+  (interactive)
+  (next-error -1)
+  )
+
+(define-key global-map '[f4] 'next-error)
+(define-key global-map '[(shift f4)] 'my-prev-error)
+
 ;; For OS X Emacs from https://github.com/railwaycat/homebrew-emacsmacport, un-swap alt & meta
 (cond ((boundp 'mac-command-modifier)
        (setq mac-command-modifier mac-option-modifier)

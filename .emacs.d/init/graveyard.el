@@ -232,14 +232,6 @@
 (global-set-key [(control tab)] 'swbuff-switch-to-next-buffer)
 (global-set-key [(control shift tab)] 'swbuff-switch-to-previous-buffer)
 
-(defun my-prev-error ()
-  "Goto the previous error in the compilation buffer"
-  (interactive)
-  (next-error -1)
-  )
-
-;; (define-key global-map '[f4] 'next-error)
-;; (define-key global-map '[(shift f4)] 'my-prev-error)
 ;; (define-key global-map '[(control pause)] 'kill-compilation)
 ;; (define-key global-map '[(control break)] 'kill-compilation)
 ;; (define-key global-map '[f1]  (lambda () (interactive) (manual-entry (current-word))))

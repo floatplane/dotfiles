@@ -11,8 +11,9 @@
   (server-start))
 
 ;; Reindent as you type. I think I like this.
-(global-aggressive-indent-mode 1)
-(add-to-list 'aggressive-indent-excluded-modes 'web-mode)
+;; Never mind. Too aggressive on existing code.
+;; (global-aggressive-indent-mode 1)
+;; (add-to-list 'aggressive-indent-excluded-modes 'web-mode)
 
 (require 'git-gutter+)
 (global-git-gutter+-mode)
@@ -75,13 +76,14 @@
   (setq indent-tabs-mode nil)
   (setq tab-width 4)
   (setq c-basic-offset 4))
+(setq tab-always-indent "complete")
 
 (require 'whitespace)
 
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
-(setq ido-use-filename-at-point 'guess)
+(setq ido-use-filename-at-point nil)
 (require 'ido-completing-read+)
 (ido-ubiquitous-mode 1)
 
@@ -108,6 +110,16 @@
 ;; (global-set-key (kbd "C-x l") 'counsel-locate)
 ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 ;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+;; Code folding based on indentation
+;; https://www.emacswiki.org/emacs/HideShow#toc5
+(defun toggle-selective-display (column)
+      (interactive "P")
+      (set-selective-display
+       (or column
+           (unless selective-display
+             (1+ (current-column))))))
+(global-set-key (kbd "C-\\") 'toggle-selective-display)
 
 ;; Enable winner-mode
 (when (fboundp 'winner-mode)
