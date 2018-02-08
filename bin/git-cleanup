@@ -1,2 +1,9 @@
+#!/bin/bash
+set -v
+# For all remotes, prune remote tracking branches that have been deleted on the
+# server
 git remote | xargs -n 1 git remote prune
-git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
+
+# If a local branch is merged, and isn't the current branch (the "*" check),
+# then delete it
+git branch --merged | grep -v "\*" | grep -v "^master" | xargs -n 1 git branch -d
