@@ -20,3 +20,8 @@
           (invert-face 'mode-line)
           (run-with-timer 0.1 nil 'invert-face 'mode-line))))
 
+(require 'all-the-icons)
+;; (all-the-icons-install-fonts)
+(use-package spaceline-all-the-icons 
+  :after spaceline
+  :config (spaceline-all-the-icons-theme))
