@@ -195,7 +195,9 @@ if [[ -n "$PS1" ]]; then
   source_if_exists /opt/local/etc/bash_completion
 
   # tab-completion for homebrew
-  source_if_exists `brew --prefix`/etc/bash_completion
+  if command_exists_on_path brew; then
+      source_if_exists `brew --prefix`/etc/bash_completion
+  fi
 
   # tab-completion for rake and cap
   source_if_exists ~/bin/rake_cap_bash_autocomplete.sh
