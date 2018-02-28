@@ -32,6 +32,7 @@
     flycheck
     flymake-ruby
     git-gutter+
+    git-link
     groovy-mode
     haml-mode
     highlight-indentation

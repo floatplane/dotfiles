@@ -105,17 +105,6 @@
 ;;                                      af-ido-flex-fuzzy-limit)))
 ;;     ad-do-it))
 
-;; ; Save the desktop periodically
-;; (setq desktop-dirname "~/.emacs.desktop.dir/")
-;; (setq desktop-load-locked-desktop nil)
-;; (require 'desktop)
-;; (add-hook 'desktop-not-loaded-hook
-;; 		  (lambda () (progn (desktop-save-mode-off)
-;; 							(message "Disabling desktop saving"))))
-;; (setq desktop-save t)
-;; (add-hook 'auto-save-hook (lambda () (desktop-save-in-desktop-dir)))
-;; (desktop-save-mode 1)
-
 ;; (require 'smex)
 ;; (add-hook 'after-init-hook 'smex-initialize)
 ;; (global-set-key (kbd "M-x") 'smex)

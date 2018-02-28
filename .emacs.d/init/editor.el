@@ -1,6 +1,10 @@
 ;; Fix some insanity
 (require 'better-defaults)
 
+;; Try speeding up some things by not forcing external commands to initialize
+;; zsh
+(setq shell-file-name "/bin/sh")
+
 ;; I want unique names for different buffers to start with the file name,
 ;; so autocomplete works better.
 (setq uniquify-buffer-name-style 'post-forward)
@@ -51,9 +55,12 @@
 
 ;; org-mode
 (require 'org)
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c l") 'org-store-link)
 (setq org-log-done t)
+(setq org-startup-indented t)
+(setq org-catch-invisible-edits 'smart)
 
 ;;
 ;; Whitespace
@@ -147,3 +154,6 @@
  kept-old-versions 2
  version-control t)       ; use versioned backups
 
+(require 'desktop)
+(setq desktop-save t)
+(desktop-save-mode 1)

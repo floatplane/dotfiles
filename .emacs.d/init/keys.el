@@ -6,6 +6,9 @@
 ;;
 (global-set-key (kbd "C-c C-f") 'projectile-ag) ; 'my-interactive-grep)
 
+(global-set-key (kbd "C-.") 'dumb-jump-go)
+(global-set-key (kbd "C-,") 'dumb-jump-back)
+
 (global-set-key '[(home)] 'move-beginning-of-line)
 (global-set-key '[(end)] 'move-end-of-line)
 (global-set-key '[(kp-delete)] 'delete-char)

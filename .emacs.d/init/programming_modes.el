@@ -1,7 +1,24 @@
 (require 'magit)
 (setq vc-handled-backends (delq 'Git vc-handled-backends))
-(setq magit-commit-show-diff nil
-      magit-revert-buffers 1)
+;; (setq magit-commit-show-diff nil
+;;       magit-revert-buffers 1)
+
+;; used for quickly opening github links to line or region
+;; configured to open in a browser right away
+(use-package git-link
+  :config
+  (setq git-link-open-in-browser t))
+
+;; sets up stripe git enterprise as a git-link handler
+(eval-after-load 'git-link
+  '(progn
+    (add-to-list 'git-link-remote-alist
+      '("git\\.corp\\.stripe\\.com" git-link-github))
+    (add-to-list 'git-link-commit-remote-alist
+      '("git\\.corp\\.stripe\\.com" git-link-commit-github))))
+
+;; binds git-link to f2 for either current line or active region
+(global-set-key [f2] 'git-link)
 
 (require 'dumb-jump)
 (dumb-jump-mode)
