@@ -1,25 +1,11 @@
 #! /bin/bash
 
-filename=$(basename "$1")
-filename="${filename%.*}"
+# Assumes brew install ffmpeg gifsicle
+rootname=$(basename "$1")
+rootname=${rootname%.*}
+in_file=$1
+out_file=$(dirname "$1")/$rootname.gif
 
 echo Converting video to GIF...
-rm -f "/tmp/mov2gif"
-mkdir -p "/tmp/mov2gif"
-ffmpeg -i "$1" -r 10 -vf 'scale=480:-1' "/tmp/mov2gif/${filename}%04d.png"
-convert -delay 1x10 /tmp/mov2gif/*.png \
-      -fuzz 2% \
-      +dither \
-      -coalesce -layers OptimizeTransparency \
-      +map "${filename}.gif"
-
-# rm -f "${filename}_temp.gif"
-# # ffmpeg -i "$1" -pix_fmt pal8 "${filename}_temp.gif" -r 15 -s 640x480
-# ffmpeg -i "$1" -vf scale=640:-1 -r 10 -f image2pipe -vcodec ppm - | convert -delay 5 -loop 0 - gif:- | convert -layers Optimize - "${filename}.gif"
-
-# # echo Optimizing GIF output...
-# # gifsicle -V --optimize=2 -o "${filename}.gif" "${filename}_temp.gif"
-
-echo Cleaning up...
-rm -rf "/tmp/mov2gif"
-# rm -f "${filename}_temp.gif"
+ffmpeg -i "$in_file" -r 10 -f gif - | gifsicle > "$out_file"
+open "$out_file" -a Google\ Chrome
