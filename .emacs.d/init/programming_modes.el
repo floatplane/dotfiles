@@ -41,6 +41,10 @@
   (setq rainbow-delimiters-mode nil)
   (setq whitespace-mode 0)
   (setq web-mode-enable-auto-indentation nil)
+  (setq web-mode-enable-auto-quoting nil)
+  (add-to-list 'web-mode-comment-formats '("css" . "//" ))
+  (add-to-list 'web-mode-comment-formats '("jsx" . "//" ))
+  (add-to-list 'web-mode-comment-formats '("javascript" . "//" ))
   (message "Entering web mode")
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
@@ -91,7 +95,18 @@
 (require 'robe)
 (add-hook 'ruby-mode-hook 'robe-mode)
 (eval-after-load 'company
-  '(push 'company-robe company-backends))
+  '(progn
+     (setq company-dabbrev-downcase nil)
+     (push 'company-robe company-backends)))
+
+(require 'lsp-mode)
+(lsp-define-stdio-client
+ lsp-ruby
+ "ruby"
+ (lambda () "/Users/bsharon/stripe/pay-server/")
+ '("pay" "exec" 
+   "scripts/bin/typecheck" "--lsp" "-v" 
+   "--statsd-host=127.0.0.1" "--statsd-prefix=ruby_typer.payserver.mydev"))
 
 ;; Javscript alist
 (setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .

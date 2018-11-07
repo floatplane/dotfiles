@@ -52,8 +52,11 @@
     smex
     spaceline
     spaceline-all-the-icons
+    string-inflection
     swiper
+    terraform-mode
     textmate
+    treemacs
     web-mode
     yaml-mode
     yasnippet

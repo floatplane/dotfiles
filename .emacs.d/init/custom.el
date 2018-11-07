@@ -11,13 +11,12 @@
  '(ag-reuse-buffers t)
  '(fill-column 80)
  '(global-auto-revert-mode t)
- '(global-whitespace-mode t)
  '(initial-buffer-choice t)
  '(load-home-init-file t t)
  '(magit-log-arguments (quote ("-n256" "--decorate")))
  '(package-selected-packages
    (quote
-    (dumb-jump helm-ag ag helm-projectile helm projectile prettier-js flycheck-flow company-flow use-package flymake-ruby aggressive-indent rjsx-mode zenburn-theme yasnippet yaml-mode web-mode textmate smex scss-mode rainbow-delimiters python-mode protobuf-mode markdown-mode magit js2-mode irony highlight-symbol highlight-indentation haml-mode groovy-mode git-gutter+ flycheck fill-column-indicator editorconfig cursor-chg csharp-mode company coffee-mode)))
+    (lsp-ui lsp-mode string-inflection terraform-mode dumb-jump helm-ag ag helm-projectile helm projectile prettier-js flycheck-flow company-flow use-package flymake-ruby aggressive-indent rjsx-mode zenburn-theme yasnippet yaml-mode web-mode textmate smex scss-mode rainbow-delimiters python-mode protobuf-mode markdown-mode magit js2-mode irony highlight-symbol highlight-indentation haml-mode groovy-mode git-gutter+ flycheck fill-column-indicator editorconfig cursor-chg csharp-mode company coffee-mode)))
  '(show-trailing-whitespace t)
  '(speedbar-frame-parameters
    (quote

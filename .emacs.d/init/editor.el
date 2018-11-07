@@ -3,7 +3,7 @@
 
 ;; Try speeding up some things by not forcing external commands to initialize
 ;; zsh
-(setq shell-file-name "/bin/sh")
+(setq shell-file-name "/bin/zsh")
 
 ;; I want unique names for different buffers to start with the file name,
 ;; so autocomplete works better.
@@ -128,6 +128,11 @@
              (1+ (current-column))))))
 (global-set-key (kbd "C-\\") 'toggle-selective-display)
 
+(defun apostrophe ()
+    (interactive)
+  (insert "’"))
+(global-set-key (kbd "C-'") 'apostrophe)
+
 ;; Enable winner-mode
 (when (fboundp 'winner-mode)
   (winner-mode 1))
@@ -157,3 +162,5 @@
 (require 'desktop)
 (setq desktop-save t)
 (desktop-save-mode 1)
+
+(require 'string-inflection)

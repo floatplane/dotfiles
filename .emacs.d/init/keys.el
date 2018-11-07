@@ -13,6 +13,11 @@
 (global-set-key '[(end)] 'move-end-of-line)
 (global-set-key '[(kp-delete)] 'delete-char)
 
+(global-set-key (kbd "C-c s t") 'string-inflection-cycle) ;; t for toggle
+(global-set-key (kbd "C-c s c") 'string-inflection-lower-camelcase)
+(global-set-key (kbd "C-c s C") 'string-inflection-lower-camelcase)
+(global-set-key (kbd "C-c s s") 'string-inflection-underscore)  ;; s for snake case
+
 (defun my-prev-error ()
   "Goto the previous error in the compilation buffer"
   (interactive)
