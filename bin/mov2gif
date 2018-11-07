@@ -8,4 +8,5 @@ out_file=$(dirname "$1")/$rootname.gif
 
 echo Converting video to GIF...
 ffmpeg -i "$in_file" -r 10 -f gif - | gifsicle > "$out_file"
-open "$out_file" -a Google\ Chrome
+open $(dirname "$1")
+# open "$out_file" -a Google\ Chrome
