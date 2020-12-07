@@ -10,7 +10,11 @@
 (setq pop-up-frames nil)
 
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Source Code Pro"))
+  ;; Use my favorite font
+  (set-face-attribute 'default nil :family "Source Code Pro")
+  ;; Update title bar to assume dark mode
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  )
 
 (setq ring-bell-function
       (lambda ()

@@ -1,5 +1,7 @@
 (require 'magit)
 (setq vc-handled-backends (delq 'Git vc-handled-backends))
+(define-key magit-hunk-section-map (kbd "RET") 'magit-diff-visit-file-other-window)
+(define-key magit-file-section-map (kbd "RET") 'magit-diff-visit-file-other-window)
 ;; (setq magit-commit-show-diff nil
 ;;       magit-revert-buffers 1)
 
