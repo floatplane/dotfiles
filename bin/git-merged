@@ -1,0 +1,30 @@
+#!/usr/bin/ruby
+
+require_relative './command.rb'
+
+SILENT = false
+
+if ARGV.length < 1
+  puts <<-EOS
+Usage: git merged <branch>
+
+Detect whether the given branch has been merged to master, even if squash merged.
+EOS
+  exit -1
+end
+
+branch = ARGV[0]
+# Figure out where the branch left master
+mergeBase = Command.run("git merge-base master '#{branch}'", silent: SILENT).strip
+# Figure out the head of the branch
+branchSha = Command.run("git rev-parse '#{branch}^{tree}'", silent: SILENT).strip
+# Generate a commit with all the changes between the branch and the merge
+deltaSha = Command.run("git commit-tree #{branchSha} -p #{mergeBase} -m _", silent: SILENT).strip
+# See if that commit has equivalent changes in the master branch
+if Command.run("git cherry master #{deltaSha}", silent: SILENT).strip =~ /^-/
+  puts "Branch #{branch} has been merged to master"
+  exit 0
+else
+  puts "Branch #{branch} has not been merged to master"
+  exit -1
+end

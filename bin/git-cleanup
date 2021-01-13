@@ -1,9 +1,24 @@
-#!/bin/bash
-set -v
+#!/usr/bin/ruby
+
+require_relative './command.rb'
+
 # For all remotes, prune remote tracking branches that have been deleted on the
 # server
-git remote | xargs -n 1 git remote prune
+puts "Pruning remote tracking branches"
+Command.run("git remote | xargs -n 1 git remote prune")
 
-# If a local branch is merged, and isn't the current branch (the "*" check),
-# then delete it
-git branch --merged | grep -v "\*" | grep -v "^\s*master" | xargs -n 1 git branch -d
+# If a local branch is merged, then delete it
+puts "Checking local branches"
+feature_branches = Command.run('git for-each-ref refs/heads/ "--format=%(refname:short)" | grep "^bsharon/"', silent: true)
+feature_branches.split.map(&:strip).each do |b|
+  print "#{b}: "
+  # git-merged is a script right next to this one
+  `git merged #{b}`
+  if $? == 0
+    puts "merged"
+    Command.run("git branch -D '#{b}'")
+  else
+    puts "unmerged"
+  end
+end
+exit 0
