@@ -1,0 +1,13 @@
+*~
+\#*#
+*.log
+.svn/
+.DS_Store
+.rsense
+*.pyc
+._.DS_Store
+*.elc
+
+.emacs.d/elpa
+.emacs.d/var
+.emacs.d/.cache

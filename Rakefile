@@ -2,7 +2,7 @@
 srcdir = File.dirname(__FILE__)
 homedir = ENV['HOME']
 
-symlinked_files = FileList.new('.*', 'bin').exclude(/^\.git$/, /^\.gitmodules$/, /^\.$/, /^\.\.$/)
+symlinked_files = FileList.new('*').exclude("Rakefile", "prezto")
 prezto_symlinks = FileList.new('prezto/runcoms/z*')
 compiled_elisp = FileList.new('emacs/**/*.el').sub!(/.el$/, '.elc')
 
@@ -35,9 +35,10 @@ task :clean do |t|
 end
 
 task :build_normal_symlinks => symlinked_files do |t|
-  for f in t.prerequisites do
+  t.prerequisites.each do |f|
+    add_dot = f != "bin"
     src = File.join(srcdir, f)
-    dst = File.join(homedir, f)
+    dst = File.join(homedir, "#{add_dot ? "." : ""}#{f}")
     make_symlink src, dst
   end
 end
