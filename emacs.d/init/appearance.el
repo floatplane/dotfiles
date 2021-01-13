@@ -26,6 +26,7 @@
 
 (require 'all-the-icons)
 ;; (all-the-icons-install-fonts)
-(use-package spaceline-all-the-icons 
-  :after spaceline
-  :config (spaceline-all-the-icons-theme))
+(straight-use-package
+ 'spaceline 
+ :config (straight-use-package 'spaceline-all-the-icons 
+                               :config (spaceline-all-the-icons-theme)))

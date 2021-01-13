@@ -7,7 +7,7 @@
 
 ;; used for quickly opening github links to line or region
 ;; configured to open in a browser right away
-(use-package git-link
+(straight-use-package 'git-link
   :config
   (setq git-link-open-in-browser t))
 
@@ -101,14 +101,14 @@
      (setq company-dabbrev-downcase nil)
      (push 'company-robe company-backends)))
 
-(require 'lsp-mode)
-(lsp-define-stdio-client
- lsp-ruby
- "ruby"
- (lambda () "/Users/bsharon/stripe/pay-server/")
- '("pay" "exec" 
-   "scripts/bin/typecheck" "--lsp" "-v" 
-   "--statsd-host=127.0.0.1" "--statsd-prefix=ruby_typer.payserver.mydev"))
+;; (require 'lsp-mode)
+;; (lsp-define-stdio-client
+;;  lsp-ruby
+;;  "ruby"
+;;  (lambda () "/Users/bsharon/stripe/pay-server/")
+;;  '("pay" "exec" 
+;;    "scripts/bin/typecheck" "--lsp" "-v" 
+;;    "--statsd-host=127.0.0.1" "--statsd-prefix=ruby_typer.payserver.mydev"))
 
 ;; Javscript alist
 (setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .

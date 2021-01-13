@@ -1,13 +1,6 @@
 ;; On OS X we don't inherit the same path as terminal programs would, so read in PATH from the shell
 ;; http://emacswiki.org/emacs/EmacsApp
 ;; TODO: I think there's a built-in now
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 (defun set-exec-path-from-shell-PATH ()
   "Sets the exec-path to the same value used by the user shell"
   (let ((path-from-shell
@@ -23,15 +16,20 @@
 ;; Make sure exec-path matches our environment's path
 (setq exec-path (split-string (getenv "PATH") path-separator))
 
-;; Load the rest of the init scripts
-(dolist (initfile '("package"
-                    "editor"
-                    "appearance"
-                    "theme"
-                    "programming_modes"
-                    "keys"))
-  (let ((path (expand-file-name (concat "~/.emacs.d/init/" initfile ".el") )))
-    (load-file path)))
+(let
+    ((initpath (concat (file-name-directory load-file-name) (file-name-as-directory "init"))))
 
-(setq custom-file "~/.emacs.d/init/custom.el")
-(load custom-file)
+  ;; Load the rest of the init scripts
+  (dolist (initfile '("package"
+                      "editor"
+                      "appearance"
+                      "theme"
+                      "programming_modes"
+                      "keys"))
+    (let ((path (expand-file-name (concat initpath initfile ".el") )))
+      (load-file path)))
+
+  (setq custom-file (expand-file-name (concat initpath "custom.el")))
+  (load custom-file)
+
+  )

@@ -1,8 +1,7 @@
-;; Add the package directories to the load path.
-(dolist (dir '(".emacs.d/packages/use-package" ".emacs.d/packages"))
-  (let ((path (expand-file-name (concat "~/" dir))))
-    (setq load-path (cons path load-path))
-    (message (format "Added %s to load-path" path))))
+;;
+;; Make sure local packages can be found
+;;
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 
 ;;
 ;; Before loading packages, make sure they don't poop everywhere
@@ -10,81 +9,84 @@
 (require 'no-littering)
 
 ;;
-;; External packages.
+;; Bootstrap code for Straight
 ;;
-(defvar packages-list
-  '(
-    ;; auto-complete
-    ;; auto-complete-clang-async
-    ag
-    all-the-icons
-    ;; aggressive-indent
-    better-defaults
-    coffee-mode
-    company
-    counsel
-    csharp-mode
-    cursor-chg
-    doom-themes
-    dumb-jump
-    editorconfig
-    fill-column-indicator
-    flycheck
-    flymake-ruby
-    git-gutter+
-    git-link
-    groovy-mode
-    haml-mode
-    highlight-indentation
-    highlight-symbol
-    ido-completing-read+
-    irony
-    ivy
-    js2-mode
-    magit
-    markdown-mode
-    neotree
-    protobuf-mode
-    python-mode
-    rainbow-delimiters
-    robe
-    scss-mode
-    smex
-    spaceline
-    spaceline-all-the-icons
-    string-inflection
-    swiper
-    terraform-mode
-    textmate
-    treemacs
-    web-mode
-    yaml-mode
-    yasnippet
-    zenburn-theme
-    )
-  "List of packages needs to be installed at launch")
+(setq straight-use-package-by-default t)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; Set up package archives
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
-
-;; Look for missing packages, and install them
-(require 'cl)
-(defun has-package-not-installed ()
-  (loop for p in packages-list
-        when (not (package-installed-p p)) do (return t)
-        finally (return nil)))
-(when (has-package-not-installed)
-  ;; Check for new packages (package versions)
-  (message "%s" "Get latest versions of all packages...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  ;; Install the missing packages
-  (dolist (p packages-list)
-    (when (not (package-installed-p p))
-      (package-install p))))
-
+;;
+;; Load packages.
+;;
+(dolist (p
+         '(
+           ag
+           aggressive-indent
+           all-the-icons
+           ;; auto-complete
+           ;; auto-complete-clang-async
+           better-defaults
+           coffee-mode
+           company
+           company-flow
+           counsel
+           csharp-mode
+           cursor-chg
+           doom-themes
+           dumb-jump
+           editorconfig
+           fill-column-indicator
+           flycheck
+           flycheck-flow
+           flymake-ruby
+           git-gutter+
+           git-link
+           groovy-mode
+           haml-mode
+           helm
+           helm-ag
+           helm-projectile
+           highlight-indentation
+           highlight-symbol
+           ido-completing-read+
+           irony
+           ivy
+           js2-mode
+           lsp-mode
+           lsp-ui
+           magit
+           markdown-mode
+           neotree
+           prettier-js
+           projectile
+           protobuf-mode
+           python-mode
+           rainbow-delimiters
+           rjsx-mode
+           robe
+           scss-mode
+           smex
+           spaceline
+           spaceline-all-the-icons
+           string-inflection
+           swiper
+           terraform-mode
+           textmate
+           treemacs
+           use-package
+           web-mode
+           yaml-mode
+           yasnippet
+           zenburn-theme
+   ))
+  (straight-use-package p))
