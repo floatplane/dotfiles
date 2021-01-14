@@ -29,7 +29,8 @@
 ;; Load packages.
 ;;
 (dolist (p
-         '(
+         `( ;; backquote: quote the list, but allow substitution of evaluated forms within it
+            ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html#Backquote
            ag
            aggressive-indent
            all-the-icons
@@ -69,6 +70,7 @@
            neotree
            prettier-js
            projectile
+           ,'(fzf :type git :host github :repo "dbalatero/fzf.el") ;; comma breaks out of backquote, allows us to make this a quoted element
            protobuf-mode
            python-mode
            rainbow-delimiters
@@ -90,3 +92,5 @@
            zenburn-theme
    ))
   (straight-use-package p))
+
+;; (straight-use-package '(fzf :type git :host github :repo "dbalatero/fzf.el"))
