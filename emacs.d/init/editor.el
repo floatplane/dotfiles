@@ -14,6 +14,20 @@
 (unless (server-running-p)
   (server-start))
 
+;; On OS X, make sure we come to the foreground when needed
+(when (featurep 'ns)
+  (defun ns-raise-emacs ()
+    "Raise Emacs."
+    (ns-do-applescript "tell application \"Emacs\" to activate"))
+(defun ns-raise-emacs-with-frame (frame)
+    "Raise Emacs and select the provided frame."
+    (with-selected-frame frame
+      (when (display-graphic-p)
+        (ns-raise-emacs))))
+(add-hook 'after-make-frame-functions 'ns-raise-emacs-with-frame)
+(when (display-graphic-p)
+    (ns-raise-emacs)))
+
 ;; Reindent as you type. I think I like this.
 ;; Never mind. Too aggressive on existing code.
 ;; (global-aggressive-indent-mode 1)
@@ -164,3 +178,14 @@
 (desktop-save-mode 1)
 
 (require 'string-inflection)
+
+;;
+;; Project navigation
+;;
+(setq fzf/files-source "ripgrep")
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-x f") 'fzf-projectile)
+(define-key projectile-mode-map (kbd "C-c f") 'projectile-ripgrep)
+(define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+

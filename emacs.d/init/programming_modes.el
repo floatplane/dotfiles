@@ -1,5 +1,6 @@
 (require 'magit)
 (setq vc-handled-backends (delq 'Git vc-handled-backends))
+;; (setq auto-revert-check-vc-info t)
 (define-key magit-hunk-section-map (kbd "RET") 'magit-diff-visit-file-other-window)
 (define-key magit-file-section-map (kbd "RET") 'magit-diff-visit-file-other-window)
 ;; (setq magit-commit-show-diff nil
@@ -59,8 +60,6 @@
 (setq scss-compile-at-save nil)
 
 (require 'coffee-mode)
-;; Support Streamline.js compiled CoffeeScript
-(add-to-list 'auto-mode-alist '("\\._coffee\\'" . coffee-mode))
 
 (require 'csharp-mode)
 
@@ -132,6 +131,13 @@
 ;; Capnproto
 (require 'capnp-mode)
 (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
+
+;; Bazel
+(require 'bazel-mode)
+(add-to-list 'auto-mode-alist '("/BUILD\\(\\..*\\)?\\'" . bazel-mode))
+(add-to-list 'auto-mode-alist '("/WORKSPACE\\'" . bazel-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(BUILD\\|WORKSPACE\\|bzl\\)\\'" . bazel-mode))
+
 
 ;;
 ;; Shell stuff

@@ -46,6 +46,7 @@
            doom-themes
            dumb-jump
            editorconfig
+           bazel-mode
            fill-column-indicator
            flycheck
            flycheck-flow
@@ -74,8 +75,10 @@
            protobuf-mode
            python-mode
            rainbow-delimiters
+           ripgrep
            rjsx-mode
            robe
+           scala-mode
            scss-mode
            smex
            spaceline
