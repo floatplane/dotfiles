@@ -89,3 +89,5 @@
 	required = true
 [status]
 	submoduleSummary = true
+[credential]
+	helper = osxkeychain
