@@ -36,9 +36,9 @@ end
 
 task :build_normal_symlinks => symlinked_files do |t|
   t.prerequisites.each do |f|
-    add_dot = f != "bin"
+    add_dot = !['bin', 'Brewfile'].include?(f)
     src = File.join(srcdir, f)
-    dst = File.join(homedir, "#{add_dot ? "." : ""}#{f}")
+    dst = File.join(homedir, "#{add_dot ? '.' : ''}#{f}")
     make_symlink src, dst
   end
 end
@@ -58,14 +58,5 @@ end
 desc "build symlinks in home dir pointing to these files"
 task :build_symlinks => [:build_normal_symlinks, :build_prezto_symlinks]
 
-# rule '.elc' => '.el' do |t|
-#   sh "emacs -q -batch -f batch-byte-compile #{t.source}"
-# end
-
-desc "byte compile all elisp."
-task :byte_compile_elisp do |t|
-  sh "emacs -q -batch -f batch-byte-compile-if-not-done #{FileList.new('emacs/**/*.el').to_a.join(' ')}"
-end
-
-desc "run build_symlinks and byte_compile_elisp"
-task :default => [:build_symlinks, :byte_compile_elisp]
+desc "run build_symlinks"
+task :default => [:build_symlinks]
