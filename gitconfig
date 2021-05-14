@@ -46,6 +46,9 @@
     np = push --no-verify
     fnp = push --no-verify --force-with-lease
     fixup = commit --amend -C head
+    unstage = restore --staged
+    us = unstage
+    ffp = !git add . && git fixup && git push --force-with-lease
 
 [merge]
 # 	tool = meld
