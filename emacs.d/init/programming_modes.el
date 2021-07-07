@@ -10,7 +10,9 @@
 ;; configured to open in a browser right away
 (straight-use-package 'git-link
   :config
-  (setq git-link-open-in-browser t))
+  (setq git-link-open-in-browser t)
+  (setq git-link-default-branch "master")
+  )
 
 ;; sets up stripe git enterprise as a git-link handler
 (eval-after-load 'git-link
@@ -113,6 +115,9 @@
 (setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .
                               js2-mode) auto-mode-alist))
 (require 'js2-mode)
+(setq auto-mode-alist (cons '("\\.ts\\|\\.tsx\\$" .
+                              typescript-mode) auto-mode-alist))
+(require 'typescript-mode)
 
 ;; Python editing stuff
 (setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript\\|BUCK$" .

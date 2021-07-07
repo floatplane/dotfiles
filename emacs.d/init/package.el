@@ -88,6 +88,7 @@
            terraform-mode
            textmate
            treemacs
+           typescript-mode
            use-package
            web-mode
            yaml-mode

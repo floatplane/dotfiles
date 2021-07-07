@@ -182,7 +182,8 @@
 ;;
 ;; Project navigation
 ;;
-(setq fzf/files-source "ripgrep")
+(setq fzf/files-source "custom")
+(setq fzf/files-source-custom-command "fd")
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-x f") 'fzf-projectile)
 (define-key projectile-mode-map (kbd "C-c f") 'projectile-ripgrep)
