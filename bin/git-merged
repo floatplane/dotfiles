@@ -14,6 +14,14 @@ EOS
 end
 
 branch = ARGV[0]
+
+# Try the simple case first: was the branch merged to master, or does the branch
+# have no changes at all?
+if Command.run("git branch --format='%(refname:short)' --contains '#{branch}' master", silent: SILENT).strip == "master"
+  puts "Branch #{branch} has no changes, or has been merged to master"
+  exit 0
+end
+
 # Figure out where the branch left master
 mergeBase = Command.run("git merge-base master '#{branch}'", silent: SILENT).strip
 # Figure out the head of the branch
@@ -22,7 +30,7 @@ branchSha = Command.run("git rev-parse '#{branch}^{tree}'", silent: SILENT).stri
 deltaSha = Command.run("git commit-tree #{branchSha} -p #{mergeBase} -m _", silent: SILENT).strip
 # See if that commit has equivalent changes in the master branch
 if Command.run("git cherry master #{deltaSha}", silent: SILENT).strip =~ /^-/
-  puts "Branch #{branch} has been merged to master"
+  puts "Branch #{branch} has been squash merged to master"
   exit 0
 else
   puts "Branch #{branch} has not been merged to master"
