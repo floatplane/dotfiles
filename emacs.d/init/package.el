@@ -36,17 +36,19 @@
            all-the-icons
            ;; auto-complete
            ;; auto-complete-clang-async
+           bazel-mode
            better-defaults
            coffee-mode
            company
            company-flow
+           company-lsp
            counsel
            csharp-mode
            cursor-chg
            doom-themes
            dumb-jump
            editorconfig
-           bazel-mode
+           enh-ruby-mode
            fill-column-indicator
            flycheck
            flycheck-flow

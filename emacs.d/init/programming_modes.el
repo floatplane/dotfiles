@@ -74,25 +74,27 @@
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
 
 ;; Default .h files to C++ mode.
-(setq auto-mode-alist (cons '("\\.h\\'" . c++-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; Make .mel files use C++ mode.
-(setq auto-mode-alist (cons '("\\.mel\\'" . c++-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.mel\\'" . c++-mode))
 
 ;; Make UnrealScript files use C++ mode.
-(setq auto-mode-alist (cons '("\\.uc\\'" . c++-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.uc\\'" . c++-mode))
 
 ;; Make .m and .mm files use objective-c mode.
 ;; (require 'objc-c-mode)
-;; (setq auto-mode-alist (cons '("\\.m\\'" . objc-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.mm\\'" . objc-mode) auto-mode-alist))
+;; (add-to-list 'auto-mode-alist '("\\.m\\'" . objc-mode))
+(add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 
 ;; Actually, make .m files use Octave for now
-(setq auto-mode-alist (cons '("\\.m\\'" . octave-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 ;; Ruby alist
-(setq auto-mode-alist (cons '("\\.rake\\|Rakefile$" .
-                              ruby-mode) auto-mode-alist))
+(require 'enh-ruby-mode)
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake\\|Rakefile$" . enh-ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 (require 'robe)
