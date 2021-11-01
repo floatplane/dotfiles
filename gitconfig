@@ -1,6 +1,7 @@
 [core]
 	excludesfile = ~/.gitignore
 	pager = less -FXR -x4
+    commitGraph = true
 [rerere]
     enabled = true
 [help]
@@ -16,16 +17,6 @@
 	branch = auto
     interactive = auto
 [alias]
-	svn-diff = !git-svn-diff
-	diffall = !git-diffall
-	switch = !legit switch \"$@\"
-	branches = !legit branches
-	sprout = !legit sprout \"$@\"
-	unpublish = !legit unpublish \"$@\"
-	harvest = !legit harvest \"$@\"
-	sync = !legit sync \"$@\"
-	publish = !legit publish \"$@\"
-	graft = !legit graft \"$@\"
     l = log --decorate --pretty=oneline --abbrev-commit
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
@@ -38,8 +29,6 @@
     prm = pr merge
     prmerge = pr merge
     prdt = pr difftool
-    feature = "!_() { local feature_name=\"$1\"; shift; git checkout -b feature/$feature_name $@; }; _"
-    f = "!_() { local feature_name=\"$1\"; shift; git checkout -b feature/$feature_name $@; }; _"
     fpush = push --force-with-lease
     p = push
     fp = push --force-with-lease
@@ -49,6 +38,7 @@
     unstage = restore --staged
     us = unstage
     ffp = !git add . && git fixup && git push --force-with-lease
+    up = fetch origin master:master
 
 [merge]
 # 	tool = meld
