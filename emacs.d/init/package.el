@@ -80,6 +80,7 @@
            ripgrep
            rjsx-mode
            robe
+           s ;; string manipulation
            scala-mode
            scss-mode
            smex
