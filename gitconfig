@@ -1,7 +1,14 @@
 [core]
 	excludesfile = ~/.gitignore
 	pager = less -FXR -x4
+    # brew install git-delta or https://dandavison.github.io/delta/installation.html
+	# pager = delta
     commitGraph = true
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    features = GitHub side-by-side
 [rerere]
     enabled = true
 [help]
@@ -46,6 +53,7 @@
 	keepBackup = false
 # 	tool = mergetool.rb
 # 	log = true
+    conflictstyle = diff3
 
 [mergetool]
 	prompt = false
@@ -63,6 +71,9 @@
 # 	trustExitCode = false
 # [diff]
 # 	external = /home/bsharon/bin/p4diff
+[diff]
+    colorMoved = default
+    
 [push]
 	default = simple
 [difftool "Kaleidoscope"]
