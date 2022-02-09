@@ -31,6 +31,7 @@
 (dolist (p
          `( ;; backquote: quote the list, but allow substitution of evaluated forms within it
             ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html#Backquote
+           add-node-modules-path
            ag
            aggressive-indent
            all-the-icons

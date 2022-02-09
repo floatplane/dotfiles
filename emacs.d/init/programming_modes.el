@@ -31,6 +31,7 @@
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
+(require 'add-node-modules-path)
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
@@ -50,6 +51,7 @@
   (add-to-list 'web-mode-comment-formats '("css" . "//" ))
   (add-to-list 'web-mode-comment-formats '("jsx" . "//" ))
   (add-to-list 'web-mode-comment-formats '("javascript" . "//" ))
+  (add-node-modules-path)
   (message "Entering web mode")
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
@@ -117,9 +119,12 @@
 (setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .
                               js2-mode) auto-mode-alist))
 (require 'js2-mode)
+(add-hook 'js2-mode-hook 'add-node-modules-path)
+
 (setq auto-mode-alist (cons '("\\.ts\\|\\.tsx\\$" .
                               typescript-mode) auto-mode-alist))
 (require 'typescript-mode)
+(add-hook 'typescript-mode-hook 'add-node-modules-path)
 
 ;; Python editing stuff
 (setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript\\|BUCK$" .
