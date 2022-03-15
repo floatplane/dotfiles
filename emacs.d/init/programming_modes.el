@@ -1,110 +1,103 @@
-(require 'magit)
-(setq vc-handled-backends (delq 'Git vc-handled-backends))
-;; (setq auto-revert-check-vc-info t)
-(define-key magit-hunk-section-map (kbd "RET") 'magit-diff-visit-file-other-window)
-(define-key magit-file-section-map (kbd "RET") 'magit-diff-visit-file-other-window)
-;; (setq magit-commit-show-diff nil
-;;       magit-revert-buffers 1)
+;;
+;; Source control
+;;
+(use-package magit
+  :defines magit-file-section-map magit-hunk-section-map
+  :bind (("C-c m s" . magit-status)
+         :map magit-hunk-section-map
+         ("RET" . magit-diff-visit-file-other-window)
+         :map magit-file-section-map
+         ("RET" . magit-diff-visit-file-other-window)))
 
-;; used for quickly opening github links to line or region
-;; configured to open in a browser right away
-(straight-use-package 'git-link
+(setq vc-handled-backends (delq 'Git vc-handled-backends))
+
+(use-package git-link
+  :defines git-link-open-in-browser git-link-commit-remote-alist git-link-remote-alist git-link-default-branch
   :config
   (setq git-link-open-in-browser t)
   (setq git-link-default-branch "master")
-  )
+  ;; sets up stripe git enterprise as a git-link handler
+  (add-to-list 'git-link-remote-alist
+               '("git\\.corp\\.stripe\\.com" git-link-github))
+  (add-to-list 'git-link-commit-remote-alist
+               '("git\\.corp\\.stripe\\.com" git-link-commit-github))
+  ;; binds git-link to f2 for either current line or active region
+  (global-set-key [f2] 'git-link))
 
-;; sets up stripe git enterprise as a git-link handler
-(eval-after-load 'git-link
-  '(progn
-    (add-to-list 'git-link-remote-alist
-      '("git\\.corp\\.stripe\\.com" git-link-github))
-    (add-to-list 'git-link-commit-remote-alist
-      '("git\\.corp\\.stripe\\.com" git-link-commit-github))))
+(use-package rainbow-delimiters
+  :defines rainbow-delimiters-mode
+  :hook (prog-mode . rainbow-delimiters-mode))
 
-;; binds git-link to f2 for either current line or active region
-(global-set-key [f2] 'git-link)
+(use-package add-node-modules-path)
 
-(require 'dumb-jump)
-(dumb-jump-mode)
-
-(require 'rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-(require 'add-node-modules-path)
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mako\\'" . web-mode))
-(defun my-web-mode-hook ()
-  "Hooks for Web mode."
+(use-package web-mode
+  :defines web-mode-comment-formats web-mode-comment-style web-mode-enable-auto-quoting web-mode-enable-auto-indentation
+  :mode "\\.phtml\\'"
+  :mode "\\.tpl\\.php\\'"
+  :mode "\\.jsp\\'"
+  :mode "\\.as[cp]x\\'"
+  :mode "\\.erb\\'"
+  :mode "\\.mustache\\'"
+  :mode "\\.djhtml\\'"
+  :mode "\\.html?\\'"
+  :mode "\\.mako\\'"
+  :config
   (setq rainbow-delimiters-mode nil)
-  (setq whitespace-mode 0)
+  (whitespace-mode 0)
   (setq web-mode-enable-auto-indentation nil)
   (setq web-mode-enable-auto-quoting nil)
+  (setq web-mode-comment-style 2) ;; server-side comments rather than HTML comments
   (add-to-list 'web-mode-comment-formats '("css" . "//" ))
   (add-to-list 'web-mode-comment-formats '("jsx" . "//" ))
   (add-to-list 'web-mode-comment-formats '("javascript" . "//" ))
-  (add-node-modules-path)
-  (message "Entering web mode")
 )
-(add-hook 'web-mode-hook  'my-web-mode-hook)
-(setq web-mode-comment-style 2) ;; server-side comments rather than HTML comments
 
-(require 'haml-mode)
+(use-package haml-mode :mode "\\.haml\\'")
 
-(require 'scss-mode)
-(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
-(setq scss-compile-at-save nil)
+(use-package scss-mode
+  :defines scss-compile-at-save
+  :mode "\\.scss\\'"
+  :config (setq scss-compile-at-save nil))
 
-(require 'coffee-mode)
+(use-package coffee-mode :mode "\\.coffee\\'")
 
-(require 'csharp-mode)
+(use-package csharp-mode :mode "\\.cs\\'")
 
-(require 'markdown-mode)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(use-package markdown-mode
+  :mode "\\.markdown\\'"
+  :mode "\\.md\\'")
 
+(use-package yaml-mode :mode "\\.ya?ml$")
 
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
-
-;; Default .h files to C++ mode.
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-
-;; Make .mel files use C++ mode.
-(add-to-list 'auto-mode-alist '("\\.mel\\'" . c++-mode))
-
-;; Make UnrealScript files use C++ mode.
-(add-to-list 'auto-mode-alist '("\\.uc\\'" . c++-mode))
-
-;; Make .m and .mm files use objective-c mode.
-;; (require 'objc-c-mode)
-;; (add-to-list 'auto-mode-alist '("\\.m\\'" . objc-mode))
-(add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
-
-;; Actually, make .m files use Octave for now
-(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
+(use-package cc-mode
+  ;; Default .h files to C++ mode.
+  :mode ("\\.h\\'" . c++-mode)
+  ;; Make .mel files use C++ mode.
+  :mode ("\\.mel\\'" . c++-mode)
+  ;; Make UnrealScript files use C++ mode.
+  :mode ("\\.uc\\'" . c++-mode)
+  ;; Make .m and .mm files use objective-c mode.
+  :mode ("\\.m\\'" . objc-c-mode)
+  :mode ("\\.mm\\'" . objc-c-mode))
 
 ;; Ruby alist
-(require 'enh-ruby-mode)
-(add-to-list 'auto-mode-alist '("\\.rb\\'" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rake\\|Rakefile$" . enh-ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-(require 'robe)
-(add-hook 'ruby-mode-hook 'robe-mode)
-(eval-after-load 'company
-  '(progn
-     (setq company-dabbrev-downcase nil)
-     (push 'company-robe company-backends)))
+(use-package enh-ruby-mode
+  :mode "\\.rb\\'"
+  :mode "\\.rake\\|Rakefile$"
+  :interpreter "ruby")
+(use-package flymake-ruby
+  :after (enh-ruby-mode)
+  :hook (ruby-mode-hook . flymake-ruby-load))
+
+(use-package robe
+  :disabled
+  :after (company enh-ruby-mode)
+  :hook (ruby-mode-hook . robe-mode)
+  :config
+  (setq company-dabbrev-downcase nil)
+  (push 'company-robe company-backends))
+
+;; Question: can I have multiple use-package decls? Seems like yes: https://github.com/jwiegley/use-package/issues/662
 
 ;; (require 'lsp-mode)
 ;; (lsp-define-stdio-client
@@ -115,41 +108,29 @@
 ;;    "scripts/bin/typecheck" "--lsp" "-v" 
 ;;    "--statsd-host=127.0.0.1" "--statsd-prefix=ruby_typer.payserver.mydev"))
 
-;; Javscript alist
-(setq auto-mode-alist (cons '("\\.js\\|\\.es\\|\\.json$" .
-                              js2-mode) auto-mode-alist))
-(require 'js2-mode)
-(add-hook 'js2-mode-hook 'add-node-modules-path)
+(use-package js2-mode :mode "\\.js\\|\\.es\\|\\.json$")
 
-(setq auto-mode-alist (cons '("\\.ts\\|\\.tsx\\$" .
-                              typescript-mode) auto-mode-alist))
-(require 'typescript-mode)
-(add-hook 'typescript-mode-hook 'add-node-modules-path)
+(use-package typescript-mode :mode "\\.tsx?$")
 
-;; Python editing stuff
-(setq auto-mode-alist (cons '("\\.pyw?\\|SConstruct\\|SConscript\\|BUCK$" .
-                              python-mode) auto-mode-alist))
-;; (setq interpreter-mode-alist (cons '("python" . python-mode)
-;;                                    interpreter-mode-alist))
-(require 'python-mode)
-(add-hook 'python-mode-hook
-      (lambda ()
-            (let ((filename (buffer-file-name)))
-              ;; Enable buck mode for the appropriate files
-              (when (and filename
-             (string-match "/BUCK.*" filename))
-        (setq python-indent 2)))))
+(use-package python-mode
+  :defines python-indent
+  :mode "\\.pyw?\\|SConstruct\\|SConscript\\|BUCK$"
 
-;; Capnproto
+  :hook (python-mode-hook . (lambda ()
+                              (let ((filename (buffer-file-name)))
+                                ;; Enable buck mode for the appropriate files
+                                (when (and filename
+                                           (string-match "/BUCK.*" filename))
+                                  (setq python-indent 2))))))
+
+;; This is a local package, can't use use-package
 (require 'capnp-mode)
 (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
 
-;; Bazel
-(require 'bazel-mode)
-(add-to-list 'auto-mode-alist '("/BUILD\\(\\..*\\)?\\'" . bazel-mode))
-(add-to-list 'auto-mode-alist '("/WORKSPACE\\'" . bazel-mode))
-(add-to-list 'auto-mode-alist '("\\.\\(BUILD\\|WORKSPACE\\|bzl\\)\\'" . bazel-mode))
-
+(use-package bazel-mode
+  :mode "/BUILD\\(\\..*\\)?\\'"
+  :mode "/WORKSPACE\\'"
+  :mode "\\.\\(BUILD\\|WORKSPACE\\|bzl\\)\\'")
 
 ;;
 ;; Shell stuff
@@ -158,18 +139,17 @@
       ["black" "red4" "green4" "yellow4"
        "blue3" "magenta4" "cyan4" "white"])
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
 (add-hook 'shell-mode-hook '(lambda () (toggle-truncate-lines 1)))
-(setq comint-prompt-read-only t)
 
+(setq comint-prompt-read-only t)
 (setq compilation-scroll-output t)
 
-(require 're-builder)
-(setq reb-re-syntax 'string)
+(use-package re-builder
+  :config
+  (setq reb-re-syntax 'string))
 
 ;; Get Stripe stuff
 (cond ((file-exists-p "~/stripe/stripemacs/stripemacs.el")
        (defvar devbox-machine "qa-mydev--02df3f12b2a77dbd7.northwest.stripe.io")
        (defvar stripe-username "bsharon")
        (load "~/stripe/stripemacs/stripemacs.el")))
-

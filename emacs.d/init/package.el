@@ -39,6 +39,7 @@
            ;; auto-complete-clang-async
            bazel-mode
            better-defaults
+           cc-mode
            coffee-mode
            company
            company-flow
@@ -58,9 +59,6 @@
            git-link
            groovy-mode
            haml-mode
-           helm
-           helm-ag
-           helm-projectile
            highlight-indentation
            highlight-symbol
            ido-completing-read+
