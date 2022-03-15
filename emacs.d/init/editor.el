@@ -154,8 +154,9 @@
 ;; Automatically clean up old buffers
 (require 'midnight)
 
-(require 'amx)
-(amx-mode)
+(use-package amx
+  :config
+  (amx-mode))
 
 (require 'tramp)
 (setq tramp-default-method "scp")

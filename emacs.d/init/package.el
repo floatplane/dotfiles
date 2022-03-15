@@ -35,6 +35,7 @@
            ag
            aggressive-indent
            all-the-icons
+           amx
            ;; auto-complete
            ;; auto-complete-clang-async
            bazel-mode
