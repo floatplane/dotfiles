@@ -1,7 +1,10 @@
 ;;
 ;; Make sure local packages can be found
 ;;
-(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+(defun path-relative-to-parent(p)
+  (expand-file-name (concat (file-name-directory (or load-file-name buffer-file-name)) "../" p)))
+
+(add-to-list 'load-path (path-relative-to-parent "packages"))
 
 ;;
 ;; Before loading packages, make sure they don't poop everywhere
@@ -14,7 +17,7 @@
 (setq straight-use-package-by-default t)
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (path-relative-to-parent "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer

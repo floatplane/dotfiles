@@ -2,8 +2,8 @@
 ;; Window size - maximize it, hide the button bar
 ;;
 (cond ((display-graphic-p)
-       (tool-bar-mode -1)
-       (toggle-frame-maximized)))
+       (tool-bar-mode -1)))
+(add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
 ;; Don't open new frames for each file open externally.
 (setq ns-pop-up-frames nil)
@@ -26,7 +26,17 @@
 
 (require 'all-the-icons)
 ;; (all-the-icons-install-fonts)
-(straight-use-package
- 'spaceline 
- :config (straight-use-package 'spaceline-all-the-icons 
-                               :config (spaceline-all-the-icons-theme)))
+;; (use-package
+;;  spaceline
+;;  :config (straight-use-package 'spaceline-all-the-icons 
+;;                                :config (spaceline-all-the-icons-theme)))
+(use-package doom-modeline
+  :defines doom-modeline-buffer-encoding doom-modeline-buffer-file-name-style doom-modeline-mode doom-modeline-project-detection doom-modeline-vcs-max-length
+  :ensure t
+  :config
+  (setq doom-modeline-buffer-encoding 'nondefault)
+  (setq doom-modeline-buffer-file-name-style 'relative-from-project)
+  (setq doom-modeline-project-detection 'projectile)
+  (setq doom-modeline-vcs-max-length 36)
+  :init
+  (doom-modeline-mode 1))

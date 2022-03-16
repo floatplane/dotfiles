@@ -15,18 +15,18 @@
   (server-start))
 
 ;; On OS X, make sure we come to the foreground when needed
-(when (featurep 'ns)
-  (defun ns-raise-emacs ()
-    "Raise Emacs."
-    (ns-do-applescript "tell application \"Emacs\" to activate"))
-(defun ns-raise-emacs-with-frame (frame)
-    "Raise Emacs and select the provided frame."
-    (with-selected-frame frame
-      (when (display-graphic-p)
-        (ns-raise-emacs))))
-(add-hook 'after-make-frame-functions 'ns-raise-emacs-with-frame)
-(when (display-graphic-p)
-    (ns-raise-emacs)))
+;; (when (featurep 'ns)
+;;   (defun ns-raise-emacs ()
+;;     "Raise Emacs."
+;;     (ns-do-applescript "tell application \"Emacs\" to activate"))
+;; (defun ns-raise-emacs-with-frame (frame)
+;;     "Raise Emacs and select the provided frame."
+;;     (with-selected-frame frame
+;;       (when (display-graphic-p)
+;;         (ns-raise-emacs))))
+;; (add-hook 'after-make-frame-functions 'ns-raise-emacs-with-frame)
+;; (when (display-graphic-p)
+;;     (ns-raise-emacs)))
 
 ;; Reindent as you type. I think I like this.
 ;; Never mind. Too aggressive on existing code.
@@ -178,10 +178,11 @@
 (require 's)
 (setq my/alternate-desktop (s-contains? "stripe-b" (getenv-internal "PWD")))
 
-(require 'desktop)
-(setq desktop-save t)
-(desktop-save-mode 1)
-(cond (my/alternate-desktop (setq desktop-base-file-name (concat desktop-base-file-name ".alternate"))))
+(use-package desktop
+  :config
+  (setq desktop-save t)
+  (desktop-save-mode 1)
+  (cond (my/alternate-desktop (setq desktop-base-file-name (concat desktop-base-file-name ".alternate")))))
 
 (require 'string-inflection)
 
