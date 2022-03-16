@@ -87,6 +87,7 @@
            scala-mode
            scss-mode
            smex
+           solaire-mode
            spaceline
            spaceline-all-the-icons
            string-inflection
