@@ -23,7 +23,6 @@
   (dolist (initfile '("package"
                       "editor"
                       "appearance"
-                      "theme"
                       "programming_modes"
                       "keys"))
     (let ((path (expand-file-name (concat initpath initfile ".el") )))

@@ -55,6 +55,7 @@
            dumb-jump
            editorconfig
            enh-ruby-mode
+           eslint-fix
            fill-column-indicator
            flycheck
            flycheck-flow

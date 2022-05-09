@@ -9,6 +9,7 @@
          :map magit-file-section-map
          ("RET" . magit-diff-visit-file-other-window)))
 
+;; This is probably what breaks git in the modeline
 (setq vc-handled-backends (delq 'Git vc-handled-backends))
 
 (use-package git-link

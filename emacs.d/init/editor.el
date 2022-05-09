@@ -197,3 +197,6 @@
 (define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
+;; Try to set up things so LSP runs decently well
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024 8)) ;; 8mb
