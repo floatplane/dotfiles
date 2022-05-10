@@ -128,7 +128,7 @@
 (require 'capnp-mode)
 (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))
 
-(use-package bazel-mode
+(use-package bazel
   :mode "/BUILD\\(\\..*\\)?\\'"
   :mode "/WORKSPACE\\'"
   :mode "\\.\\(BUILD\\|WORKSPACE\\|bzl\\)\\'")

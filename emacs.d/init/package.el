@@ -41,13 +41,12 @@
            amx
            ;; auto-complete
            ;; auto-complete-clang-async
-           bazel-mode
+           bazel
            better-defaults
            cc-mode
            coffee-mode
            company
            company-flow
-           company-lsp
            counsel
            csharp-mode
            cursor-chg
