@@ -5,7 +5,8 @@ emacs.d/amx-items
 emacs.d/elpa
 emacs.d/ido.last
 emacs.d/places
-emacs.d/straight
+emacs.d/straight/*
+!emacs.d/straight/versions
 emacs.d/transient
 emacs.d/var
 emacs.d/.cache
