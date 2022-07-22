@@ -43,12 +43,12 @@
     ((initpath (concat (file-name-directory load-file-name) (file-name-as-directory "init"))))
 
   ;; Load the rest of the init scripts
-  (dolist (initfile '("package"
-                      "editor"
-                      "appearance"
-                      "programming_modes"
-                      "keys"))
-    (let ((path (expand-file-name (concat initpath initfile ".el") )))
+  (dolist (initfile '("package.el"
+                      "editor.el"
+                      "appearance.el"
+                      "programming_modes.el"
+                      "keys.el"))
+    (let ((path (expand-file-name initfile initpath)))
       (load-file path)))
 
   (setq custom-file (expand-file-name (concat initpath "custom.el")))

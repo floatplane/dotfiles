@@ -50,6 +50,7 @@
            counsel
            csharp-mode
            cursor-chg
+           doom-modeline
            doom-themes
            dumb-jump
            editorconfig

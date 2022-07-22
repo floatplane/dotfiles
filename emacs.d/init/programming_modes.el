@@ -9,9 +9,6 @@
          :map magit-file-section-map
          ("RET" . magit-diff-visit-file-other-window)))
 
-;; This is probably what breaks git in the modeline
-(setq vc-handled-backends (delq 'Git vc-handled-backends))
-
 (use-package git-link
   :defines git-link-open-in-browser git-link-commit-remote-alist git-link-remote-alist git-link-default-branch
   :config
@@ -29,6 +26,7 @@
   :defines rainbow-delimiters-mode
   :hook (prog-mode . rainbow-delimiters-mode))
 
+;; TODO: add this as a hook for various modes
 (use-package add-node-modules-path)
 
 (use-package web-mode
