@@ -11,3 +11,4 @@ emacs.d/transient
 emacs.d/var
 emacs.d/.cache
 emacs.d/.lsp-session-v1
+emacs.d/eln-cache
