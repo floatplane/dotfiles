@@ -10,6 +10,10 @@
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 
+;; Suppress some warnings that started showing up in recent OS X versions
+;; https://www.reddit.com/r/emacs/comments/xfhnzz/weird_errors_with_latest_build_of_emacs/
+(when (eq system-type 'darwin) (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
+
 ;; call function now
 (if (not (getenv "TERM_PROGRAM"))
     (set-exec-path-from-shell-PATH))
@@ -45,7 +49,6 @@
   ;; Load the rest of the init scripts
   (dolist (initfile '("package.el"
                       "editor.el"
-                      "appearance.el"
                       "programming_modes.el"
                       "keys.el"))
     (let ((path (expand-file-name initfile initpath)))

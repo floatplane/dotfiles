@@ -200,3 +200,7 @@
 ;; Try to set up things so LSP runs decently well
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024 8)) ;; 8mb
+
+;; The bell
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)

@@ -41,7 +41,7 @@
            amx
            ;; auto-complete
            ;; auto-complete-clang-async
-           bazel
+           ;; bazel
            better-defaults
            cc-mode
            coffee-mode
