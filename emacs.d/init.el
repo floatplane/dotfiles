@@ -49,6 +49,7 @@
   ;; Load the rest of the init scripts
   (dolist (initfile '("package.el"
                       "editor.el"
+                      "appearance.el"
                       "programming_modes.el"
                       "keys.el"))
     (let ((path (expand-file-name initfile initpath)))
