@@ -9,7 +9,7 @@ Command.run("git remote | xargs -n 1 git remote prune")
 
 # If a local branch is merged, then delete it
 puts "Checking local branches"
-feature_branches = Command.run('git for-each-ref refs/heads/ "--format=%(refname:short)" | grep "^bsharon/"', silent: true)
+feature_branches = Command.run('git for-each-ref refs/heads/ "--format=%(refname:short)" | grep -v "^\(main\|master\)$"', silent: true)
 feature_branches.split.map(&:strip).each do |b|
   print "#{b}: "
   # git-merged is a script right next to this one

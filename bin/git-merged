@@ -8,31 +8,32 @@ if ARGV.length < 1
   puts <<-EOS
 Usage: git merged <branch>
 
-Detect whether the given branch has been merged to master, even if squash merged.
+Detect whether the given branch has been merged to main/master, even if squash merged.
 EOS
   exit -1
 end
 
 branch = ARGV[0]
+master_branch = Command.run('git symbolic-ref refs/remotes/origin/HEAD', silent:SILENT).split('/')[3].strip
 
-# Try the simple case first: was the branch merged to master, or does the branch
+# Try the simple case first: was the branch merged to #{master_branch}, or does the branch
 # have no changes at all?
-if Command.run("git branch --format='%(refname:short)' --contains '#{branch}' master", silent: SILENT).strip == "master"
-  puts "Branch #{branch} has no changes, or has been merged to master"
+if Command.run("git branch --format='%(refname:short)' --contains '#{branch}' #{master_branch}", silent: SILENT).strip == master_branch
+  puts "Branch #{branch} has no changes, or has been merged to #{master_branch}"
   exit 0
 end
 
-# Figure out where the branch left master
-mergeBase = Command.run("git merge-base master '#{branch}'", silent: SILENT).strip
+# Figure out where the branch left master_branch
+mergeBase = Command.run("git merge-base #{master_branch} '#{branch}'", silent: SILENT).strip
 # Figure out the head of the branch
 branchSha = Command.run("git rev-parse '#{branch}^{tree}'", silent: SILENT).strip
 # Generate a commit with all the changes between the branch and the merge
 deltaSha = Command.run("git commit-tree #{branchSha} -p #{mergeBase} -m _", silent: SILENT).strip
-# See if that commit has equivalent changes in the master branch
-if Command.run("git cherry master #{deltaSha}", silent: SILENT).strip =~ /^-/
-  puts "Branch #{branch} has been squash merged to master"
+# See if that commit has equivalent changes in the master_branch branch
+if Command.run("git cherry #{master_branch} #{deltaSha}", silent: SILENT).strip =~ /^-/
+  puts "Branch #{branch} has been squash merged to #{master_branch}"
   exit 0
 else
-  puts "Branch #{branch} has not been merged to master"
+  puts "Branch #{branch} has not been merged to #{master_branch}"
   exit -1
 end
