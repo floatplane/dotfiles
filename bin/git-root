@@ -1,0 +1,16 @@
+#!/usr/bin/ruby
+
+require_relative './command.rb'
+
+SILENT = true
+
+if ARGV.length != 0
+  puts <<-EOS
+Usage: git root
+
+Print the name of the root branch, typically either `master` or `main`
+EOS
+  exit -1
+end
+
+print Command.run('git symbolic-ref refs/remotes/origin/HEAD', silent:SILENT).split('/')[3].strip

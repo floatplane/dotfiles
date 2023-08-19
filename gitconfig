@@ -45,7 +45,7 @@
     unstage = restore --staged
     us = unstage
     ffp = !git add . && git fixup && git push --force-with-lease
-    up = fetch origin master:master
+    up = !ROOT=$(git root) sh -c 'git fetch origin $ROOT:$ROOT'
 
 [merge]
 # 	tool = meld
@@ -96,3 +96,5 @@
 	submoduleSummary = true
 [credential]
 	helper = osxkeychain
+[init]
+	defaultBranch = main
