@@ -34,7 +34,7 @@
 (use-package doom-themes
   :config
   ;; Global settings (defaults)
-  (load-theme (cond (my/alternate-desktop 'doom-spacegrey) (t 'doom-zenburn)) t)
+  (load-theme 'doom-zenburn t)
 
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   ;; (doom-themes-neotree-config)
