@@ -7,6 +7,19 @@ require_relative './command.rb'
 puts "Pruning remote tracking branches"
 Command.run("git remote | xargs -n 1 git remote prune")
 
+# Build map of branch name -> worktree path
+worktrees = {}
+current_path = nil
+`git worktree list --porcelain`.each_line do |line|
+  line.chomp!
+  if line.start_with?("worktree ")
+    current_path = line.sub("worktree ", "")
+  elsif line.start_with?("branch refs/heads/")
+    branch = line.sub("branch refs/heads/", "")
+    worktrees[branch] = current_path
+  end
+end
+
 # If a local branch is merged, then delete it
 puts "Checking local branches"
 feature_branches = Command.run('git for-each-ref refs/heads/ "--format=%(refname:short)" | grep -v "^\(main\|master\)$"', silent: true)
@@ -16,7 +29,11 @@ feature_branches.split.map(&:strip).each do |b|
   `git merged #{b}`
   if $? == 0
     puts "merged"
-    Command.run("git branch -D '#{b}'")
+    if worktrees[b]
+      puts "  (in worktree: #{worktrees[b]})"
+      Command.run("git worktree remove --force '#{worktrees[b]}'", fatal: false)
+    end
+    Command.run("git branch -D '#{b}'", fatal: false)
   else
     puts "unmerged"
   end
