@@ -30,8 +30,13 @@ feature_branches.split.map(&:strip).each do |b|
   if $? == 0
     puts "merged"
     if worktrees[b]
-      puts "  (in worktree: #{worktrees[b]})"
-      Command.run("git worktree remove --force '#{worktrees[b]}'", fatal: false)
+      dirty = `git -C '#{worktrees[b]}' status --porcelain 2>/dev/null`.strip
+      if !dirty.empty?
+        puts "  skipping: worktree has dirty files (#{worktrees[b]})"
+        next
+      end
+      puts "  removing worktree: #{worktrees[b]}"
+      Command.run("git worktree remove '#{worktrees[b]}'", fatal: false)
     end
     Command.run("git branch -D '#{b}'", fatal: false)
   else
