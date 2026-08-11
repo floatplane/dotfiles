@@ -11,3 +11,5 @@
 .emacs.d/elpa
 .emacs.d/var
 .emacs.d/.cache
+
+**/.claude/settings.local.json
