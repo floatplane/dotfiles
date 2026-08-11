@@ -174,15 +174,10 @@
  kept-old-versions 2
  version-control t)       ; use versioned backups
 
-;; figure out if we're running in an alternate universe
-(require 's)
-(setq my/alternate-desktop (s-contains? "stripe-b" (getenv-internal "PWD")))
-
 (use-package desktop
   :config
   (setq desktop-save t)
-  (desktop-save-mode 1)
-  (cond (my/alternate-desktop (setq desktop-base-file-name (concat desktop-base-file-name ".alternate")))))
+  (desktop-save-mode 1))
 
 (require 'string-inflection)
 

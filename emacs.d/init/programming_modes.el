@@ -14,11 +14,6 @@
   :config
   (setq git-link-open-in-browser t)
   (setq git-link-default-branch "master")
-  ;; sets up stripe git enterprise as a git-link handler
-  (add-to-list 'git-link-remote-alist
-               '("git\\.corp\\.stripe\\.com" git-link-github))
-  (add-to-list 'git-link-commit-remote-alist
-               '("git\\.corp\\.stripe\\.com" git-link-commit-github))
   ;; binds git-link to f2 for either current line or active region
   (global-set-key [f2] 'git-link))
 
@@ -98,15 +93,6 @@
 
 ;; Question: can I have multiple use-package decls? Seems like yes: https://github.com/jwiegley/use-package/issues/662
 
-;; (require 'lsp-mode)
-;; (lsp-define-stdio-client
-;;  lsp-ruby
-;;  "ruby"
-;;  (lambda () "/Users/bsharon/stripe/pay-server/")
-;;  '("pay" "exec" 
-;;    "scripts/bin/typecheck" "--lsp" "-v" 
-;;    "--statsd-host=127.0.0.1" "--statsd-prefix=ruby_typer.payserver.mydev"))
-
 (use-package js2-mode :mode "\\.js\\|\\.es\\|\\.json$")
 
 (use-package typescript-mode :mode "\\.tsx?$")
@@ -146,9 +132,3 @@
 (use-package re-builder
   :config
   (setq reb-re-syntax 'string))
-
-;; Get Stripe stuff
-(cond ((file-exists-p "~/stripe/stripemacs/stripemacs.el")
-       (defvar devbox-machine "qa-mydev--02df3f12b2a77dbd7.northwest.stripe.io")
-       (defvar stripe-username "bsharon")
-       (load "~/stripe/stripemacs/stripemacs.el")))
