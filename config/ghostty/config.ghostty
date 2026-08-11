@@ -1,0 +1,10 @@
+# Ghostty config — tracked in ~/dotfiles/config/ghostty, symlinked by `rake`.
+# Reference: https://ghostty.org/docs/config/reference
+
+# Match URLs in terminal output; open on Cmd+click while hovering.
+# Inside tmux/herdr (mouse on), tmux captures the mouse, so add Shift:
+# Cmd+Shift+hover to preview, Cmd+Shift+click to open.
+link-url = true
+
+# Show a preview of the destination for matched URLs and OSC 8 hyperlinks.
+link-previews = true
