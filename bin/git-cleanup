@@ -2,21 +2,56 @@
 
 require_relative './command.rb'
 
+# --dry-run / -n: report what would be pruned, removed, and deleted
+# without touching anything.
+dry_run = !(ARGV & ['--dry-run', '-n']).empty?
+puts "Dry run: nothing will be modified" if dry_run
+
 # For all remotes, prune remote tracking branches that have been deleted on the
 # server
-puts "Pruning remote tracking branches"
-Command.run("git remote | xargs -n 1 git remote prune")
+if dry_run
+  puts "Would prune remote tracking branches"
+else
+  puts "Pruning remote tracking branches"
+  Command.run("git remote | xargs -n 1 git remote prune")
+end
 
-# Build map of branch name -> worktree path
+# Build map of branch name -> { path:, locked: }
+# First entry is always the main worktree
 worktrees = {}
+main_worktree = nil
 current_path = nil
+current_locked = false
 `git worktree list --porcelain`.each_line do |line|
   line.chomp!
   if line.start_with?("worktree ")
     current_path = line.sub("worktree ", "")
+    main_worktree ||= current_path
+    current_locked = false
+  elsif line == "locked" || line.start_with?("locked ")
+    current_locked = true
   elsif line.start_with?("branch refs/heads/")
     branch = line.sub("branch refs/heads/", "")
-    worktrees[branch] = current_path
+    worktrees[branch] = { path: current_path, locked: current_locked }
+  end
+end
+
+# Optional teardown script to run inside each worktree before removal.
+# Resolution order:
+#   1. GIT_CLEANUP_TEARDOWN environment variable
+#   2. `git config cleanup.teardown`, so each clone can opt in with e.g.
+#      `git config cleanup.teardown scripts/worktree/teardown.sh`
+# Both are paths relative to the main worktree.
+teardown_setting = ENV['GIT_CLEANUP_TEARDOWN']
+if teardown_setting.nil? || teardown_setting.empty?
+  teardown_setting = `git config --get cleanup.teardown`.strip
+end
+teardown_script = nil
+if !teardown_setting.empty? && main_worktree
+  teardown_script = File.expand_path(teardown_setting, main_worktree)
+  unless File.executable?(teardown_script)
+    puts "Warning: teardown script #{teardown_script} is not executable, ignoring"
+    teardown_script = nil
   end
 end
 
@@ -29,16 +64,38 @@ feature_branches.split.map(&:strip).each do |b|
   `git merged #{b}`
   if $? == 0
     puts "merged"
-    if worktrees[b]
-      dirty = `git -C '#{worktrees[b]}' status --porcelain 2>/dev/null`.strip
-      if !dirty.empty?
-        puts "  skipping: worktree has dirty files (#{worktrees[b]})"
+    wt = worktrees[b]
+    if wt
+      if wt[:locked]
+        puts "  skipping: worktree is locked (#{wt[:path]})"
         next
       end
-      puts "  removing worktree: #{worktrees[b]}"
-      Command.run("git worktree remove '#{worktrees[b]}'", fatal: false)
+      dirty = `git -C '#{wt[:path]}' status --porcelain 2>/dev/null`.strip
+      if !dirty.empty?
+        puts "  skipping: worktree has dirty files (#{wt[:path]})"
+        next
+      end
+      if dry_run
+        puts "  would run teardown in #{wt[:path]}" if teardown_script
+        puts "  would remove worktree: #{wt[:path]}"
+      else
+        if teardown_script
+          puts "  running teardown in #{wt[:path]}"
+          Command.run("cd '#{wt[:path]}' && '#{teardown_script}'", fatal: false)
+        end
+        puts "  removing worktree: #{wt[:path]}"
+        result = Command.run("git worktree remove '#{wt[:path]}'", fatal: false)
+        if result.nil?
+          puts "  skipping branch delete: worktree removal failed"
+          next
+        end
+      end
     end
-    Command.run("git branch -D '#{b}'", fatal: false)
+    if dry_run
+      puts "  would delete branch #{b}"
+    else
+      Command.run("git branch -D '#{b}'", fatal: false)
+    end
   else
     puts "unmerged"
   end
