@@ -20,3 +20,10 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+# >>> rowspace-cloud-bootstrap >>>
+export PATH="$HOME/.local/bin:$HOME/.pulumi/bin:$PATH"
+if [ -n "${BASH_VERSION:-}" ] && command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook bash)"
+fi
+# <<< rowspace-cloud-bootstrap <<<
