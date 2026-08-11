@@ -1,0 +1,4 @@
+- Always use ripgrep (`rg`) instead of `grep`
+- If I give you specific instructions and you are unable to follow them, stop and ask me for guidance
+- Always use Context7 MCP when searching for library/API documentation, code generation, setup or configuration steps without me having to explicitly ask. This will provide the latest information, usually more than was available when you were trained.
+- When writing documentation (PR descriptions, specs, design docs), adhere to ASD-STE100 Simplified Technical English
