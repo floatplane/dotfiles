@@ -8,3 +8,8 @@ link-url = true
 
 # Show a preview of the destination for matched URLs and OSC 8 hyperlinks.
 link-previews = true
+
+# Make ssh to hosts without an xterm-ghostty terminfo entry work: install the
+# entry on the remote via infocmp/tic, and fall back to xterm-256color if that
+# fails. Naming these two leaves the other defaults untouched.
+shell-integration-features = ssh-env,ssh-terminfo
