@@ -27,3 +27,5 @@ if [ -n "${BASH_VERSION:-}" ] && command -v direnv >/dev/null 2>&1; then
     eval "$(direnv hook bash)"
 fi
 # <<< rowspace-cloud-bootstrap <<<
+
+. "$HOME/.atuin/bin/env"

@@ -252,3 +252,6 @@ fi
 # <<< rowspace-cloud-bootstrap <<<
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
+
+. "$HOME/.atuin/bin/env"
+eval "$(atuin init bash)"
