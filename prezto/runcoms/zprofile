@@ -47,6 +47,13 @@ path=(
   $path
 )
 
+# Put Homebrew on PATH here (not in zshrc) so non-interactive shells get it
+# too — e.g. SSH exec channels, which is how mosh finds mosh-server and the
+# Moshi app finds moshi-hook.
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 #
 # Less
 #
