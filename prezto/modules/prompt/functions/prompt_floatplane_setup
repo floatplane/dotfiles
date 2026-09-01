@@ -1,0 +1,52 @@
+function prompt_floatplane_precmd {
+  # Get Git repository information.
+  if (( $+functions[git-info] )); then
+      git-info
+  fi
+}
+
+function prompt_floatplane_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
+  # Add hook for calling vcs_info before each command.
+  add-zsh-hook precmd prompt_floatplane_precmd
+
+  # Use extended color pallete if available.
+  if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
+    _prompt_floatplane_colors=(
+      "%F{5}"  # Purple - branch name
+      "%F{166}" # Orange
+      "%F{135}" # Purple
+      "%F{142}" # Yellow
+      "%F{28}" # green
+    )
+  else
+    _prompt_floatplane_colors=(
+      "%F{purple}"
+      "%F{red}"
+      "%F{magenta}"
+      "%F{yellow}"
+      "%F{green}"
+    )
+  fi
+
+  # Set git-info parameters.
+  zstyle ':prezto:module:git:info' verbose 'yes' # needed? what does this do
+  zstyle ':prezto:module:git:info:branch' format "${_prompt_floatplane_colors[1]}%b%f"
+  zstyle ':prezto:module:git:info:dirty' format "${_prompt_floatplane_colors[4]}⚡%f"
+  zstyle ':prezto:module:git:info:clean' format ""
+  zstyle ':prezto:module:git:info:keys' format \
+    'prompt' '%b%C%D' \
+    'rprompt' ''
+
+  # Define prompts.
+  PROMPT="%n@%B%m%b: %~ "'${git_info:+${(e)git_info[prompt]}}'" $ "
+  # RPROMPT='${_prompt_floatplane_colors[5]}| nvm `nvm current`%f'
+}
+
+prompt_floatplane_setup "$@"

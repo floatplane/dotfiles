@@ -1,0 +1,209 @@
+# -*- mode: shell-script -*-
+
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+function source_if_exists {
+  if [[ -s $1 ]] ; then
+      source $1
+  # elif [[ "$PS1" ]]; then
+  #     # Warn when running interactively, not otherwise
+  #     echo $1 not found.
+  fi
+}
+
+function command_exists_on_path () {
+  type "$1" &> /dev/null ;
+}
+
+# Tweak the path.
+export PATH=/opt/local/bin:/opt/local/sbin:~/bin:~/src/hadoop-0.20.2/bin:$PATH
+
+if [[ $(uname) =~ "Darwin" ]]; then
+    # OS X limits us to 256 open file descriptors by default. That's kinda
+    # small. Node can chew that up easily.
+    # See http://docs.basho.com/riak/latest/ops/tuning/open-files-limit/#Mac-OS-X for
+    # information about creating /Library/LaunchDaemons/limit.{maxfiles,maxprocs}.plist
+    ulimit -n 10000
+
+    # Move /usr/local/bin to the front for Homebrew
+    export PATH=/usr/local/bin:$PATH
+fi
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    # WARNING: enabling this can cause multi-second delays due to NFS latency
+    #alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+if [[ -d "/Applications/Emacs.app/Contents/MacOS/bin" ]]; then
+  alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs -n'
+  export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs"
+else
+  alias ec="emacsclient --alternate-editor=emacs -n"
+  export EDITOR="emacsclient --alternate-editor=emacs"
+fi
+export GIT_EDITOR=$EDITOR
+export VISUAL=$EDITOR
+
+if [[ -d "$HOME/Library/Android/sdk" ]]; then
+  export ANDROID_HOME=$HOME/Library/Android/sdk
+  export PATH=$PATH:$ANDROID_HOME/emulator
+  export PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
+
+alias ls="ls -Gp"
+alias l="ls -la"
+alias p="pushd ~/stripe/pay-server"
+function up {
+  dir="$(up_dir $@)"
+  pushd $dir
+}
+if [[ $(uname) =~ "Darwin" ]]; then
+  alias xc="open -a Xcode"
+  eval $(/opt/homebrew/bin/brew shellenv)
+else
+  alias pbcopy="xclip -i -sel clip"
+  alias pbpaste="xclip -o"
+  alias ack="ack-grep"
+fi
+
+# Initialize Starship prompt (after Homebrew setup)
+eval "$(starship init zsh)"
+alias ag="ag --pager='less -FXR' --depth 100"
+function rg {
+  command rg -p "$@" | less -FXR
+}
+
+# Alias git to the hub command
+# if command_exists_on_path hub; then
+#     eval "$(hub alias -s)"
+# fi
+# alias gcb='git checkout $(git branch --sort=-committerdate | fzf)'
+gcb() {
+   local branch=$(git branch --sort=-committerdate | fzf | sed 's/^[+* ]*//')
+   [[ -z "$branch" ]] && return
+
+   # Check if this branch is in a worktree
+   local wt_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
+     /^worktree / {wt=$2}
+     /^branch / && $2==b {print wt; exit}
+   ')
+
+   if [[ -n "$wt_path" ]]; then
+     cd "$wt_path"
+   else
+     git checkout "$branch"
+   fi
+}
+
+git() {
+    for arg in "$@"; do
+      if [[ "$arg" =~ ^orig_head([~^]|$) ]]; then
+        echo "Error: Use 'ORIG_HEAD' instead of lowercase 'orig_head'" >&2
+        return 1
+      elif [[ "$arg" =~ ^head([~^]|$) ]]; then
+        echo "Error: Use 'HEAD' or '@' instead of lowercase 'head'" >&2
+        return 1
+      fi
+    done
+    command git "$@"
+}
+
+# Load local script, if any
+source_if_exists ~/.zshrc.local
+
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+
+# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+eval "$(rbenv init -)"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+# Get grunt tab completion if it's installed
+# doesn't work!
+# command -v "grunt" > /dev/null && eval "$(grunt --completion=zsh)"
+
+# export NVM_DIR="/Users/brians/.nvm"
+# [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[[ -x `which nodenv` ]] && eval "$(nodenv init -)"
+
+# YOLO. remove the '-i'
+alias rm='nocorrect rm'
+
+# Octave. Force command line
+alias octave='echo "\noctave is aliased to octave-cli, override by launching octave-gui explicitly\n"; octave-cli'
+
+# Don't make me quote things like the ^ in `git reset --hard HEAD^1`
+unsetopt nomatch
+
+source_if_exists ~/projects/google-cloud-sdk/completion.zsh.inc
+source_if_exists ~/projects/google-cloud-sdk/path.zsh.inc
+
+# Muscle memory is hard
+alias blaze bazel
+
+# Load CLI improvements
+[[ -x `which bat` ]] && alias cat='bat -p' && export GIT_PAGER='bat -p'
+[[ -x `which delta` ]] && export GIT_PAGER='delta'
+[[ -x `prettyping` ]] && alias ping='prettyping --nolegend'
+[[ -x `which zoxide` ]] && eval "$(zoxide init zsh)"
+
+# Starship prompt configuration is handled by ~/.config/starship.toml
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Set up direnve
+[[ -x `which direnv` ]] && eval "$(direnv hook zsh)"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Created by `pipx` on 2024-08-05 16:37:16
+export PATH="$PATH:/Users/brians/.local/bin"
+command -v "register-python-argcomplete" > /dev/null && eval "$(register-python-argcomplete pipx)"
+[[ -d "/opt/homebrew/opt/mysql-client/bin" ]] && export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+
+export DOCKER_VOLUME_DIRECTORY=$HOME/.docker
+
+command -v "just" > /dev/null && eval "$(just --completions=zsh)"
+command -v "kubectl" > /dev/null && source <(kubectl completion zsh)
+command -v "pulumi" > /dev/null && source <(pulumi gen-completion zsh)
+
+# # Add customer() function with autocomplete
+# source "/Users/brians/projects/rowspace/scripts/shell/customer.sh"
+
+# bun completions
+[ -s "/Users/brians/.bun/_bun" ] && source "/Users/brians/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/Users/brians/.opencode/bin:$PATH
+
+export ESC_CACHE_TTL_SECS=3600
+
+# Added by Devin
+export PATH="/Users/brians/.codeium/windsurf/bin:$PATH"
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
