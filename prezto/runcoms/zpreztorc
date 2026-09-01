@@ -43,8 +43,7 @@ zstyle ':prezto:load' pmodule \
   'homebrew' \
   'osx' \
   'git' \
-  'syntax-highlighting' \
-  'history-substring-search'
+  'syntax-highlighting'
 
 # Packages to investigate
 #  'rails' \
