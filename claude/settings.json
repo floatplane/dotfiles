@@ -11,11 +11,9 @@
       "Bash(git:*)",
       "Bash(gh:*)",
       "Bash(npm:*)",
-      "Bash(npx:*)",
       "Bash(pnpm:*)",
       "Bash(yarn:*)",
       "Bash(bun:*)",
-      "Bash(node:*)",
       "Bash(tsc:*)",
       "Bash(eslint:*)",
       "Bash(prettier:*)"
@@ -28,7 +26,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "fable",
   "hooks": {
     "Notification": [
       {
@@ -71,6 +69,26 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -91,6 +109,15 @@
             "type": "command",
             "command": "'/opt/homebrew/bin/moshi-hook' claude-hook",
             "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
           }
         ]
       }
@@ -122,6 +149,16 @@
           {
             "type": "command",
             "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/brian/.claude/hooks/herdr-agent-state.sh' session",
             "timeout": 10
           }
         ]
@@ -191,5 +228,37 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(pulumi:destroy) in infra/rowspace_apps or infra/rowspace_infra — Protected-Scope IaC Apply on *-prod stacks",
+      "Bash(git push --force) to main on RowspaceAI/rowspace — Git Destructive / Git Push Destination to a protected branch"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: RowspaceAI (github.com:RowspaceAI/rowspace)",
+      "**Cloud provider(s)**: AWS, Azure (per infra/rowspace_apps and infra/rowspace_infra Pulumi stacks)",
+      "**Repository visibility**: Internal (RowspaceAI/rowspace, confirmed via gh)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: main (protected; rulesets: `main` active, `main` active, `main-merge-queue` evaluate, `non-main-branches` evaluate)",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo (RowspaceAI/rowspace) and its remote(s) only — as scoped by Trusted repo and Repository visibility entries above",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: .env, .env.worktree, .envrc, .ingestion-service-account-key.json, .ingestion-service-account-key-local.json, ingestion-service-account-key.json, rowspace/adapters/aws/secrets.py, rowspace/adapters/azure/secrets.py, rowspace/adapters/in_memory/secrets.py, rowspace/core/interfaces/secrets.py, rowspace/core/models/secrets.py, rowspace/entrypoints/wirings/secrets.py, infra/runbooks/qdrant-collection-rebuild/setup-rebuild-secret.sh, customers/rowspace/schemas/clo_oc_position_classifications.py, customers/rowspace/schemas/portfolio_retention.py — share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment — includes infra/rowspace_apps and infra/rowspace_infra Pulumi stacks (parker-azure-prod, presidio-azure-prod, quaker-aws-prod, rosewood-aws-prod, rowspace-aws-prod, strauss-aws-prod, tahoe-azure-prod), loadtest/profiles/eclipse-prod.yaml, docs/prod-pg-backups.md",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment — includes all *-prod Pulumi stack files under infra/rowspace_apps and infra/rowspace_infra",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development",
+      "**Trusted repo**: /Users/brian/projects/rowspace.brian-serialization-bug (RowspaceAI/rowspace, internal visibility) and its origin remote",
+      "**Org-specific CLIs**: just, gh, pulumi (per README.md and shell history)"
+    ]
+  }
 }

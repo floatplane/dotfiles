@@ -11,6 +11,9 @@ trust_level = "trusted"
 [projects."/Users/brians/Library/Application Support/com.conductor.app/bin"]
 trust_level = "trusted"
 
+[projects."/Users/brian/projects/rowspace"]
+trust_level = "trusted"
+
 [notice.model_migrations]
 "gpt-5.1-codex-max" = "gpt-5.2-codex"
 "gpt-5.2-codex" = "gpt-5.3-codex"
@@ -119,3 +122,27 @@ trusted_hash = "sha256:78297874884298bf02ef5d48433f2bb34166de580ee027e9e85d564cd
 
 [hooks.state."/Users/brians/.codex/hooks.json:stop:0:0"]
 trusted_hash = "sha256:a0550731637177c048527d803117304a1b3d0f9e4f2580a9fba31d53bfe4cb8f"
+
+[hooks.state."/Users/brian/.codex/hooks.json:permission_request:0:0"]
+trusted_hash = "sha256:fcec2a18f441c5694bc9469cf13d7014e823c57ab420e02d63a8bf7ebdfcc72b"
+
+[hooks.state."/Users/brian/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:32c80cd33fbfcfc4ae4f2feca77149fe3334b1113c6598676f753fd942500de2"
+
+[hooks.state."/Users/brian/.codex/hooks.json:session_start:1:0"]
+trusted_hash = "sha256:341f095eb06db5b52fa3c919f6e3ba2ada4c63883b73a18707a760623a7fc589"
+
+[hooks.state."/Users/brian/.codex/hooks.json:session_start:2:0"]
+trusted_hash = "sha256:3b1b283e3d486f11b94aeed0e5763018aef21d4f62614b4df17c6f2de6d7d0f8"
+
+[hooks.state."/Users/brian/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:78297874884298bf02ef5d48433f2bb34166de580ee027e9e85d564cdf23fe63"
+
+[hooks.state."/Users/brian/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:a0550731637177c048527d803117304a1b3d0f9e4f2580a9fba31d53bfe4cb8f"
+
+[hooks.state."/Users/brian/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:fc87dbee1cb8a9be4f78ba094c4fa8d5e2fd38cb800854e3717f9b6a52fe2a47"
+
+[hooks.state."/Users/brian/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:ac371f260e4b23ba1d1b7a4ad68a44a323a8470b61f38471a47aceac1b7a5a7c"
